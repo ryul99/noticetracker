@@ -1,0 +1,19 @@
+sudo: required
+
+notifications:
+  slack: swpp-team8:DU9yzMW01pR6CPdmxs68Zdkv
+  email: false
+
+matrix:
+  include:
+    - language: node_js
+      node_js: 11.0.0
+      addons:
+        chrome: stable
+      cache:
+        directories:
+          - frontend/node_modules
+    - language: python
+      python: 3.6
+      cache:
+        pip: true
