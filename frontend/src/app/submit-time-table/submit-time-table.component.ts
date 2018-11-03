@@ -38,7 +38,7 @@ export class SubmitTimeTableComponent implements OnInit {
     for (let course of this.selectedCourse) {
       this.userService.addCourse(course.id);
     }
-    this.router.navigate(['/site_recomendation']);
+    this.router.navigate(['/site_recommendation']);
   }
 
   skip() {
@@ -53,7 +53,9 @@ export class SubmitTimeTableComponent implements OnInit {
     this.courseService.searchByCode(this.codeTerm);
   }
 
-  goHome() {}
+  goHome() {
+    this.router.navigate(['/newsfeed']);
+  }
 
   toggle(course: Course) {
     const searchIndex: number = this.searchedCourse.indexOf(course);
