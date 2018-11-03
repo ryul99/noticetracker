@@ -7,7 +7,7 @@ notifications:
 matrix:
   include:
     - language: node_js
-      node_js: 11.0.0
+      node_js: 10.13
       addons:
         chrome: stable
       cache:
