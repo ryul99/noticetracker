@@ -7,8 +7,14 @@ course code:<input [(ngModel)]="this.codeTerm" id="pw-input">
 <button (click)="searchByCode()">search</button>
 
 
-<div *ngIf=searchedCourse>
+<div *ngIf="searchedCourse">
   <li *ngFor="let course of searchedCourse">
-    {{course[0].name}} <input type="checkbox" [(ngModel)]="course[1]">
+    {{course[0].name}} <input type="checkbox" (change)="this.toggle(course)">
+  </li>
+</div>
+
+<div *ngIf="selectedCourse">
+  <li *ngFor="let course of selectedCourse">
+    {{course.name}}
   </li>
 </div>
