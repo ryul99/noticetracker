@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Course } from '../course';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';
-
 
 @Component({
   selector: 'app-submit-time-table',
@@ -11,41 +11,38 @@ import { UserService } from '../user.service';
   styleUrls: ['./submit-time-table.component.css']
 })
 export class SubmitTimeTableComponent implements OnInit {
-
   private nameTerm: string;
   private codeTerm: string;
   private selectedCourse: Course[] = [];
   private searchedCourse: Course[] = [
-    {name:"swpp", id:1,code:"A",time:[]},
-    {name:"sp", id:2,code:"B",time:[]}, 
-    {name:"pl", id:3,code:"C",time:[]},  
+    { name: 'swpp', id: 1, code: 'A', time: [] },
+    { name: 'sp', id: 2, code: 'B', time: [] },
+    { name: 'pl', id: 3, code: 'C', time: [] },
+    { name: 'es', id: 4, code: 'D', time: [] },
+    { name: 'al', id: 5, code: 'E', time: [] },
+    { name: 'cc', id: 6, code: 'F', time: [] },
+    { name: 'os', id: 7, code: 'G', time: [] },
+    { name: 'at', id: 8, code: 'H', time: [] }
   ];
   private searchedCourseSelected: boolean[] = [false, false, false];
-  
-
-  /*private searchedCourse: [Course, boolean][] = [
-    [{name:"swpp", id:1,code:"A",time:[]}, false],
-    [{name:"sp", id:2,code:"B",time:[]}, false],
-    [{name:"pl", id:3,code:"C",time:[]}, false], 
-  ];*/
-
 
   constructor(
     private courseService: CourseService,
     private userService: UserService,
-  ) { }
+    private router: Router
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   submit() {
-    for(let course of this.selectedCourse) {
+    for (let course of this.selectedCourse) {
       this.userService.addCourse(course.id);
     }
+    this.router.navigate(['/site_recomendation']);
   }
 
   skip() {
-
+    this.router.navigate(['/newsfeed']);
   }
 
   searchByName() {
@@ -56,21 +53,16 @@ export class SubmitTimeTableComponent implements OnInit {
     this.courseService.searchByCode(this.codeTerm);
   }
 
-  goHome() {
-
-  }
+  goHome() {}
 
   toggle(course: Course) {
     const searchIndex: number = this.searchedCourse.indexOf(course);
     const selectIndex: number = this.selectedCourse.indexOf(course);
 
-
-    if(selectIndex != -1) {
+    if (selectIndex != -1) {
       this.selectedCourse.splice(selectIndex, 1);
       this.searchedCourseSelected[searchIndex] = false;
-
-    }
-    else {
+    } else {
       this.selectedCourse.push(course);
       this.searchedCourseSelected[searchIndex] = true;
     }
