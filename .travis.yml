@@ -13,7 +13,23 @@ matrix:
       cache:
         directories:
           - frontend/node_modules
+      before_install:
+          - export CHROME_BIN=chromium-browser
+          - sh -e /etc/init.d/xvfb start
+          - export DISPLAY=:99.0
+      install:
+          - cd frontend
+          - npm install
+          - npm install -g @angular/cli
+      script:
+          - npm test
+
     - language: python
       python: 3.6
       cache:
         pip: true
+      install:
+        - cd backend
+        - pip install django
+      script:
+        - python manage.py test
