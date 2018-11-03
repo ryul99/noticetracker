@@ -8,8 +8,8 @@ course code:<input [(ngModel)]="this.codeTerm" id="pw-input">
 
 
 <div *ngIf="searchedCourse">
-  <li *ngFor="let course of searchedCourse">
-    {{course[0].name}} <input type="checkbox" (change)="this.toggle(course)">
+  <li *ngFor="let course of searchedCourse; let index = index;">
+    {{course.name}} <input type="checkbox" [(ngModel)]="searchedCourseSelected[index]" (change)="this.toggle(course)">
   </li>
 </div>
 

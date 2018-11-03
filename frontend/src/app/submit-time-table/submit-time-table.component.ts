@@ -12,15 +12,22 @@ import { UserService } from '../user.service';
 })
 export class SubmitTimeTableComponent implements OnInit {
 
-  
   private nameTerm: string;
   private codeTerm: string;
   private selectedCourse: Course[] = [];
-  private searchedCourse: [Course, boolean][] = [
+  private searchedCourse: Course[] = [
+    {name:"swpp", id:1,code:"A",time:[]},
+    {name:"sp", id:2,code:"B",time:[]}, 
+    {name:"pl", id:3,code:"C",time:[]},  
+  ];
+  private searchedCourseSelected: boolean[] = [false, false, false];
+  
+
+  /*private searchedCourse: [Course, boolean][] = [
     [{name:"swpp", id:1,code:"A",time:[]}, false],
     [{name:"sp", id:2,code:"B",time:[]}, false],
     [{name:"pl", id:3,code:"C",time:[]}, false], 
-  ];
+  ];*/
 
 
   constructor(
@@ -53,20 +60,19 @@ export class SubmitTimeTableComponent implements OnInit {
 
   }
 
-  toggle(course: [Course, boolean]) {
-    const selectIndex: number = this.selectedCourse.indexOf(course[0]);
+  toggle(course: Course) {
     const searchIndex: number = this.searchedCourse.indexOf(course);
+    const selectIndex: number = this.selectedCourse.indexOf(course);
 
-    console.log(`${selectIndex} ${searchIndex}`);
-    console.log(`${course[0].name}`)
 
     if(selectIndex != -1) {
       this.selectedCourse.splice(selectIndex, 1);
-      this.searchedCourse[searchIndex][1]=false;
+      this.searchedCourseSelected[searchIndex] = false;
+
     }
     else {
-      this.selectedCourse.push(course[0]);
-      this.searchedCourse[searchIndex][1]=true;
+      this.selectedCourse.push(course);
+      this.searchedCourseSelected[searchIndex] = true;
     }
   }
 }
