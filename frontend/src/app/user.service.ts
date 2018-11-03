@@ -4,20 +4,20 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UserService {
-  userId: number;
+  userId: string;
   username: string;
 
   constructor() { }
 
-  signIn(userId: number, password: string) {
+  signIn(userId: string, password: string) {
 
   }
 
-  signOut(userId: number) {
+  signOut(userId: string) {
 
   }
 
-  signUp(userId: number, password: string) {
+  signUp(userId: string, password: string) {
 
   }
 
@@ -29,8 +29,8 @@ export class UserService {
 
   }
 
-  getUserId(): number {
-    return 0;
+  getUserId(): string {
+    return "";
 
   }
 

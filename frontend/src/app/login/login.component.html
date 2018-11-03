@@ -1,3 +1,5 @@
-<p>
-  login works!
-</p>
+id: <input [(ngModel)]="this.id" id="id">
+password: <input type="password" [(ngModel)]="this.password" id="password">
+
+<button id="signin-button" (click)="signIn()">sign in</button>
+<button id="signup-button" (click)="signUp()">sign up</button>
