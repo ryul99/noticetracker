@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { SingleLectureComponent } from './single-lecture.component';
 
 describe('SingleLectureComponent', () => {
@@ -8,9 +8,9 @@ describe('SingleLectureComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SingleLectureComponent ]
-    })
-    .compileComponents();
+      declarations: [SingleLectureComponent],
+      imports: [FormsModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

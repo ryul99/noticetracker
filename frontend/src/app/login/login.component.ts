@@ -8,23 +8,20 @@ import { UserService } from '../user.service';
 })
 export class LoginComponent implements OnInit {
   id: string;
-  password: string; 
-  errorMessage: string; 
+  password: string;
+  errorMessage: string;
 
-  constructor(
-    private userService: UserService,
-  ) { }
+  constructor(private userService: UserService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   signIn() {
     this.userService.signIn(this.id, this.password);
     console.log(`${this.id} ${this.password} sign in!\n`);
-}
+  }
 
   signUp() {
     this.userService.signUp(this.id, this.password);
-    console.log("sign up!\n");
+    console.log('sign up!\n');
   }
 }
