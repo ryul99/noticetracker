@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Course } from '../course';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';
-
 
 @Component({
   selector: 'app-submit-time-table',
@@ -11,7 +9,6 @@ import { UserService } from '../user.service';
   styleUrls: ['./submit-time-table.component.css']
 })
 export class SubmitTimeTableComponent implements OnInit {
-
   private nameTerm: string;
   private codeTerm: string;
   private selectedCourse: Course[] = [];
@@ -29,24 +26,20 @@ export class SubmitTimeTableComponent implements OnInit {
     [{name:"pl", id:3,code:"C",time:[]}, false], 
   ];*/
 
-
   constructor(
     private courseService: CourseService,
-    private userService: UserService,
-  ) { }
+    private userService: UserService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   submit() {
-    for(let course of this.selectedCourse) {
+    for (let course of this.selectedCourse) {
       this.userService.addCourse(course.id);
     }
   }
 
-  skip() {
-
-  }
+  skip() {}
 
   searchByName() {
     this.courseService.searchByName(this.nameTerm);
@@ -56,16 +49,13 @@ export class SubmitTimeTableComponent implements OnInit {
     this.courseService.searchByCode(this.codeTerm);
   }
 
-  goHome() {
-
-  }
+  goHome() {}
 
   toggle(course: Course) {
     const searchIndex: number = this.searchedCourse.indexOf(course);
     const selectIndex: number = this.selectedCourse.indexOf(course);
 
-
-    if(selectIndex != -1) {
+    if (selectIndex != -1) {
       this.selectedCourse.splice(selectIndex, 1);
       this.searchedCourseSelected[searchIndex] = false;
 

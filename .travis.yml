@@ -7,12 +7,15 @@ notifications:
 matrix:
   include:
     - language: node_js
-      node_js: 11.0.0
+      node_js: 10.13
       addons:
         chrome: stable
       cache:
         directories:
           - frontend/node_modules
+      env:
+          - TEST=frontend
+          - CI=true
       before_install:
           - export CHROME_BIN=chromium-browser
           - sh -e /etc/init.d/xvfb start
@@ -28,6 +31,8 @@ matrix:
       python: 3.6
       cache:
         pip: true
+      env:
+        - TEST=backend
       install:
         - cd backend
         - pip install django
