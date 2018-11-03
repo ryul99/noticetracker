@@ -1,22 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { LoginComponent } from './login.component';
+import { SiteRecommendationComponent } from './site-recommendation.component';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('SiteRecommendationComponent', () => {
+  let component: SiteRecommendationComponent;
+  let fixture: ComponentFixture<SiteRecommendationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginComponent],
+      declarations: [SiteRecommendationComponent],
       imports: [FormsModule, RouterTestingModule]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(SiteRecommendationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,22 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { LoginComponent } from './login.component';
+import { SubmitTimeTableComponent } from './submit-time-table.component';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('SubmitTimeTableComponent', () => {
+  let component: SubmitTimeTableComponent;
+  let fixture: ComponentFixture<SubmitTimeTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginComponent],
+      declarations: [SubmitTimeTableComponent],
       imports: [FormsModule, RouterTestingModule]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(SubmitTimeTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

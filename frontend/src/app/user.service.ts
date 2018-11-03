@@ -7,34 +7,23 @@ export class UserService {
   userId: string;
   username: string;
 
-  constructor() { }
+  constructor() {}
 
-  signIn(userId: string, password: string) {
+  signIn(userId: string, password: string) {}
 
-  }
+  signOut(userId: string) {}
 
-  signOut(userId: string) {
+  signUp(userId: string, password: string) {}
 
-  }
+  addCourse(courseId: number) {}
 
-  signUp(userId: string, password: string) {
-
-  }
-
-  addCourse(courseId: number) {
-
-  }
-
-  getTakingCourses() {
-
-  }
+  getTakingCourses() {}
 
   getUserId(): string {
-    return "";
-
+    return '';
   }
 
   getUserName(): string {
-    return "";
+    return '';
   }
 }
