@@ -1,7 +1,6 @@
-id: <input [(ngModel)]="this.id" id="id">
-password: <input type="password" [(ngModel)]="this.password" id="password">
+ID: <input [(ngModel)]="this.id" id="id"> Password: <input type="password" [(ngModel)]="this.password" id="password">
 
-<button id="signin-button" (click)="signIn()">sign in</button>
-<button id="signup-button" (click)="signUp()">sign up</button>
+<button id="signin-button" (click)="signIn()">Sign in</button>
+<button id="signup-button" (click)="signUp()">Sign up</button>
 
-<div *ngIf=this.errorMessage >{{this.errorMessage}}</div>
+<div *ngIf=this.errorMessage>{{this.errorMessage}}</div>

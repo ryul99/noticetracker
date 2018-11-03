@@ -1,20 +1,29 @@
-<button (click)="goHome()">Home</button>
-
-course name:<input [(ngModel)]="this.nameTerm" id="name-term">
-<button (click)="searchByName()">search</button>
-
-course code:<input [(ngModel)]="this.codeTerm" id="pw-input">
-<button (click)="searchByCode()">search</button>
-
-
-<div *ngIf="searchedCourse">
-  <li *ngFor="let course of searchedCourse; let index = index;">
-    {{course.name}} <input type="checkbox" [(ngModel)]="searchedCourseSelected[index]" (change)="this.toggle(course)">
-  </li>
+<div>submit time table</div>
+<div>
+  <button (click)="goHome()">Home</button>
+  <button (click)="skip()">Skip</button>
+  <button (click)="submit()">Submit</button>
 </div>
 
+<br>
+<div>
+  course name:<input [(ngModel)]="this.nameTerm" id="name-term">
+  <button (click)="searchByName()">search</button>
+</div>
+<div>
+  course code:<input [(ngModel)]="this.codeTerm" id="pw-input">
+  <button (click)="searchByCode()">search</button>
+</div>
+
+<br>
+<div *ngIf="searchedCourse">
+  <li *ngFor="let course of searchedCourse; let index = index;">
+    {{course.name}} {{course.code}}<input type="checkbox" [(ngModel)]="searchedCourseSelected[index]" (change)="this.toggle(course)">
+  </li>
+</div>
+<br><br>
 <div *ngIf="selectedCourse">
   <li *ngFor="let course of selectedCourse">
-    {{course.name}}
+    {{course.name}} {{course.code}}
   </li>
 </div>

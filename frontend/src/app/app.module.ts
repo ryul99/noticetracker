@@ -5,23 +5,21 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SubmitTimeTableComponent } from './submit-time-table/submit-time-table.component';
-import { SiteComponent } from './site/site.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
 import { SingleLectureComponent } from './single-lecture/single-lecture.component';
+import { AppRoutingModule } from './app-routing.module';
+import { SiteRecommendationComponent } from './site-recommendation/site-recommendation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SubmitTimeTableComponent,
-    SiteComponent,
     NewsfeedComponent,
-    SingleLectureComponent
+    SingleLectureComponent,
+    SiteRecommendationComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-  ],
+  imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
   bootstrap: [AppComponent]
 })
