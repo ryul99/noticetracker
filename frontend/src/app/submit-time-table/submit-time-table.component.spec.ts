@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { SubmitTimeTableComponent } from './submit-time-table.component';
 
 describe('SubmitTimeTableComponent', () => {
@@ -8,9 +8,9 @@ describe('SubmitTimeTableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubmitTimeTableComponent ]
-    })
-    .compileComponents();
+      declarations: [SubmitTimeTableComponent],
+      imports: [FormsModule]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
