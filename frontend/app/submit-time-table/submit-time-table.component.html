@@ -1,0 +1,14 @@
+<button (click)="goHome()">Home</button>
+
+course name:<input [(ngModel)]="this.nameTerm" id="name-term">
+<button (click)="searchByName()">search</button>
+
+course code:<input [(ngModel)]="this.codeTerm" id="pw-input">
+<button (click)="searchByCode()">search</button>
+
+
+<div *ngIf=searchedCourse>
+  <li *ngFor="let course of searchedCourse">
+    {{course[0].name}} <input type="checkbox" [(ngModel)]="course[1]">
+  </li>
+</div>
