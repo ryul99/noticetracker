@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NewsfeedComponent } from './newsfeed.component';
+import { RouterModule, Routes, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('NewsfeedComponent', () => {
   let component: NewsfeedComponent;
@@ -9,7 +11,7 @@ describe('NewsfeedComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [NewsfeedComponent],
-      imports: [FormsModule]
+      imports: [FormsModule, RouterTestingModule]
     }).compileComponents();
   }));
 

@@ -5,26 +5,15 @@ import { Site } from './site';
   providedIn: 'root'
 })
 export class CourseService {
+  constructor() {}
 
-  constructor() { }
+  searchByCode(courseCode: string) {}
 
-  searchByCode(courseCode: string) {
+  searchByName(name: string) {}
 
-  }
+  getCourseObjectById(courseId: number) {}
 
-  searchByName(name: string) {
+  getRecommentdedSitesById(courseId: number) {}
 
-  }
-
-  getCourseObjectById(courseId: number) {
-
-  }
-
-  getRecommentdedSitesById(courseId: number) {
-
-  }
-
-  addRecommendSite(courseId: number, site: Site) {
-
-  }
+  addRecommendSite(courseId: number, site: Site) {}
 }

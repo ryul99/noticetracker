@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SubmitTimeTableComponent } from './submit-time-table.component';
+import { RouterModule, Routes, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SubmitTimeTableComponent', () => {
   let component: SubmitTimeTableComponent;
@@ -9,7 +11,7 @@ describe('SubmitTimeTableComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SubmitTimeTableComponent],
-      imports: [FormsModule]
+      imports: [FormsModule, RouterTestingModule]
     }).compileComponents();
   }));
 

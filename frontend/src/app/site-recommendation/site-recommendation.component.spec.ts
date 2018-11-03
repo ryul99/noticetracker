@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { SiteRecommendationComponent } from './site-recommendation.component';
+import { RouterModule, Routes, Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('SiteRecommendationComponent', () => {
   let component: SiteRecommendationComponent;
@@ -8,7 +10,8 @@ describe('SiteRecommendationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SiteRecommendationComponent]
+      declarations: [SiteRecommendationComponent],
+      imports: [FormsModule, RouterTestingModule]
     }).compileComponents();
   }));
 
