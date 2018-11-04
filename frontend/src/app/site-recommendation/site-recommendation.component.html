@@ -2,3 +2,17 @@
 <button (click)="goHome()">Home</button>
 <button (click)="confirm()">confirm</button>
 <button (click)="back()">Back</button>
+
+<br>
+<div *ngIf="expanded">
+
+    <li *ngFor="let course of courses; let expand of expanded">
+        {{course.name}} <button (click)="toggleExpand(course)">expand</button>
+        <div *ngIf="expand">
+            <li *ngFor="let site of course.sites">
+                {{site.name}}{{site.url}}
+            </li>
+        </div>
+
+    </li>
+</div>

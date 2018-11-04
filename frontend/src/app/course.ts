@@ -1,5 +1,6 @@
 import { LectureTime } from './lecturetime';
 import { Site } from './site';
+
 export class Course {
   id: number;
   name: string;
