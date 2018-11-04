@@ -17,6 +17,8 @@ export class SubmitTimeTableComponent implements OnInit {
   private searchedCourse: Course[] = mockCourses;
   private searchedCourseSelected: boolean[] = [false, false, false];
 
+  private viewAsList: boolean = true;
+
   constructor(
     private courseService: CourseService,
     private userService: UserService,
@@ -48,7 +50,7 @@ export class SubmitTimeTableComponent implements OnInit {
     this.router.navigate(['/newsfeed']);
   }
 
-  toggle(course: Course) {
+  toggleOnSearchedList(course: Course) {
     const searchIndex: number = this.searchedCourse.indexOf(course);
     const selectIndex: number = this.selectedCourse.indexOf(course);
 
@@ -59,5 +61,13 @@ export class SubmitTimeTableComponent implements OnInit {
       this.selectedCourse.push(course);
       this.searchedCourseSelected[searchIndex] = true;
     }
+  }
+
+  chooseListView() {
+    this.viewAsList = true;
+  }
+
+  chooseTableView() {
+    this.viewAsList = false;
   }
 }

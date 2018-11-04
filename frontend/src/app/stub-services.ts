@@ -7,7 +7,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'A',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   },
   {
     name: 'sp',
@@ -15,7 +16,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'B',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   },
   {
     name: 'pl',
@@ -23,7 +25,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'C',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   },
   {
     name: 'es',
@@ -31,7 +34,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'D',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   },
   {
     name: 'al',
@@ -39,7 +43,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'E',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   },
   {
     name: 'cc',
@@ -47,7 +52,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'F',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   },
   {
     name: 'os',
@@ -55,7 +61,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'G',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   },
   {
     name: 'at',
@@ -63,7 +70,8 @@ export const mockCourses: Course[] = [
     lectureCode: 'H',
     time: [],
     profName: 'CBG',
-    classNumber: 1
+    classNumber: 1,
+    sites: []
   }
 ];
 
