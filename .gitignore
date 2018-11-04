@@ -6,6 +6,8 @@ e2e_test.*
 node_modules
 bower_components
 tools/gulp-tasks/cldr/cldr-data/
+coverage
+db.sqlite3
 
 # Include when developing application packages.
 pubspec.lock

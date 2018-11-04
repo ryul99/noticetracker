@@ -16,14 +16,21 @@
 </div>
 
 <br>
+
 <div *ngIf="searchedCourse">
-  <li *ngFor="let course of searchedCourse; let index = index;">
-    {{course.name}} {{course.code}}<input type="checkbox" [(ngModel)]="searchedCourseSelected[index]" (change)="this.toggle(course)">
-  </li>
+  <ul class="searched">
+    <li *ngFor="let course of searchedCourse; let index = index;">
+      {{course.name}} {{course.code}}<input type="checkbox" [(ngModel)]="searchedCourseSelected[index]" (change)="this.toggle(course)">
+    </li>
+  </ul>
 </div>
 <br><br>
+
 <div *ngIf="selectedCourse">
-  <li *ngFor="let course of selectedCourse">
-    {{course.name}} {{course.code}}
-  </li>
+  <ul class="heroes">
+
+    <li *ngFor="let course of selectedCourse">
+      {{course.name}} {{course.code}}
+    </li>
+  </ul>
 </div>

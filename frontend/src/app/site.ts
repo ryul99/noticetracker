@@ -1,5 +1,5 @@
 export class Site {
-  name: string;
   id: number;
+  name: string;
   url: string;
 }
