@@ -1,7 +1,9 @@
 import { LectureTime } from './lecturetime';
 export class Course {
-  name: string;
   id: number;
-  code: string;
+  name: string;
+  lectureCode: string;
+  profName: string;
+  classNumber: number;
   time: LectureTime[];
 }

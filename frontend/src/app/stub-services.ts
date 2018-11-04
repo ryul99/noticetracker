@@ -1,11 +1,71 @@
 import { Course } from './course';
 
-export const c1: Course = {
-  name: 'PL',
-  id: 1,
-  code: '4190.310',
-  time: [{ day: 2, start: 110, end: 125 }, { day: 4, start: 110, end: 125 }]
-};
+export const mockCourses: Course[] = [
+  {
+    name: 'swpp',
+    id: 1,
+    lectureCode: 'A',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  },
+  {
+    name: 'sp',
+    id: 2,
+    lectureCode: 'B',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  },
+  {
+    name: 'pl',
+    id: 3,
+    lectureCode: 'C',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  },
+  {
+    name: 'es',
+    id: 4,
+    lectureCode: 'D',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  },
+  {
+    name: 'al',
+    id: 5,
+    lectureCode: 'E',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  },
+  {
+    name: 'cc',
+    id: 6,
+    lectureCode: 'F',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  },
+  {
+    name: 'os',
+    id: 7,
+    lectureCode: 'G',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  },
+  {
+    name: 'at',
+    id: 8,
+    lectureCode: 'H',
+    time: [],
+    profName: 'CBG',
+    classNumber: 1
+  }
+];
 
 export const stubUserService = {
   signIn: function(username: string, pw: string) {
