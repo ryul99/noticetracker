@@ -1,4 +1,5 @@
 import { LectureTime } from './lecturetime';
+import { Site } from './site';
 export class Course {
   id: number;
   name: string;
@@ -6,4 +7,5 @@ export class Course {
   profName: string;
   classNumber: number;
   time: LectureTime[];
+  sites: Site[];
 }
