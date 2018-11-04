@@ -19,7 +19,7 @@ export class NewsfeedComponent implements OnInit {
     this.router.navigate(['/site_recommendation']);
   }
 
-  logOut() {
+  signOut() {
     this.router.navigate(['']);
   }
 }
