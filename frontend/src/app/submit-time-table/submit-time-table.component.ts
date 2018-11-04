@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { mockCourses } from '../stub-services';
 import { Course } from '../course';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';
@@ -14,17 +14,10 @@ export class SubmitTimeTableComponent implements OnInit {
   private nameTerm: string;
   private codeTerm: string;
   private selectedCourse: Course[] = [];
-  private searchedCourse: Course[] = [
-    { name: 'swpp', id: 1, code: 'A', time: [] },
-    { name: 'sp', id: 2, code: 'B', time: [] },
-    { name: 'pl', id: 3, code: 'C', time: [] },
-    { name: 'es', id: 4, code: 'D', time: [] },
-    { name: 'al', id: 5, code: 'E', time: [] },
-    { name: 'cc', id: 6, code: 'F', time: [] },
-    { name: 'os', id: 7, code: 'G', time: [] },
-    { name: 'at', id: 8, code: 'H', time: [] }
-  ];
+  private searchedCourse: Course[] = mockCourses;
   private searchedCourseSelected: boolean[] = [false, false, false];
+
+  private viewAsList: boolean = true;
 
   constructor(
     private courseService: CourseService,
@@ -57,7 +50,7 @@ export class SubmitTimeTableComponent implements OnInit {
     this.router.navigate(['/newsfeed']);
   }
 
-  toggle(course: Course) {
+  toggleOnSearchedList(course: Course) {
     const searchIndex: number = this.searchedCourse.indexOf(course);
     const selectIndex: number = this.selectedCourse.indexOf(course);
 
@@ -68,5 +61,13 @@ export class SubmitTimeTableComponent implements OnInit {
       this.selectedCourse.push(course);
       this.searchedCourseSelected[searchIndex] = true;
     }
+  }
+
+  chooseListView() {
+    this.viewAsList = true;
+  }
+
+  chooseTableView() {
+    this.viewAsList = false;
   }
 }

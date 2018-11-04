@@ -16,14 +16,30 @@
 </div>
 
 <br>
+
 <div *ngIf="searchedCourse">
-  <li *ngFor="let course of searchedCourse; let index = index;">
-    {{course.name}} {{course.code}}<input type="checkbox" [(ngModel)]="searchedCourseSelected[index]" (change)="this.toggle(course)">
-  </li>
+  <ul class="searchedCourse">
+    <li *ngFor="let course of searchedCourse; let index = index;">
+      {{course.name}} {{course.code}}<input type="checkbox" [(ngModel)]="searchedCourseSelected[index]" (change)="this.toggleOnSearchedList(course)">
+    </li>
+  </ul>
 </div>
 <br><br>
+
+
+<button (click)="chooseListView()">List</button>
+<button (click)="chooseTableView()">Table</button>
+
 <div *ngIf="selectedCourse">
-  <li *ngFor="let course of selectedCourse">
-    {{course.name}} {{course.code}}
-  </li>
+  <div *ngIf="viewAsList">
+    <ul class="selectedCourseList">
+
+      <li *ngFor="let course of selectedCourse">
+        {{course.name}} {{course.code}}
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="!viewAsList">
+    Mon Tue Wed Thu Fri
+  </div>
 </div>
