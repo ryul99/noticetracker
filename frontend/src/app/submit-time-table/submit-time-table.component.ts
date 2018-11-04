@@ -19,11 +19,7 @@ export class SubmitTimeTableComponent implements OnInit {
 
   private viewAsList: boolean = true;
 
-  constructor(
-    private courseService: CourseService,
-    private userService: UserService,
-    private router: Router
-  ) {}
+  constructor(private courseService: CourseService, private userService: UserService, private router: Router) {}
 
   ngOnInit() {}
 
