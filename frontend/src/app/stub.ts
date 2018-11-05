@@ -1,4 +1,5 @@
 import { Course } from './course';
+import { Site } from './site';
 
 export const mockCourses: Course[] = [
   {
