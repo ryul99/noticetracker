@@ -2,6 +2,7 @@ sudo: required
 
 notifications:
   slack: swpp-team8:DU9yzMW01pR6CPdmxs68Zdkv
+  webhooks: https://coveralls.io/webhook
   email: false
 
 matrix:
@@ -16,6 +17,7 @@ matrix:
       env:
           - TEST=frontend
           - CI=true
+          - COVERALLS_PARALLEL=true
       before_install:
           - export CHROME_BIN=chromium-browser
           - sh -e /etc/init.d/xvfb start
@@ -36,6 +38,7 @@ matrix:
         pip: true
       env:
         - TEST=backend
+        - COVERALLS_PARALLEL=true
       install:
         - cd backend
         - pip install django
