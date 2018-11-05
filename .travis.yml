@@ -24,8 +24,11 @@ matrix:
           - cd frontend
           - npm install
           - npm install -g @angular/cli
+          - npm install coveralls
       script:
           - npm test
+      after_success:
+          - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
     - language: python
       python: 3.6
@@ -36,5 +39,9 @@ matrix:
       install:
         - cd backend
         - pip install django
+        - pip install coverage
+        - pip install python-coveralls
       script:
-        - python manage.py test
+        - coverage run --source="./noticetracker" manage.py test
+      after_script:
+        - coveralls
