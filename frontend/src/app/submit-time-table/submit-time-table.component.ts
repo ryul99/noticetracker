@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { mockCourses } from '../stub-services';
+import { mockCourses } from '../stub';
 import { Course } from '../course';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';

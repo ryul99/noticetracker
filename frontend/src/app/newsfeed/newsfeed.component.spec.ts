@@ -4,7 +4,7 @@ import { NewsfeedComponent } from './newsfeed.component';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user.service';
-import { stubUserService } from '../stub-services';
+import { stubUserService } from '../stub';
 
 describe('NewsfeedComponent', () => {
   let component: NewsfeedComponent;
@@ -34,18 +34,21 @@ describe('NewsfeedComponent', () => {
 
   it('submitTimeTable', () => {
     spyOn(router, 'navigate');
+    component.submitTimeTable();
     expect(router.navigate).toHaveBeenCalledWith(['/submit_time_table']);
   });
 
   it('siteRecommendation', () => {
     spyOn(router, 'navigate');
+    component.siteRecommendation();
     expect(router.navigate).toHaveBeenCalledWith(['/site_recommendation']);
   });
 
   it('signOut', () => {
     spyOn(router, 'navigate');
     spyOn(userService, 'signOut');
-    expect(router.navigate).toHaveBeenCalledWith(['/site_recommendation']);
+    component.signOut();
+    expect(router.navigate).toHaveBeenCalledWith(['']);
     expect(userService.signOut).toHaveBeenCalled();
   });
 });
