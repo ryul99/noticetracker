@@ -13,7 +13,7 @@ export class CourseService {
 
   getCourseObjectById(courseId: number) {}
 
-  getRecommentdedSitesById(courseId: number) {}
+  getRecommendedSitesById(courseId: number) {}
 
   addRecommendSite(courseId: number, site: Site) {}
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { mockCourses } from '../stub-services';
+import { mockCourses } from '../stub';
 import { Course } from '../course';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';
@@ -11,13 +11,13 @@ import { UserService } from '../user.service';
   styleUrls: ['./submit-time-table.component.css']
 })
 export class SubmitTimeTableComponent implements OnInit {
-  private nameTerm: string;
-  private codeTerm: string;
-  private selectedCourse: Course[] = [];
-  private searchedCourse: Course[] = mockCourses;
-  private searchedCourseSelected: boolean[] = [false, false, false];
+  nameTerm: string;
+  codeTerm: string;
+  selectedCourse: Course[] = [];
+  searchedCourse: Course[] = mockCourses;
+  searchedCourseSelected: boolean[] = [false, false, false];
 
-  private viewAsList: boolean = true;
+  viewAsList: boolean = true;
 
   constructor(private courseService: CourseService, private userService: UserService, private router: Router) {}
 

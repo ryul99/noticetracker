@@ -1,4 +1,5 @@
 import { Course } from './course';
+import { Site } from './site';
 
 export const mockCourses: Course[] = [
   {
@@ -77,6 +78,28 @@ export const stubUserService = {
     return;
   },
   getTakingCourses: function() {
+    return;
+  }
+};
+
+export const stubCourseService = {
+  searchByCode: function(courseCode: string) {
+    return;
+  },
+
+  searchByName: function(name: string) {
+    return;
+  },
+
+  getCourseObjectById: function(courseId: number) {
+    return;
+  },
+
+  getRecommendedSitesById: function(courseId: number) {
+    return;
+  },
+
+  addRecommendSite: function(courseId: number, site: Site) {
     return;
   }
 };

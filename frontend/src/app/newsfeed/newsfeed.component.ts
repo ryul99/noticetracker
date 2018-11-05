@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-newsfeed',
@@ -7,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./newsfeed.component.css']
 })
 export class NewsfeedComponent implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {}
 
@@ -20,6 +21,7 @@ export class NewsfeedComponent implements OnInit {
   }
 
   signOut() {
+    this.userService.signOut();
     this.router.navigate(['']);
   }
 }
