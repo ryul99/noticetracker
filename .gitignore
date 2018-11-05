@@ -8,7 +8,13 @@ bower_components
 tools/gulp-tasks/cldr/cldr-data/
 coverage
 db.sqlite3
+<<<<<<< HEAD
 __pycache__
+=======
+venv
+__pycache__
+
+>>>>>>> frontend-1104
 # Include when developing application packages.
 pubspec.lock
 .c9

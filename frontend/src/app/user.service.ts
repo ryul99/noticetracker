@@ -11,7 +11,7 @@ export class UserService {
 
   signIn(userId: string, password: string) {}
 
-  signOut(userId: string) {}
+  signOut() {}
 
   signUp(userId: string, password: string) {}
 
