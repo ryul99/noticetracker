@@ -9,6 +9,7 @@ tools/gulp-tasks/cldr/cldr-data/
 coverage
 db.sqlite3
 venv
+__pycache__
 
 # Include when developing application packages.
 pubspec.lock
