@@ -9,14 +9,14 @@ import { Course } from '../course';
   styleUrls: ['./site-recommendation.component.css']
 })
 export class SiteRecommendationComponent implements OnInit {
-  private courses: Course[] = mockCourses;
-  private expanded: boolean[] = [];
-  private urlToAdd: string[] = [];
+  courses: Course[] = mockCourses;
+  expanded: boolean[] = [];
+  urlToAdd: string[] = [];
 
-  private siteIDList: number[] = [];
-  private siteSelected: boolean[] = [];
+  siteIDList: number[] = [];
+  siteSelected: boolean[] = [];
 
-  private initialized: boolean = false;
+  initialized: boolean = false;
 
   constructor(private router: Router) {}
 
