@@ -3,9 +3,9 @@ from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, HttpResponseBadRequest
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-import JsonResponse
 from json.decoder import JSONDecodeError
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
+import json
 
 # Create your views here.
 
@@ -33,7 +33,7 @@ def signup(request):
             username = requestData['username']
             password = requestData['password']
             User.objects.create_user(username=username, password=password)
-            HttpResponse(status=201)
+            return HttpResponse(status=201)
         except:
             return HttpResponseBadRequest()
     else:

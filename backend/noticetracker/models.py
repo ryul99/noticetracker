@@ -8,10 +8,15 @@ class LectureTime(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
 
+class Article(models.Model):
+    url = models.TextField()
+
 class Site(models.Model):
     url = models.TextField() # ex) https://github.com/swsnu/swppfall2018
     lastUpdated = models.DateTimeField()
-    articleList = models.ManyToManyField(Article)
+
+Article.fromSite = models.ForeignKey(Site, on_delete=models.CASCADE)
+Site.articleList = models.ManyToManyField(Article)
 
 class Course(models.Model):
     name = models.CharField(max_length=120) # ex) Principles and Practices ...
@@ -20,16 +25,14 @@ class Course(models.Model):
     classCode = models.CharField(max_length=120) # ex) M1522.000100
 
 class CourseCustom(models.Model):
-    course = models.ForeignKey(Course)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     siteList = models.ManyToManyField(Site)
     lastUpdated = models.DateTimeField()
-
-class Article(models.Model):
-    url = models.TextField()
-    fromSite = models.ForeignKey(Site, on_delete=models.CASCADE)
 
 class UserDetail(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     courseList = models.ManyToManyField(CourseCustom)
-    starList = models.ManyToManyField(Article)
-    ignoreList = models.ManyToManyField(Article)
+    # TODO: change related_name to appropriate names.
+    # These are added to pass tests.
+    starList = models.ManyToManyField(Article, related_name="user_to_starlist")
+    ignoreList = models.ManyToManyField(Article, related_name="user_to_ignorelist")
