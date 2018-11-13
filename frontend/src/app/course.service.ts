@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Site } from './site';
+import { Observable, of } from 'rxjs';
+import { Course } from './course';
 
 @Injectable({
   providedIn: 'root'
@@ -7,13 +9,13 @@ import { Site } from './site';
 export class CourseService {
   constructor() {}
 
-  searchByCode(courseCode: string) {}
+  searchByCode(courseCode: string): Observable<Course[]> {}
 
-  searchByName(name: string) {}
+  searchByName(name: string): Observable<Course[]> {}
 
-  getCourseObjectById(courseId: number) {}
+  getCourseObjectById(courseId: number): Observable<Course> {}
 
-  getRecommendedSitesById(courseId: number) {}
+  getRecommendedSitesById(courseId: number): Observable<Site[]> {}
 
-  addRecommendSite(courseId: number, site: Site) {}
+  addSiteByCourseId(courseId: number, site: Site): Observable<Site> {}
 }
