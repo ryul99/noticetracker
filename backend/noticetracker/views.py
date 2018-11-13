@@ -21,7 +21,7 @@ def signin(request):
                 return HttpResponse(status=204)
             else:
                 return HttpResponse(status=401)
-        except:
+        except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -34,7 +34,7 @@ def signup(request):
             password = requestData['password']
             User.objects.create_user(username=username, password=password)
             return HttpResponse(status=201)
-        except:
+        except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -48,5 +48,16 @@ def signout(request):
             return HttpResponse(status=204)
         else:
             return HttpResponse(status=401)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def userInst(request, userId):
+    if request.method == 'GET':
+        try:
+            userdetail = UserDetail.objects.get(id=userId)
+        except UserDetail.DoesNotExist:
+            return HttpResponseNotFound()
+        dict = {}
+        return JsonResponse(dict)
     else:
         return HttpResponseNotAllowed(['GET'])
