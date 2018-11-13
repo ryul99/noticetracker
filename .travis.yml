@@ -44,6 +44,7 @@ matrix:
         - pip install django
         - pip install coverage
         - pip install python-coveralls
+        - pip install beautifulsoup4
       script:
         - coverage run --source="./noticetracker" manage.py test
       after_script:
