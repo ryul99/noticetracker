@@ -22,7 +22,9 @@ class Course(models.Model):
     name = models.CharField(max_length=120) # ex) Principles and Practices ...
     time = models.ManyToManyField(LectureTime)
     siteList = models.ManyToManyField(Site)
-    classCode = models.CharField(max_length=120) # ex) M1522.000100
+    lectureCode = models.CharField(max_length=120) # ex) M1522.000100
+    profName = models.CharField(max_length=120)
+    classNumber = models.IntegerField()
 
 class CourseCustom(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
@@ -32,7 +34,5 @@ class CourseCustom(models.Model):
 class UserDetail(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     courseList = models.ManyToManyField(CourseCustom)
-    # TODO: change related_name to appropriate names.
-    # These are added to pass tests.
-    starList = models.ManyToManyField(Article, related_name="user_to_starlist")
-    ignoreList = models.ManyToManyField(Article, related_name="user_to_ignorelist")
+    starList = models.ManyToManyField(Article, related_name="star")
+    ignoreList = models.ManyToManyField(Article, related_name="ignore")
