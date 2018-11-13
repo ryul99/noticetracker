@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.contrib import auth
+from .crawl import crawl, crawler
 import json
 
 # Create your tests here.
@@ -76,3 +77,8 @@ class NoticeTrackerTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn('\"userId\": 1', str(response.content))
         self.assertIn('\"username\": \"minty\"', str(response.content))
+
+    def test_crawl(self):
+        # Do it if you are ready...
+        # crawl()
+        pass

@@ -8,9 +8,10 @@ def crawl():
     url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
     url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
     html = requests.get(url_front + '1' + url_back)
+    bsObject = BeautifulSoup(html.text, "html.parser")
     if html.status_code == 200:
         numOfCourse = bsObject.find('span', {'class':'fc_o'})
-        for i in [0:((numOfCourse // 10)+1)]:
+        for i in range(1, 728): # ((numOfCourse // 10)+1)) has error, need to fix
             crawler(i)
     else:
         raise Exception('HttpResponse is not 200')
@@ -24,16 +25,17 @@ def crawler(i):
         check = 0
         bsObject = BeautifulSoup(html.text, "html.parser")
         tbodyList = bsObject.find_all('tbody')
+        ### tbodyList[1] is not as expected: 16silver failed to find it...
         rawCourse = tbodyList[1]
         course = rawCourse.find_all('tr')
         courseData = Course(
-            name = 'name'
-            lectureCode = 'lectureCode'
-            profName = 'profName'
+            name = 'name',
+            lectureCode = 'lectureCode',
+            profName = 'profName',
             classNumber = 0
         )
         for c in course:
-            if c['class'] == 'even':
+            if 'class' in c and c['class'] == 'even':
                 if check == 1:
                     check = 0
                     divCource = c.find_all('td')
@@ -43,9 +45,9 @@ def crawler(i):
                     classNumber = divCource[7].text
                     time = divCource[10].text
                     courseData = Course(
-                        name = name
-                        lectureCode = lectureCode
-                        profName = profName
+                        name = name,
+                        lectureCode = lectureCode,
+                        profName = profName,
                         classNumber = classNumber
                     )
                     courseData.save()
@@ -79,8 +81,8 @@ def crawler(i):
                         minute = 0
                     end = int(time[8:10]) * 10 + minute
                     lectureTimeData = LectureTime(
-                        day = day
-                        start = start
+                        day = day,
+                        start = start,
                         end = end
                     )
                     lectureTimeData.save()
@@ -118,8 +120,8 @@ def crawler(i):
                         minute = 0
                     end = int(time[8:10]) * 10 + minute
                     lectureTimeData = LectureTime(
-                        day = day
-                        start = start
+                        day = day,
+                        start = start,
                         end = end
                     )
                     lectureTimeData.save()
@@ -134,9 +136,9 @@ def crawler(i):
                     classNumber = divCource[7].text
                     time = divCource[10].text
                     courseData = Course(
-                        name = name
-                        lectureCode = lectureCode
-                        profName = profName
+                        name = name,
+                        lectureCode = lectureCode,
+                        profName = profName,
                         classNumber = classNumber
                     )
                     courseData.save()
@@ -170,8 +172,8 @@ def crawler(i):
                         minute = 0
                     end = int(time[8:10]) * 10 + minute
                     lectureTimeData = LectureTime(
-                        day = day
-                        start = start
+                        day = day,
+                        start = start,
                         end = end
                     )
                     lectureTimeData.save()
@@ -209,8 +211,8 @@ def crawler(i):
                         minute = 0
                     end = int(time[8:10]) * 10 + minute
                     lectureTimeData = LectureTime(
-                        day = day
-                        start = start
+                        day = day,
+                        start = start,
                         end = end
                     )
                     lectureTimeData.save()
