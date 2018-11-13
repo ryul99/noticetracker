@@ -80,5 +80,5 @@ class NoticeTrackerTestCase(TestCase):
 
     def test_crawl(self):
         # Do it if you are ready...
-        # crawl()
+        crawl()
         pass

@@ -11,7 +11,7 @@ def crawl():
     bsObject = BeautifulSoup(html.text, "html.parser")
     if html.status_code == 200:
         numOfCourse = bsObject.find('span', {'class':'fc_o'})
-        for i in range(1, 728): # ((numOfCourse // 10)+1)) has error, need to fix
+        for i in range(1, ((int(numOfCourse.text)+9) // 10)): # ((numOfCourse // 10)+1)) has error, need to fix
             crawler(i)
     else:
         raise Exception('HttpResponse is not 200')
@@ -22,28 +22,70 @@ def crawler(i):
     url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
     html = requests.get(url_front + str(i) + url_back)
     if html.status_code == 200:
+        idx = 0
         check = 0
+        timeCount = 0
         bsObject = BeautifulSoup(html.text, "html.parser")
-        tbodyList = bsObject.find_all('tbody')
-        ### tbodyList[1] is not as expected: 16silver failed to find it...
-        rawCourse = tbodyList[1]
-        course = rawCourse.find_all('tr')
+        tbodyList = bsObject.find('html').extract()
+        rawCourse = bsObject
+        course = rawCourse.find_all('td')
+        divCource = bsObject.find_all('td')
+        name = divCource[7].text
+        lectureCode = divCource[5].text
+        profName = divCource[12].text
+        classNumber = divCource[6].text
+        time = divCource[9].text
         courseData = Course(
-            name = 'name',
-            lectureCode = 'lectureCode',
-            profName = 'profName',
-            classNumber = 0
+            name = name,
+            lectureCode = lectureCode,
+            profName = profName,
+            classNumber = classNumber
         )
+        courseData.save()
+        day = 1
+        start = 1
+        end = 1
+        minute = 0;
+        if time[0] == '월':
+            day = 1
+        if time[0] == '화':
+            day = 2
+        if time[0] == '수':
+            day = 3
+        if time[0] == '목':
+            day = 4
+        if time[0] == '금':
+            day = 5
+        if time[0] == '토':
+            day = 6
+        if time[0] == '일':
+            day = 7
+        if int(time[5:7]) == 30:
+            minute = 5
+        else:
+            minute = 0
+        start = int(time[2:4]) * 10 + minute
+
+        if int(time[11:13]) == 30:
+            minute = 5
+        else:
+            minute = 0
+        end = int(time[8:10]) * 10 + minute
+        lectureTimeData = LectureTime(
+            day = day,
+            start = start,
+            end = end
+        )
+        lectureTimeData.save()
+        courseData.time.add(lectureTimeData)
+
         for c in course:
-            if 'class' in c and c['class'] == 'even':
-                if check == 1:
-                    check = 0
-                    divCource = c.find_all('td')
-                    name = divCource[8].text
-                    lectureCode = divCource[6].text
-                    profName = divCource[13].text
-                    classNumber = divCource[7].text
-                    time = divCource[10].text
+            if 'class' in c and c['class'] == 'blue_st':
+                if check == 14 or check == 10:
+                    name = course[idx - 2].text
+                    lectureCode = course[idx - 4].text
+                    profName = course[idx + 3].text
+                    classNumber = course[idx - 3].text
                     courseData = Course(
                         name = name,
                         lectureCode = lectureCode,
@@ -51,6 +93,8 @@ def crawler(i):
                         classNumber = classNumber
                     )
                     courseData.save()
+                if check != 0:
+                    time = c.text
                     day = 1
                     start = 1
                     end = 1
@@ -87,135 +131,50 @@ def crawler(i):
                     )
                     lectureTimeData.save()
                     courseData.time.add(lectureTimeData)
+                    timeCount = 0
                 else:
-                    divCource = c.find_all('td')
-                    time = divCource[0].text
-                    day = 1
-                    start = 1
-                    end = 1
-                    minute = 0;
-                    if time[0] == '월':
+                    if (timeCount % 3) == 0:
+                        time = c.text
                         day = 1
-                    if time[0] == '화':
-                        day = 2
-                    if time[0] == '수':
-                        day = 3
-                    if time[0] == '목':
-                        day = 4
-                    if time[0] == '금':
-                        day = 5
-                    if time[0] == '토':
-                        day = 6
-                    if time[0] == '일':
-                        day = 7
-                    if int(time[5:7]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    start = int(time[2:4]) * 10 + minute
+                        start = 1
+                        end = 1
+                        minute = 0;
+                        if time[0] == '월':
+                            day = 1
+                        if time[0] == '화':
+                            day = 2
+                        if time[0] == '수':
+                            day = 3
+                        if time[0] == '목':
+                            day = 4
+                        if time[0] == '금':
+                            day = 5
+                        if time[0] == '토':
+                            day = 6
+                        if time[0] == '일':
+                            day = 7
+                        if int(time[5:7]) == 30:
+                            minute = 5
+                        else:
+                            minute = 0
+                        start = int(time[2:4]) * 10 + minute
 
-                    if int(time[11:13]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    end = int(time[8:10]) * 10 + minute
-                    lectureTimeData = LectureTime(
-                        day = day,
-                        start = start,
-                        end = end
-                    )
-                    lectureTimeData.save()
-                    courseData.time.add(lectureTimeData)
+                        if int(time[11:13]) == 30:
+                            minute = 5
+                        else:
+                            minute = 0
+                        end = int(time[8:10]) * 10 + minute
+                        lectureTimeData = LectureTime(
+                            day = day,
+                            start = start,
+                            end = end
+                        )
+                        lectureTimeData.save()
+                        courseData.time.add(lectureTimeData)
+                check = 0
+                timeCount = timeCount + 1
             else:
-                if check == 0:
-                    check = 1
-                    divCource = c.find_all('td')
-                    name = divCource[8].text
-                    lectureCode = divCource[6].text
-                    profName = divCource[13].text
-                    classNumber = divCource[7].text
-                    time = divCource[10].text
-                    courseData = Course(
-                        name = name,
-                        lectureCode = lectureCode,
-                        profName = profName,
-                        classNumber = classNumber
-                    )
-                    courseData.save()
-                    day = 1
-                    start = 1
-                    end = 1
-                    minute = 0;
-                    if time[0] == '월':
-                        day = 1
-                    if time[0] == '화':
-                        day = 2
-                    if time[0] == '수':
-                        day = 3
-                    if time[0] == '목':
-                        day = 4
-                    if time[0] == '금':
-                        day = 5
-                    if time[0] == '토':
-                        day = 6
-                    if time[0] == '일':
-                        day = 7
-                    if int(time[5:7]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    start = int(time[2:4]) * 10 + minute
-
-                    if int(time[11:13]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    end = int(time[8:10]) * 10 + minute
-                    lectureTimeData = LectureTime(
-                        day = day,
-                        start = start,
-                        end = end
-                    )
-                    lectureTimeData.save()
-                    courseData.time.add(lectureTimeData)
-                else:
-                    divCource = c.find_all('td')
-                    time = divCource[0].text
-                    day = 1
-                    start = 1
-                    end = 1
-                    minute = 0;
-                    if time[0] == '월':
-                        day = 1
-                    if time[0] == '화':
-                        day = 2
-                    if time[0] == '수':
-                        day = 3
-                    if time[0] == '목':
-                        day = 4
-                    if time[0] == '금':
-                        day = 5
-                    if time[0] == '토':
-                        day = 6
-                    if time[0] == '일':
-                        day = 7
-                    if int(time[5:7]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    start = int(time[2:4]) * 10 + minute
-
-                    if int(time[11:13]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    end = int(time[8:10]) * 10 + minute
-                    lectureTimeData = LectureTime(
-                        day = day,
-                        start = start,
-                        end = end
-                    )
-                    lectureTimeData.save()
-                    courseData.time.add(lectureTimeData)
+                check = check + 1
+            idx = idx + 1
     else:
         raise Exception('HttpResponse is not 200')
