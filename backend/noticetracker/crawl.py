@@ -11,7 +11,7 @@ def crawl():
     bsObject = BeautifulSoup(html.text, "html.parser")
     if html.status_code == 200:
         numOfCourse = bsObject.find('span', {'class':'fc_o'})
-        for i in range(0, 727): # ((numOfCourse // 10)+1)) has error, need to fix
+        for i in range(1, 728): # ((numOfCourse // 10)+1)) has error, need to fix
             crawler(i)
     else:
         raise Exception('HttpResponse is not 200')
@@ -25,6 +25,7 @@ def crawler(i):
         check = 0
         bsObject = BeautifulSoup(html.text, "html.parser")
         tbodyList = bsObject.find_all('tbody')
+        ### tbodyList[1] is not as expected: 16silver failed to find it...
         rawCourse = tbodyList[1]
         course = rawCourse.find_all('tr')
         courseData = Course(
@@ -34,7 +35,7 @@ def crawler(i):
             classNumber = 0
         )
         for c in course:
-            if c['class'] == 'even':
+            if 'class' in c and c['class'] == 'even':
                 if check == 1:
                     check = 0
                     divCource = c.find_all('td')
