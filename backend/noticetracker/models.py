@@ -22,7 +22,9 @@ class Course(models.Model):
     name = models.CharField(max_length=120) # ex) Principles and Practices ...
     time = models.ManyToManyField(LectureTime)
     siteList = models.ManyToManyField(Site)
-    classCode = models.CharField(max_length=120) # ex) M1522.000100
+    lectureCode = models.CharField(max_length=120) # ex) M1522.000100
+    profName = models.CharField(max_length=120)
+    classNumber = models.IntegerField()
 
 class CourseCustom(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
