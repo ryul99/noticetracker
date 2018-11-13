@@ -39,8 +39,6 @@ def signup(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
-
-# Not in D&P documentation, but maybe needed
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -57,7 +55,7 @@ def userInst(request, userId):
             userdetail = UserDetail.objects.get(id=userId)
         except UserDetail.DoesNotExist:
             return HttpResponseNotFound()
-        dict = {}
+        dict = {'userId': userdetail.user.id, 'username': userdetail.user.username}
         return JsonResponse(dict)
     else:
         return HttpResponseNotAllowed(['GET'])
