@@ -7,7 +7,19 @@ from bs4 import BeautifulSoup
 def crawl():
     url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
     url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
-    html = requests.get(url_front + "1" + url_back)
+    html = requests.get(url_front + '1' + url_back)
+    if html.status_code == 200:
+        numOfCourse = bsObject.find('span', {'class':'fc_o'})
+        for i in [0:((numOfCourse // 10)+1)]:
+            crawler(i)
+    else:
+        raise Exception('HttpResponse is not 200')
+
+
+def crawler(i):
+    url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
+    url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
+    html = requests.get(url_front + str(i) + url_back)
     if html.status_code == 200:
         check = 0
         bsObject = BeautifulSoup(html.text, "html.parser")
