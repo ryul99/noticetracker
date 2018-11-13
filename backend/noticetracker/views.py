@@ -52,10 +52,10 @@ def signout(request):
 def userInst(request, userId):
     if request.method == 'GET':
         try:
-            userdetail = UserDetail.objects.get(id=userId)
-        except UserDetail.DoesNotExist:
+            user = User.objects.get(id=userId)
+        except User.DoesNotExist:
             return HttpResponseNotFound()
-        dict = {'userId': userdetail.user.id, 'username': userdetail.user.username}
+        dict = {'userId': user.id, 'username': user.username}
         return JsonResponse(dict)
     else:
         return HttpResponseNotAllowed(['GET'])
