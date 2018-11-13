@@ -14,7 +14,7 @@ export class SubmitTimeTableComponent implements OnInit {
   nameTerm: string;
   codeTerm: string;
   selectedCourse: Course[] = [];
-  searchedCourse: Course[] = mockCourses;
+  searchedCourse: Course[] = [];
   searchedCourseSelected: boolean[] = [false, false, false];
 
   viewAsList: boolean = true;
@@ -35,11 +35,23 @@ export class SubmitTimeTableComponent implements OnInit {
   }
 
   searchByName() {
-    this.courseService.searchByName(this.nameTerm);
+    this.courseService.searchByName(this.nameTerm).subscribe(list => {
+      this.searchedCourse = list;
+      this.selectedCourse = [];
+      this.searchedCourseSelected = Array.from(new Array(list.length), function(val, i) {
+        return false;
+      });
+    });
   }
 
   searchByCode() {
-    this.courseService.searchByCode(this.codeTerm);
+    this.courseService.searchByCode(this.codeTerm).subscribe(list => {
+      this.searchedCourse = list;
+      this.selectedCourse = [];
+      this.searchedCourseSelected = Array.from(new Array(list.length), function(val, i) {
+        return false;
+      });
+    });
   }
 
   goHome() {
