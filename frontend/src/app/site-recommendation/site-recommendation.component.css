@@ -1,0 +1,14 @@
+.container {
+  height: 100vh;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  max-width: 500px;
+}
+
+.lh-condensed {
+  line-height: 1.25;
+}
+
+.btn-space {
+  margin-right: 5px;
+}
