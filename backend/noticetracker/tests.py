@@ -35,10 +35,14 @@ class NoticeTrackerTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
             len(User.objects.filter(username='16silver').values()), 1)
+        response = client.post('/api/signup', "", content_type='application/json')
+        self.assertEqual(response.status_code, 400)
         self.checkInvalidRequest(['POST'], '/api/signup')
 
     def test_signin(self):
         client = Client()
+        response = client.post('/api/signin', "", content_type='application/json')
+        self.assertEqual(response.status_code, 400)
         response = client.post(
             '/api/signin', json.dumps(self.mock_minty), content_type='application/json')
         user = auth.get_user(client)
@@ -63,7 +67,9 @@ class NoticeTrackerTestCase(TestCase):
 
     def test_userInst(self):
         client = Client()
-        response = client.get('/api/user/1')
-        self.assertEqual(response.status_code, 200)
         response = client.get('/api/user/5')
         self.assertEqual(response.status_code, 404)
+        response = client.get('/api/user/1')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('\"userId\": 1', str(response.content))
+        self.assertIn('\"username\": \"minty\"', str(response.content))
