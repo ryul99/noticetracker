@@ -60,3 +60,10 @@ class NoticeTrackerTestCase(TestCase):
         user = auth.get_user(client)
         self.assertFalse(user.is_authenticated)
         self.checkInvalidRequest(['GET'], '/api/signout')
+
+    def test_userInst(self):
+        client = Client()
+        response = client.get('/api/user/1')
+        self.assertEqual(response.status_code, 200)
+        response = client.get('/api/user/5')
+        self.assertEqual(response.status_code, 404)
