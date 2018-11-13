@@ -1,5 +1,6 @@
 import { Course } from './course';
 import { Site } from './site';
+import { Observable, of } from 'rxjs';
 
 export const mockCourses: Course[] = [
   {
@@ -84,11 +85,19 @@ export const stubUserService = {
 
 export const stubCourseService = {
   searchByCode: function(courseCode: string) {
-    return;
+    var list: Course[] = [];
+    for (var i = 0; i < 6; i++) {
+      if (mockCourses[i].lectureCode.includes(courseCode)) list.push(mockCourses[i]);
+    }
+    return of(list);
   },
 
-  searchByName: function(name: string) {
-    return;
+  searchByName: function(courseName: string) {
+    var list: Course[] = [];
+    for (var i = 0; i < 6; i++) {
+      if (mockCourses[i].name.includes(courseName)) list.push(mockCourses[i]);
+    }
+    return of(list);
   },
 
   getCourseObjectById: function(courseId: number) {
@@ -99,7 +108,7 @@ export const stubCourseService = {
     return;
   },
 
-  addRecommendSite: function(courseId: number, site: Site) {
+  addSiteByCourseId: function(courseId: number, site: Site) {
     return;
   }
 };
