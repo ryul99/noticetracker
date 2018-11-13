@@ -48,6 +48,9 @@ class NoticeTrackerTestCase(TestCase):
         user = auth.get_user(client)
         self.assertEqual(response.status_code, 204)
         self.assertTrue(user.is_authenticated)
+        response = client.post(
+            '/api/signin', json.dumps(self.mock_16silver), content_type='application/json')
+        self.assertEqual(response.status_code, 401)
         self.checkInvalidRequest(['POST'], '/api/signin')
 
     def test_signout(self):
