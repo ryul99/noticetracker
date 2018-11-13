@@ -32,7 +32,5 @@ class CourseCustom(models.Model):
 class UserDetail(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     courseList = models.ManyToManyField(CourseCustom)
-    # TODO: change related_name to appropriate names.
-    # These are added to pass tests.
-    starList = models.ManyToManyField(Article, related_name="user_to_starlist")
-    ignoreList = models.ManyToManyField(Article, related_name="user_to_ignorelist")
+    starList = models.ManyToManyField(Article, related_name="star")
+    ignoreList = models.ManyToManyField(Article, related_name="ignore")
