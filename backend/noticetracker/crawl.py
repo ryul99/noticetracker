@@ -4,6 +4,8 @@ import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
+daysToNumber = {"월": 1, "화": 2, "수": 3, "목": 4, "금": 5, "토": 6, "일": 7}
+
 def crawl():
     url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
     url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
@@ -11,6 +13,7 @@ def crawl():
     bsObject = BeautifulSoup(html.text, "html.parser")
     if html.status_code == 200:
         numOfCourse = bsObject.find('span', {'class':'fc_o'})
+        print("numOfCourse = %s" % numOfCourse.text)
         for i in range(1, ((int(numOfCourse.text)+9) // 10)): # ((numOfCourse // 10)+1)) has error, need to fix
             crawler(i)
     else:
@@ -35,6 +38,7 @@ def crawler(i):
         profName = divCource[12].text
         classNumber = divCource[6].text
         time = divCource[9].text
+        print(name, lectureCode, profName, classNumber, time)
         courseData = Course(
             name = name,
             lectureCode = lectureCode,
@@ -46,38 +50,27 @@ def crawler(i):
         start = 1
         end = 1
         minute = 0;
-        if time[0] == '월':
-            day = 1
-        if time[0] == '화':
-            day = 2
-        if time[0] == '수':
-            day = 3
-        if time[0] == '목':
-            day = 4
-        if time[0] == '금':
-            day = 5
-        if time[0] == '토':
-            day = 6
-        if time[0] == '일':
-            day = 7
-        if int(time[5:7]) == 30:
-            minute = 5
-        else:
-            minute = 0
-        start = int(time[2:4]) * 10 + minute
+        if len(time) > 0:
+            day = daysToNumber[time[0]]
+            if int(time[5:7]) == 30:
+                minute = 5
+            else:
+                minute = 0
+            start = int(time[2:4]) * 10 + minute
 
-        if int(time[11:13]) == 30:
-            minute = 5
-        else:
-            minute = 0
-        end = int(time[8:10]) * 10 + minute
-        lectureTimeData = LectureTime(
-            day = day,
-            start = start,
-            end = end
-        )
-        lectureTimeData.save()
-        courseData.time.add(lectureTimeData)
+            if int(time[11:13]) == 30:
+                minute = 5
+            else:
+                minute = 0
+            end = int(time[8:10]) * 10 + minute
+            lectureTimeData = LectureTime(
+                day = day,
+                start = start,
+                end = end
+            )
+            print(day, start, end)
+            lectureTimeData.save()
+            courseData.time.add(lectureTimeData)
 
         for c in course:
             if 'class' in c and c['class'] == 'blue_st':
@@ -92,6 +85,7 @@ def crawler(i):
                         profName = profName,
                         classNumber = classNumber
                     )
+                    print(courseData)
                     courseData.save()
                 if check != 0:
                     time = c.text
@@ -99,60 +93,8 @@ def crawler(i):
                     start = 1
                     end = 1
                     minute = 0;
-                    if time[0] == '월':
-                        day = 1
-                    if time[0] == '화':
-                        day = 2
-                    if time[0] == '수':
-                        day = 3
-                    if time[0] == '목':
-                        day = 4
-                    if time[0] == '금':
-                        day = 5
-                    if time[0] == '토':
-                        day = 6
-                    if time[0] == '일':
-                        day = 7
-                    if int(time[5:7]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    start = int(time[2:4]) * 10 + minute
-
-                    if int(time[11:13]) == 30:
-                        minute = 5
-                    else:
-                        minute = 0
-                    end = int(time[8:10]) * 10 + minute
-                    lectureTimeData = LectureTime(
-                        day = day,
-                        start = start,
-                        end = end
-                    )
-                    lectureTimeData.save()
-                    courseData.time.add(lectureTimeData)
-                    timeCount = 0
-                else:
-                    if (timeCount % 3) == 0:
-                        time = c.text
-                        day = 1
-                        start = 1
-                        end = 1
-                        minute = 0;
-                        if time[0] == '월':
-                            day = 1
-                        if time[0] == '화':
-                            day = 2
-                        if time[0] == '수':
-                            day = 3
-                        if time[0] == '목':
-                            day = 4
-                        if time[0] == '금':
-                            day = 5
-                        if time[0] == '토':
-                            day = 6
-                        if time[0] == '일':
-                            day = 7
+                    if len(time) > 0:
+                        day = daysToNumber[time[0]]
                         if int(time[5:7]) == 30:
                             minute = 5
                         else:
@@ -169,8 +111,38 @@ def crawler(i):
                             start = start,
                             end = end
                         )
+                        print(day, start, end)
                         lectureTimeData.save()
                         courseData.time.add(lectureTimeData)
+                    timeCount = 0
+                else:
+                    if (timeCount % 3) == 0:
+                        time = c.text
+                        day = 1
+                        start = 1
+                        end = 1
+                        minute = 0;
+                        if len(time) > 0:
+                            day = daysToNumber[time[0]]
+                            if int(time[5:7]) == 30:
+                                minute = 5
+                            else:
+                                minute = 0
+                            start = int(time[2:4]) * 10 + minute
+
+                            if int(time[11:13]) == 30:
+                                minute = 5
+                            else:
+                                minute = 0
+                            end = int(time[8:10]) * 10 + minute
+                            lectureTimeData = LectureTime(
+                                day = day,
+                                start = start,
+                                end = end
+                            )
+                            print(day, start, end)
+                            lectureTimeData.save()
+                            courseData.time.add(lectureTimeData)
                 check = 0
                 timeCount = timeCount + 1
             else:
