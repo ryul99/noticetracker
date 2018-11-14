@@ -20,6 +20,29 @@ def crawl():
         raise Exception('HttpResponse is not 200')
 
 
+def lectureTimeDataProcess(courseData, time):
+    if len(time) > 0:
+        day = daysToNumber[time[0]]
+        if int(time[5:7]) == 30:
+            minute = 5
+        else:
+            minute = 0
+        start = int(time[2:4]) * 10 + minute
+
+        if int(time[11:13]) == 30:
+            minute = 5
+        else:
+            minute = 0
+        end = int(time[8:10]) * 10 + minute
+        lectureTimeData = LectureTime(
+            day = day,
+            start = start,
+            end = end
+        )
+        print(day, start, end)
+        lectureTimeData.save()
+        courseData.time.add(lectureTimeData)
+
 def crawler(i):
     url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
     url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
@@ -46,31 +69,7 @@ def crawler(i):
             classNumber = classNumber
         )
         courseData.save()
-        day = 1
-        start = 1
-        end = 1
-        minute = 0;
-        if len(time) > 0:
-            day = daysToNumber[time[0]]
-            if int(time[5:7]) == 30:
-                minute = 5
-            else:
-                minute = 0
-            start = int(time[2:4]) * 10 + minute
-
-            if int(time[11:13]) == 30:
-                minute = 5
-            else:
-                minute = 0
-            end = int(time[8:10]) * 10 + minute
-            lectureTimeData = LectureTime(
-                day = day,
-                start = start,
-                end = end
-            )
-            print(day, start, end)
-            lectureTimeData.save()
-            courseData.time.add(lectureTimeData)
+        lectureTimeDataProcess(courseData, time)
 
         for c in course:
             if 'class' in c and c['class'] == 'blue_st':
@@ -85,64 +84,13 @@ def crawler(i):
                         profName = profName,
                         classNumber = classNumber
                     )
-                    print(courseData)
                     courseData.save()
                 if check != 0:
-                    time = c.text
-                    day = 1
-                    start = 1
-                    end = 1
-                    minute = 0;
-                    if len(time) > 0:
-                        day = daysToNumber[time[0]]
-                        if int(time[5:7]) == 30:
-                            minute = 5
-                        else:
-                            minute = 0
-                        start = int(time[2:4]) * 10 + minute
-
-                        if int(time[11:13]) == 30:
-                            minute = 5
-                        else:
-                            minute = 0
-                        end = int(time[8:10]) * 10 + minute
-                        lectureTimeData = LectureTime(
-                            day = day,
-                            start = start,
-                            end = end
-                        )
-                        print(day, start, end)
-                        lectureTimeData.save()
-                        courseData.time.add(lectureTimeData)
+                    lectureTimeDataProcess(courseData, c.text)
                     timeCount = 0
                 else:
                     if (timeCount % 3) == 0:
-                        time = c.text
-                        day = 1
-                        start = 1
-                        end = 1
-                        minute = 0;
-                        if len(time) > 0:
-                            day = daysToNumber[time[0]]
-                            if int(time[5:7]) == 30:
-                                minute = 5
-                            else:
-                                minute = 0
-                            start = int(time[2:4]) * 10 + minute
-
-                            if int(time[11:13]) == 30:
-                                minute = 5
-                            else:
-                                minute = 0
-                            end = int(time[8:10]) * 10 + minute
-                            lectureTimeData = LectureTime(
-                                day = day,
-                                start = start,
-                                end = end
-                            )
-                            print(day, start, end)
-                            lectureTimeData.save()
-                            courseData.time.add(lectureTimeData)
+                        lectureTimeDataProcess(courseData, c.text)
                 check = 0
                 timeCount = timeCount + 1
             else:
