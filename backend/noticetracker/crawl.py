@@ -23,16 +23,20 @@ def crawl():
 def lectureTimeDataProcess(courseData, time):
     if len(time) > 0:
         day = daysToNumber[time[0]]
-        if int(time[5:7]) == 30:
+        startMinute = int(time[5:7])
+        if startMinute == 30:
             minute = 5
         else:
             minute = 0
         start = int(time[2:4]) * 10 + minute
 
-        if int(time[11:13]) == 30:
+        endMinute = int(time[11:13])
+        if endMinute == 0:
+            minute = 0
+        elif endMinute <= 30:
             minute = 5
         else:
-            minute = 0
+            minute = 10
         end = int(time[8:10]) * 10 + minute
         lectureTimeData = LectureTime(
             day = day,
