@@ -59,3 +59,20 @@ def userInst(request, userId):
         return JsonResponse(dict)
     else:
         return HttpResponseNotAllowed(['GET'])
+
+def course(request):
+    if request.method == 'GET':
+        courseAll = [{'name': course['name'],
+                    } for course in Course.objects.all().values()]
+        return JsonResponse(courseAll, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+def courseDetail(request, courseId):
+    if request.method == 'GET':
+        try:
+            course = Course.objects.get(id=courseId)
+        except Course.DoesNotExist:
+            return HttpResponseNotFound()
+        dict = {'name': course.name}
+        return JsonResponse(dict)

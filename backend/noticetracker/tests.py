@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.contrib import auth
 from .crawl import crawl, crawler
+from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
 
 # Create your tests here.
@@ -82,3 +83,13 @@ class NoticeTrackerTestCase(TestCase):
         # Do it if you are ready...
         crawl()
         pass
+
+    def test_course(self):
+        client = Client()
+        temp_course = Course(
+            name='SWPP',
+            lectureCode='A02',
+            profName='skystar',
+            classNumber=1)
+        temp_course.save()
+        response = client.get('/api/course')
