@@ -15,7 +15,7 @@ export class SubmitTimeTableComponent implements OnInit {
   codeTerm: string;
   selectedCourse: Course[] = [];
   searchedCourse: Course[] = [];
-  searchedCourseSelected: boolean[] = [false, false, false];
+  searchedCourseSelected: boolean[] = [];
 
   viewAsList: boolean = true;
 
@@ -37,20 +37,38 @@ export class SubmitTimeTableComponent implements OnInit {
   searchByName() {
     this.courseService.searchByName(this.nameTerm).subscribe(list => {
       this.searchedCourse = list;
-      this.selectedCourse = [];
-      this.searchedCourseSelected = Array.from(new Array(list.length), function(val, i) {
-        return false;
-      });
+      this.searchedCourseSelected = [];
+      for (let item of list) {
+        var isSelected: boolean = false;
+        for (let course of this.selectedCourse) {
+          console.log(course.id);
+          console.log(item.id);
+          if (course.id === item.id) {
+            isSelected = true;
+            break;
+          }
+        }
+        if (isSelected) this.searchedCourseSelected.push(true);
+        else this.searchedCourseSelected.push(false);
+      }
     });
   }
 
   searchByCode() {
     this.courseService.searchByCode(this.codeTerm).subscribe(list => {
       this.searchedCourse = list;
-      this.selectedCourse = [];
-      this.searchedCourseSelected = Array.from(new Array(list.length), function(val, i) {
-        return false;
-      });
+      this.searchedCourseSelected = [];
+      for (let item of list) {
+        var isSelected: boolean = false;
+        for (let course of this.selectedCourse) {
+          if (course.id === item.id) {
+            isSelected = true;
+            break;
+          }
+        }
+        if (isSelected) this.searchedCourseSelected.push(true);
+        else this.searchedCourseSelected.push(false);
+      }
     });
   }
 

@@ -60,8 +60,6 @@ describe('SubmitTimeTableComponent', () => {
     component.nameTerm = '프로그래밍언어';
     component.searchByName();
     expect(courseService.searchByName).toHaveBeenCalledWith('프로그래밍언어');
-    expect(component.selectedCourse).toEqual([]);
-    expect(component.searchedCourseSelected.length).toEqual(component.searchedCourse.length);
   });
 
   it('searchByCode', () => {
@@ -69,8 +67,6 @@ describe('SubmitTimeTableComponent', () => {
     component.codeTerm = '4190.310';
     component.searchByCode();
     expect(courseService.searchByCode).toHaveBeenCalledWith('4190.310');
-    expect(component.selectedCourse).toEqual([]);
-    expect(component.searchedCourseSelected.length).toEqual(component.searchedCourse.length);
   });
 
   it('goHome', () => {
