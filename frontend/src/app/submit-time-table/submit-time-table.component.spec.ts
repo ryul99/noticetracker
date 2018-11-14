@@ -56,14 +56,14 @@ describe('SubmitTimeTableComponent', () => {
   });
 
   it('searchByName', () => {
-    spyOn(courseService, 'searchByName');
+    spyOn(courseService, 'searchByName').and.callThrough();
     component.nameTerm = '프로그래밍언어';
     component.searchByName();
     expect(courseService.searchByName).toHaveBeenCalledWith('프로그래밍언어');
   });
 
   it('searchByCode', () => {
-    spyOn(courseService, 'searchByCode');
+    spyOn(courseService, 'searchByCode').and.callThrough();
     component.codeTerm = '4190.310';
     component.searchByCode();
     expect(courseService.searchByCode).toHaveBeenCalledWith('4190.310');

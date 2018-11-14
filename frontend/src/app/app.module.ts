@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SubmitTimeTableComponent } from './submit-time-table/submit-time-table.component';
@@ -19,7 +19,7 @@ import { SiteRecommendationComponent } from './site-recommendation/site-recommen
     SingleLectureComponent,
     SiteRecommendationComponent
   ],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, HttpClientModule],
   providers: [],
   bootstrap: [AppComponent]
 })

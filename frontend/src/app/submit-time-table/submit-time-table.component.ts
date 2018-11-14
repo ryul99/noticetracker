@@ -14,8 +14,8 @@ export class SubmitTimeTableComponent implements OnInit {
   nameTerm: string;
   codeTerm: string;
   selectedCourse: Course[] = [];
-  searchedCourse: Course[] = mockCourses;
-  searchedCourseSelected: boolean[] = [false, false, false];
+  searchedCourse: Course[] = [];
+  searchedCourseSelected: boolean[] = [];
 
   viewAsList: boolean = true;
 
@@ -35,11 +35,39 @@ export class SubmitTimeTableComponent implements OnInit {
   }
 
   searchByName() {
-    this.courseService.searchByName(this.nameTerm);
+    this.courseService.searchByName(this.nameTerm).subscribe(list => {
+      this.searchedCourse = list;
+      this.searchedCourseSelected = [];
+      for (let item of list) {
+        var isSelected: boolean = false;
+        for (let course of this.selectedCourse) {
+          if (course.id === item.id) {
+            isSelected = true;
+            break;
+          }
+        }
+        if (isSelected) this.searchedCourseSelected.push(true);
+        else this.searchedCourseSelected.push(false);
+      }
+    });
   }
 
   searchByCode() {
-    this.courseService.searchByCode(this.codeTerm);
+    this.courseService.searchByCode(this.codeTerm).subscribe(list => {
+      this.searchedCourse = list;
+      this.searchedCourseSelected = [];
+      for (let item of list) {
+        var isSelected: boolean = false;
+        for (let course of this.selectedCourse) {
+          if (course.id === item.id) {
+            isSelected = true;
+            break;
+          }
+        }
+        if (isSelected) this.searchedCourseSelected.push(true);
+        else this.searchedCourseSelected.push(false);
+      }
+    });
   }
 
   goHome() {

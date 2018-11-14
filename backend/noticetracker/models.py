@@ -3,36 +3,43 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+
 class LectureTime(models.Model):
     day = models.IntegerField()
     start = models.IntegerField()
     end = models.IntegerField()
 
+
 class Article(models.Model):
     url = models.TextField()
 
+
 class Site(models.Model):
-    url = models.TextField() # ex) https://github.com/swsnu/swppfall2018
+    url = models.TextField()  # ex) https://github.com/swsnu/swppfall2018
     lastUpdated = models.DateTimeField()
+
 
 Article.fromSite = models.ForeignKey(Site, on_delete=models.CASCADE)
 Site.articleList = models.ManyToManyField(Article)
 
+
 class Course(models.Model):
-    name = models.CharField(max_length=120) # ex) Principles and Practices ...
+    name = models.CharField(max_length=120)  # ex) Principles and Practices ...
     time = models.ManyToManyField(LectureTime)
     siteList = models.ManyToManyField(Site)
-    classCode = models.CharField(max_length=120) # ex) M1522.000100
+    lectureCode = models.CharField(max_length=120)  # ex) M1522.000100
+    profName = models.CharField(max_length=120)
+    classNumber = models.IntegerField()
+
 
 class CourseCustom(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     siteList = models.ManyToManyField(Site)
     lastUpdated = models.DateTimeField()
 
+
 class UserDetail(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     courseList = models.ManyToManyField(CourseCustom)
-    # TODO: change related_name to appropriate names.
-    # These are added to pass tests.
-    starList = models.ManyToManyField(Article, related_name="user_to_starlist")
-    ignoreList = models.ManyToManyField(Article, related_name="user_to_ignorelist")
+    starList = models.ManyToManyField(Article, related_name="star")
+    ignoreList = models.ManyToManyField(Article, related_name="ignore")
