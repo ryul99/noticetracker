@@ -9,6 +9,7 @@ import json
 
 # Create your views here.
 
+
 def signin(request):
     if request.method == 'POST':
         try:
@@ -26,6 +27,7 @@ def signin(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+
 def signup(request):
     if request.method == 'POST':
         try:
@@ -39,6 +41,7 @@ def signup(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -49,6 +52,7 @@ def signout(request):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+
 def userInst(request, userId):
     if request.method == 'GET':
         try:
@@ -57,5 +61,63 @@ def userInst(request, userId):
             return HttpResponseNotFound()
         dict = {'userId': user.id, 'username': user.username}
         return JsonResponse(dict)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+def course(request):
+    if request.method == 'GET':
+        courseAll = list(Course.objects.all().values())
+        ret = list()
+        for item in courseAll:
+            ret.append({'name': item['name'],
+                        'lectureCode': item['lectureCode'],
+                        'profName': item['profName'],
+                        'classNumber': item['classNumber']})
+        return JsonResponse(courseAll, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+def courseDetail(request, courseId):
+    if request.method == 'GET':
+        try:
+            course = Course.objects.get(id=courseId)
+        except Course.DoesNotExist:
+            return HttpResponseNotFound()
+        dict = {'name': course.name,
+                'lectureCode': course.lectureCode,
+                'profName': course.profName,
+                'classNumber': course.classNumber}
+        return JsonResponse(dict)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+def searchByName(request, courseName):
+    if request.method == 'GET':
+        items = list(Course.objects.filter(name__contains=courseName).values())
+        ret = list()
+        for item in courseAll:
+            ret.append({'name': item['name'],
+                        'lectureCode': item['lectureCode'],
+                        'profName': item['profName'],
+                        'classNumber': item['classNumber']})
+        return JsonResponse(courseAll, safe=False)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+def searchByCode(request, courseCode):
+    if request.method == 'GET':
+        items = list(Course.objects.filter(
+            name__startswith=courseName).values())
+        ret = list()
+        for item in courseAll:
+            ret.append({'name': item['name'],
+                        'lectureCode': item['lectureCode'],
+                        'profName': item['profName'],
+                        'classNumber': item['classNumber']})
+        return JsonResponse(courseAll, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
