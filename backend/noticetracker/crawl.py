@@ -68,7 +68,9 @@ def crawler(i):
         courseData = None
         while idx < len(course):
             c = course[idx]
-            if 'input name="check"' in str(c):
+            if 'input name="check"' in str(c) or idx == 0:
+                if idx == 0:
+                    idx = -1
                 name = course[idx + 8].text
                 lectureCode = course[idx + 6].text
                 profName = course[idx + 13].text
@@ -89,7 +91,9 @@ def crawler(i):
                 timeIndex += 8
                 while timeIndex < len(course) and course[timeIndex].has_attr('class') and course[timeIndex]['class'][0] == 'blue_st':
                     lectureTimeDataProcess(courseData, course[timeIndex].text)
-                    timeIndex += 8
+                    timeIndex += 3
+            if idx == -1:
+                idx = 0
             idx += 1
     else:
         raise Exception('HttpResponse is not 200')
