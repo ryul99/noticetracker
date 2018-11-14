@@ -16,6 +16,7 @@ def crawl():
         numOfCourse = bsObject.find('span', {'class': 'fc_o'})
         # print("numOfCourse = %s" % numOfCourse.text)
         for i in range(1, ((int(numOfCourse.text) + 9) // 10)):
+            print("%d-page crawling started" % i)
             crawler(i)
     else:
         raise Exception('HttpResponse is not 200')
