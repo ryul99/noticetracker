@@ -71,6 +71,7 @@ def course(request):
         ret = list()
         for item in courseAll:
             ret.append({'name': item['name'],
+                        'id': item['id'],
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
                         'classNumber': item['classNumber']})
@@ -88,7 +89,8 @@ def courseDetail(request, courseId):
         dict = {'name': course.name,
                 'lectureCode': course.lectureCode,
                 'profName': course.profName,
-                'classNumber': course.classNumber}
+                'classNumber': course.classNumber,
+                'id': course.id}
         return JsonResponse(dict)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -100,6 +102,7 @@ def searchByName(request, courseName):
         ret = list()
         for item in items:
             ret.append({'name': item['name'],
+                        'id': item['id'],
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
                         'classNumber': item['classNumber']})
@@ -115,6 +118,7 @@ def searchByCode(request, courseCode):
         ret = list()
         for item in items:
             ret.append({'name': item['name'],
+                        'id': item['id'],
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
                         'classNumber': item['classNumber']})
