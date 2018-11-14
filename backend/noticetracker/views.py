@@ -74,7 +74,7 @@ def course(request):
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
                         'classNumber': item['classNumber']})
-        return JsonResponse(courseAll, safe=False)
+        return JsonResponse(ret, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -98,12 +98,12 @@ def searchByName(request, courseName):
     if request.method == 'GET':
         items = list(Course.objects.filter(name__contains=courseName).values())
         ret = list()
-        for item in courseAll:
+        for item in items:
             ret.append({'name': item['name'],
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
                         'classNumber': item['classNumber']})
-        return JsonResponse(courseAll, safe=False)
+        return JsonResponse(ret, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -111,13 +111,13 @@ def searchByName(request, courseName):
 def searchByCode(request, courseCode):
     if request.method == 'GET':
         items = list(Course.objects.filter(
-            name__startswith=courseName).values())
+            lectureCode__startswith=courseCode).values())
         ret = list()
-        for item in courseAll:
+        for item in items:
             ret.append({'name': item['name'],
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
                         'classNumber': item['classNumber']})
-        return JsonResponse(courseAll, safe=False)
+        return JsonResponse(ret, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
