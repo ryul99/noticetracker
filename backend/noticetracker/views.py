@@ -9,6 +9,7 @@ import json
 
 # Create your views here.
 
+
 def signin(request):
     if request.method == 'POST':
         try:
@@ -26,6 +27,7 @@ def signin(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+
 def signup(request):
     if request.method == 'POST':
         try:
@@ -39,6 +41,7 @@ def signup(request):
     else:
         return HttpResponseNotAllowed(['POST'])
 
+
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -48,6 +51,7 @@ def signout(request):
             return HttpResponse(status=401)
     else:
         return HttpResponseNotAllowed(['GET'])
+
 
 def userInst(request, userId):
     if request.method == 'GET':
@@ -60,13 +64,15 @@ def userInst(request, userId):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+
 def course(request):
     if request.method == 'GET':
         courseAll = [{'name': course['name'],
-                    } for course in Course.objects.all().values()]
+                      } for course in Course.objects.all().values()]
         return JsonResponse(courseAll, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
+
 
 def courseDetail(request, courseId):
     if request.method == 'GET':

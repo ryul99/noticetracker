@@ -6,6 +6,8 @@ from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
 
 # Create your tests here.
+
+
 class NoticeTrackerTestCase(TestCase):
     mock_minty = {'username': 'minty', 'password': 'pw1'}
     mock_16silver = {'username': '16silver', 'password': 'pw2'}
@@ -37,13 +39,15 @@ class NoticeTrackerTestCase(TestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(
             len(User.objects.filter(username='16silver').values()), 1)
-        response = client.post('/api/signup', "", content_type='application/json')
+        response = client.post(
+            '/api/signup', "", content_type='application/json')
         self.assertEqual(response.status_code, 400)
         self.checkInvalidRequest(['POST'], '/api/signup')
 
     def test_signin(self):
         client = Client()
-        response = client.post('/api/signin', "", content_type='application/json')
+        response = client.post(
+            '/api/signin', "", content_type='application/json')
         self.assertEqual(response.status_code, 400)
         response = client.post(
             '/api/signin', json.dumps(self.mock_minty), content_type='application/json')
