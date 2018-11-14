@@ -14,7 +14,7 @@ def crawl():
     bsObject = BeautifulSoup(html.text, "html.parser")
     if html.status_code == 200:
         numOfCourse = bsObject.find('span', {'class': 'fc_o'})
-        print("numOfCourse = %s" % numOfCourse.text)
+        # print("numOfCourse = %s" % numOfCourse.text)
         for i in range(1, ((int(numOfCourse.text) + 9) // 10)):
             crawler(i)
     else:
@@ -47,7 +47,7 @@ def lectureTimeDataProcess(courseData, time):
             start=start,
             end=end
         )
-        print(day, start, end)
+        # print(day, start, end)
         lectureTimeData.save()
         courseData.time.add(lectureTimeData)
 
@@ -79,7 +79,7 @@ def crawler(i):
                     profName=profName,
                     classNumber=classNumber
                 )
-                print(name, lectureCode, profName, classNumber)
+                # print(name, lectureCode, profName, classNumber)
                 courseData.save()
 
                 # Process LectureTime.
