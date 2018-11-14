@@ -15,7 +15,6 @@ def crawl():
     if html.status_code == 200:
         numOfCourse = bsObject.find('span', {'class': 'fc_o'})
         print("numOfCourse = %s" % numOfCourse.text)
-        # ((numOfCourse // 10)+1)) has error, need to fix
         for i in range(1, ((int(numOfCourse.text) + 9) // 10)):
             crawler(i)
     else:
