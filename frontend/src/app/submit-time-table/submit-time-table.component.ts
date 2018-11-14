@@ -41,8 +41,6 @@ export class SubmitTimeTableComponent implements OnInit {
       for (let item of list) {
         var isSelected: boolean = false;
         for (let course of this.selectedCourse) {
-          console.log(course.id);
-          console.log(item.id);
           if (course.id === item.id) {
             isSelected = true;
             break;
