@@ -6,15 +6,17 @@ from bs4 import BeautifulSoup
 
 daysToNumber = {"월": 1, "화": 2, "수": 3, "목": 4, "금": 5, "토": 6, "일": 7}
 
+
 def crawl():
     url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
     url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
     html = requests.get(url_front + '1' + url_back)
     bsObject = BeautifulSoup(html.text, "html.parser")
     if html.status_code == 200:
-        numOfCourse = bsObject.find('span', {'class':'fc_o'})
+        numOfCourse = bsObject.find('span', {'class': 'fc_o'})
         print("numOfCourse = %s" % numOfCourse.text)
-        for i in range(1, ((int(numOfCourse.text)+9) // 10)): # ((numOfCourse // 10)+1)) has error, need to fix
+        # ((numOfCourse // 10)+1)) has error, need to fix
+        for i in range(1, ((int(numOfCourse.text) + 9) // 10)):
             crawler(i)
     else:
         raise Exception('HttpResponse is not 200')
@@ -22,7 +24,10 @@ def crawl():
 
 def lectureTimeDataProcess(courseData, time):
     if len(time) > 0:
-        day = daysToNumber[time[0]]
+        if time[0] in daysToNumber:
+            day = daysToNumber[time[0]]
+        else:
+            return
         startMinute = int(time[5:7])
         if startMinute == 30:
             minute = 5
@@ -39,13 +44,14 @@ def lectureTimeDataProcess(courseData, time):
             minute = 10
         end = int(time[8:10]) * 10 + minute
         lectureTimeData = LectureTime(
-            day = day,
-            start = start,
-            end = end
+            day=day,
+            start=start,
+            end=end
         )
         print(day, start, end)
         lectureTimeData.save()
         courseData.time.add(lectureTimeData)
+
 
 def crawler(i):
     url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
@@ -59,46 +65,32 @@ def crawler(i):
         tbodyList = bsObject.find('html').extract()
         rawCourse = bsObject
         course = rawCourse.find_all('td')
-        divCource = bsObject.find_all('td')
-        name = divCource[7].text
-        lectureCode = divCource[5].text
-        profName = divCource[12].text
-        classNumber = divCource[6].text
-        time = divCource[9].text
-        print(name, lectureCode, profName, classNumber, time)
-        courseData = Course(
-            name = name,
-            lectureCode = lectureCode,
-            profName = profName,
-            classNumber = classNumber
-        )
-        courseData.save()
-        lectureTimeDataProcess(courseData, time)
 
-        for c in course:
-            if 'class' in c and c['class'] == 'blue_st':
-                if check == 14 or check == 10:
-                    name = course[idx - 2].text
-                    lectureCode = course[idx - 4].text
-                    profName = course[idx + 3].text
-                    classNumber = course[idx - 3].text
-                    courseData = Course(
-                        name = name,
-                        lectureCode = lectureCode,
-                        profName = profName,
-                        classNumber = classNumber
-                    )
-                    courseData.save()
-                if check != 0:
-                    lectureTimeDataProcess(courseData, c.text)
-                    timeCount = 0
-                else:
-                    if (timeCount % 3) == 0:
-                        lectureTimeDataProcess(courseData, c.text)
-                check = 0
-                timeCount = timeCount + 1
-            else:
-                check = check + 1
-            idx = idx + 1
+        courseData = None
+        while idx < len(course):
+            c = course[idx]
+            if 'input name="check"' in str(c):
+                name = course[idx + 8].text
+                lectureCode = course[idx + 6].text
+                profName = course[idx + 13].text
+                classNumber = course[idx + 7].text
+                courseData = Course(
+                    name=name,
+                    lectureCode=lectureCode,
+                    profName=profName,
+                    classNumber=classNumber
+                )
+                print(name, lectureCode, profName, classNumber)
+                courseData.save()
+
+                # Process LectureTime.
+                timeIndex = idx + 10
+                lectureTimeDataProcess(courseData, course[timeIndex].text)
+
+                timeIndex += 8
+                while timeIndex < len(course) and course[timeIndex].has_attr('class') and course[timeIndex]['class'][0] == 'blue_st':
+                    lectureTimeDataProcess(courseData, course[timeIndex].text)
+                    timeIndex += 8
+            idx += 1
     else:
         raise Exception('HttpResponse is not 200')
