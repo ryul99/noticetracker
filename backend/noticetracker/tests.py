@@ -80,8 +80,8 @@ class NoticeTrackerTestCase(TestCase):
         self.assertIn('\"username\": \"minty\"', str(response.content))
 
     def test_crawl(self):
-        # Do it if you are ready...
-        crawl()
+        # Disabled for CI
+        # crawl()
         pass
 
     def test_course(self):
