@@ -22,7 +22,7 @@ export class UserService {
   addCourse(courseId: number) {}
 
   getTakingCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>('/api/user/' + this.userId + 'courses');
+    return this.http.get<Course[]>('/api/user/' + this.userId + '/courses');
   }
 
   getUserId(): string {
