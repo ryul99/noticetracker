@@ -18,6 +18,7 @@ export class SubmitTimeTableComponent implements OnInit {
   searchedCourseSelected: boolean[] = [];
 
   viewAsList: boolean = true;
+  removeActivated: boolean = false;
 
   constructor(private courseService: CourseService, private userService: UserService, private router: Router) {}
 
@@ -93,5 +94,17 @@ export class SubmitTimeTableComponent implements OnInit {
 
   chooseTableView() {
     this.viewAsList = false;
+  }
+
+  toggleDeleteButton() {
+    this.removeActivated = !this.removeActivated;
+  }
+
+  removeCourse(course: Course) {
+    this.selectedCourse = this.selectedCourse.filter(c => c !== course);
+    let i: number = this.searchedCourse.indexOf(course);
+    if (i > -1) {
+      this.searchedCourseSelected[i] = false;
+    }
   }
 }
