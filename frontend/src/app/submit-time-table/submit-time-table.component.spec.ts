@@ -57,16 +57,20 @@ describe('SubmitTimeTableComponent', () => {
 
   it('searchByName', () => {
     spyOn(courseService, 'searchByName').and.callThrough();
-    component.nameTerm = '프로그래밍언어';
+    component.selectedCourse = [mockCourses[2]];
+    component.nameTerm = '프로그래밍';
     component.searchByName();
-    expect(courseService.searchByName).toHaveBeenCalledWith('프로그래밍언어');
+    expect(courseService.searchByName).toHaveBeenCalledWith('프로그래밍');
+    expect(component.searchedCourseSelected).toEqual([false, true]);
   });
 
   it('searchByCode', () => {
     spyOn(courseService, 'searchByCode').and.callThrough();
-    component.codeTerm = '4190.310';
+    component.selectedCourse = [mockCourses[1], mockCourses[2]];
+    component.codeTerm = '4190';
     component.searchByCode();
-    expect(courseService.searchByCode).toHaveBeenCalledWith('4190.310');
+    expect(courseService.searchByCode).toHaveBeenCalledWith('4190');
+    expect(component.searchedCourseSelected).toEqual([true, false, false, false]);
   });
 
   it('goHome', () => {
@@ -78,17 +82,17 @@ describe('SubmitTimeTableComponent', () => {
   it('toggleOnSearchedList_not_selected', () => {
     component.searchedCourse = [mockCourses[0], mockCourses[1], mockCourses[2], mockCourses[3]];
     component.selectedCourse = [mockCourses[0], mockCourses[3]];
+    component.searchedCourseSelected = [true, false, true, true];
     component.toggleOnSearchedList(mockCourses[2]);
     expect(component.selectedCourse).toContain(mockCourses[2]);
-    expect(component.searchedCourseSelected[2]).toBeTruthy();
   });
 
   it('toggleOnSearchedList_already_selected', () => {
     component.searchedCourse = [mockCourses[0], mockCourses[1], mockCourses[2], mockCourses[3]];
     component.selectedCourse = [mockCourses[0], mockCourses[3]];
+    component.searchedCourseSelected = [true, false, false, false];
     component.toggleOnSearchedList(mockCourses[3]);
     expect(component.selectedCourse).not.toContain(mockCourses[3]);
-    expect(component.searchedCourseSelected[3]).toBeFalsy();
   });
 
   it('chooseListView', () => {
@@ -99,5 +103,23 @@ describe('SubmitTimeTableComponent', () => {
   it('chooseTableView', () => {
     component.chooseTableView();
     expect(component.viewAsList).toBeFalsy();
+  });
+
+  it('toggleDeleteButton', () => {
+    component.toggleDeleteButton();
+    expect(component.removeActivated).toBeTruthy();
+
+    component.toggleDeleteButton();
+    expect(component.removeActivated).toBeFalsy();
+  });
+
+  it('removeCourse', () => {
+    component.selectedCourse = [mockCourses[0], mockCourses[1]];
+    component.searchedCourse = [mockCourses[0], mockCourses[2]];
+    component.searchedCourseSelected = [true, false];
+    component.removeCourse(mockCourses[0]);
+    expect(component.selectedCourse).toEqual([mockCourses[1]]);
+    expect(component.searchedCourse).toEqual([mockCourses[0], mockCourses[2]]);
+    expect(component.searchedCourseSelected).toEqual([false, false]);
   });
 });

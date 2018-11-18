@@ -22,14 +22,14 @@ export class UserService {
   addCourse(courseId: number) {}
 
   getTakingCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>('asdf');
+    return this.http.get<Course[]>('/api/user/' + this.userId + '/courses');
   }
 
   getUserId(): string {
-    return '';
+    return this.userId;
   }
 
   getUserName(): string {
-    return '';
+    return this.username;
   }
 }
