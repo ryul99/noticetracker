@@ -23,10 +23,17 @@
         <button class="btn btn-secondary btn-space" (click)="submitTimeTable()">Edit Timetable</button>
         <button class="btn btn-secondary btn-space" (click)="siteRecommendation()">Edit Site List</button>
       </div>
+      <br />
       <li *ngFor="let article of newsfeed; let index = index">
-        <a href="{{article.url}}">{{ timeTable[courseIdOfArticle[index] - 1].name }}</a>
-        <button (click)="star(article)">star</button> <button (click)="ignore(article)">ignore</button>
-        <span *ngIf="articleIsStar[index]">★</span> <span *ngIf="articleIsIgnore[index]">㉿</span>
+        <div class="card bg-light mb-3" style="max-width: 40rem;">
+          <div class="card-header">{{ timeTable[courseIdOfArticle[index] - 1].name }}</div>
+          <div class="card-body">
+            <a href="{{article.url}}">Article </a>
+            <button class="btn btn-secondary btn-space" (click)="star(article)">star</button>
+            <button class="btn btn-secondary btn-space" (click)="ignore(article)">ignore</button>
+            <span *ngIf="articleIsStar[index]">★</span> <span *ngIf="articleIsIgnore[index]">㉿</span>
+          </div>
+        </div>
       </li>
     </div>
   </body>
