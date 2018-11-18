@@ -79,12 +79,10 @@ export class SubmitTimeTableComponent implements OnInit {
     const searchIndex: number = this.searchedCourse.indexOf(course);
     const selectIndex: number = this.selectedCourse.indexOf(course);
 
-    if (selectIndex != -1) {
-      this.selectedCourse.splice(selectIndex, 1);
-      this.searchedCourseSelected[searchIndex] = false;
+    if (!this.searchedCourseSelected[searchIndex]) {
+      this.selectedCourse = this.selectedCourse.filter(c => c.id != course.id);
     } else {
       this.selectedCourse.push(course);
-      this.searchedCourseSelected[searchIndex] = true;
     }
   }
 
