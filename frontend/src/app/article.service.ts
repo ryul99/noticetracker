@@ -5,4 +5,14 @@ import { Injectable } from '@angular/core';
 })
 export class ArticleService {
   constructor() {}
+
+  getNewsfeed() {}
+
+  getArticleByCourseId(courseID: number) {}
+
+  getMarkedArticles(userID: number) {}
+
+  setStar(articleID: number) {}
+
+  setIgnore(articleId: number) {}
 }
