@@ -79,7 +79,7 @@ export const stubUserService = {
     return;
   },
   getTakingCourses: function() {
-    return;
+    return of([mockCourses[1], mockCourses[2]]);
   }
 };
 

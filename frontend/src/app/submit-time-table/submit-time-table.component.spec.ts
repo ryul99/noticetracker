@@ -78,17 +78,17 @@ describe('SubmitTimeTableComponent', () => {
   it('toggleOnSearchedList_not_selected', () => {
     component.searchedCourse = [mockCourses[0], mockCourses[1], mockCourses[2], mockCourses[3]];
     component.selectedCourse = [mockCourses[0], mockCourses[3]];
+    component.searchedCourseSelected = [true, false, true, true];
     component.toggleOnSearchedList(mockCourses[2]);
     expect(component.selectedCourse).toContain(mockCourses[2]);
-    expect(component.searchedCourseSelected[2]).toBeTruthy();
   });
 
   it('toggleOnSearchedList_already_selected', () => {
     component.searchedCourse = [mockCourses[0], mockCourses[1], mockCourses[2], mockCourses[3]];
     component.selectedCourse = [mockCourses[0], mockCourses[3]];
+    component.searchedCourseSelected = [true, false, false, false];
     component.toggleOnSearchedList(mockCourses[3]);
     expect(component.selectedCourse).not.toContain(mockCourses[3]);
-    expect(component.searchedCourseSelected[3]).toBeFalsy();
   });
 
   it('chooseListView', () => {
