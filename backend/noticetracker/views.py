@@ -125,3 +125,48 @@ def searchByCode(request, courseCode):
         return JsonResponse(ret, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
+
+def sitesByCourseId(request, courseId):
+    if request.method not in ['GET', 'POST']:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+
+    elif request.method == 'GET':
+        try:
+            course = Course.objects.get(id=courseId)
+        except Course.DoesNotExist:
+            return HttpResponseNotFound()
+        sites = list(course.siteList.all())
+        ret = list()
+        for site in sites:
+            ret.append({'url': site.url,
+                        'lastUpdated': site.lastUpdated})
+        return JsonResponse(ret, safe=false)
+
+    elif request.method == 'POST':
+        try:
+            course = Course.objects.get(id=courseId)
+        except Course.DoesNotExist:
+            return HttpResponseNotFound()
+        try:
+            requestData = json.loads(request.body.decode())
+            reqUrl = requestData['url']
+            reqLastUpdated = requestData['lastUpdated']
+            site = Site(url=reqUrl, lastUpdated=reqLastUpdated)
+            site.save()
+            course.siteList.add(site)
+            return HttpResponse(status=201)
+        except (KeyError, JSONDecodeError) as e:
+            return HttpResponseBadRequest()
+    raise Exception("unreachable code")
+
+def deleteSiteFromCourse(request, courseId, siteId):
+    if request.method not in ['DELETE']:
+        return HttpResponseNotAllowed(['DELETE'])
+    elif request.method == 'DELETE':
+        try:
+            course = Course.objects.get(id=courseId)
+        except CourseDoesNotExist:
+            return HttpResponseNotFound()
+        site = Site.objects.filter(id=siteId)
+        course.siteList.remove(site)
+        HttpResponseOk()
