@@ -12,4 +12,6 @@ urlpatterns = [
          views.searchByName, name='searchByName'),
     path('search/id/<str:courseCode>',
          views.searchByCode, name='searchByCode'),
+    path('course/<int:courseId>/site', views.sitesByCourseId, name='sitesByCourseId'),
+    path('course/<int:courseId>/site/<int:siteId>', views.deleteSiteFromCourse, name='deleteSiteFromCourse'),
 ]
