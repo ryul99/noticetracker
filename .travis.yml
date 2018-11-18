@@ -30,7 +30,7 @@ matrix:
       script:
           - npm test
       after_success:
-          - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+          - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js ../
 
     - language: python
       python: 3.6
@@ -49,4 +49,4 @@ matrix:
       script:
         - coverage run --source="./noticetracker" manage.py test
       after_script:
-        - coveralls
+        - coveralls -b ../
