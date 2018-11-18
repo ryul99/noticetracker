@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { mockCourses } from '../stub';
 import { Course } from '../course';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-site-recommendation',
@@ -18,19 +19,22 @@ export class SiteRecommendationComponent implements OnInit {
 
   initialized: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
-    for (let course of this.courses) {
-      this.expanded.push(false);
-      this.urlToAdd.push('');
-      for (let site of course.sites) {
-        this.siteIDList.push(site.id);
-        this.siteSelected.push(false);
+    this.userService.getTakingCourses().subscribe(courses => {
+      this.courses = courses;
+      for (let course of this.courses) {
+        this.expanded.push(false);
+        this.urlToAdd.push('');
+        for (let site of course.sites) {
+          this.siteIDList.push(site.id);
+          this.siteSelected.push(false);
+        }
       }
-    }
 
-    this.initialized = true;
+      this.initialized = true;
+    });
   }
 
   expand() {}
