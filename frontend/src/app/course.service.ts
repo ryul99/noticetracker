@@ -30,7 +30,7 @@ export class CourseService {
     return this.http.get<Site[]>(url);
   }
 
-  addSiteByCourseId(courseId: number, site: Site): Observable<Site> {
+  addSiteByCourseId(courseId: number, site: Partial<Site>): Observable<Site> {
     let url = 'api/course/' + courseId + '/site';
     return this.http.post<Site>(url, site);
   }

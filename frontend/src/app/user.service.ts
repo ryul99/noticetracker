@@ -1,4 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Course } from './course';
+import { Site } from './site';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +11,7 @@ export class UserService {
   userId: string;
   username: string;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   signIn(userId: string, password: string) {}
 
@@ -17,13 +21,15 @@ export class UserService {
 
   addCourse(courseId: number) {}
 
-  getTakingCourses() {}
+  getTakingCourses(): Observable<Course[]> {
+    return this.http.get<Course[]>('/api/user/' + this.userId + '/courses');
+  }
 
   getUserId(): string {
-    return '';
+    return this.userId;
   }
 
   getUserName(): string {
-    return '';
+    return this.username;
   }
 }
