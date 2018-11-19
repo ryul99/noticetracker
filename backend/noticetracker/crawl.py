@@ -51,12 +51,15 @@ def lectureTimeDataProcess(courseData, time):
         # print(day, start, end)
         lectureTimeData.save()
         courseData.time.add(lectureTimeData)
+        return (day, start, end)
 
 
 def crawler(i):
     url_front = "http://sugang.snu.ac.kr/sugang/cc/cc100.action?workType=S&pageNo="
     url_back = "&srchCond=1&srchOpenSchyy=2018&srchOpenShtm=U000200002U000300001"
     html = requests.get(url_front + str(i) + url_back)
+    courseDataResult = []
+
     if html.status_code == 200:
         idx = 0
         check = 0
@@ -86,15 +89,22 @@ def crawler(i):
                 courseData.save()
 
                 # Process LectureTime.
+                lectureTimes = []
                 timeIndex = idx + 10
-                lectureTimeDataProcess(courseData, course[timeIndex].text)
+                lectureTimes += [lectureTimeDataProcess(
+                    courseData, course[timeIndex].text)]
 
                 timeIndex += 8
                 while timeIndex < len(course) and course[timeIndex].has_attr('class') and course[timeIndex]['class'][0] == 'blue_st':
-                    lectureTimeDataProcess(courseData, course[timeIndex].text)
+                    lectureTimes += [lectureTimeDataProcess(
+                        courseData, course[timeIndex].text)]
                     timeIndex += 3
+
+                courseDataResult += [(name, lectureCode,
+                                      profName, classNumber, lectureTimes)]
             if idx == -1:
                 idx = 0
             idx += 1
+        return courseDataResult
     else:
         raise Exception('HttpResponse is not 200')
