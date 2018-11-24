@@ -30,6 +30,11 @@ export class CourseService {
     return this.http.get<Site[]>(url);
   }
 
+  deleteSiteById(courseId: number, siteId: number): Observable<boolean> {
+    let url = 'api/course/' + courseId + '/site/' + siteId;
+    return this.http.delete<boolean>(url);
+  }
+
   addSiteByCourseId(courseId: number, site: Partial<Site>): Observable<Site> {
     let url = 'api/course/' + courseId + '/site';
     return this.http.post<Site>(url, site);
