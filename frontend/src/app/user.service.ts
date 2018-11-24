@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Course } from './course';
-import { Site } from './site';
 import { User } from './user';
 import { Observable, of } from 'rxjs';
 
@@ -10,22 +9,20 @@ import { Observable, of } from 'rxjs';
 })
 export class UserService {
   userNumber: number;
-  username: string;
+  userId: string;
 
   constructor(private http: HttpClient) {}
-
-  //signIn(userId: string, password: string) {}
 
   signIn(userId: string, password: string): Promise<boolean> {
     return this.http
       .post<User>('/api/sign_in/', {
-        email: userId,
+        userId: userId,
         password: password
       })
       .toPromise()
       .then(
         user => {
-          this.username = user.username;
+          this.userId = user.userId;
           this.userNumber = user.id;
           return true;
         },
@@ -42,13 +39,13 @@ export class UserService {
   signUp(userId: string, password: string): Promise<boolean> {
     return this.http
       .post<User>('/api/sign_up/', {
-        email: userId,
+        userId: userId,
         password: password
       })
       .toPromise()
       .then(
         user => {
-          this.username = user.username;
+          this.userId = user.userId;
           this.userNumber = user.id;
           return true;
         },
@@ -57,17 +54,30 @@ export class UserService {
         }
       );
   }
-  addCourse(courseId: number) {}
+
+  addCourses(courseIds: number[]): Observable<boolean> {
+    let url = '/user/course';
+    return this.http.post<boolean>(url, {
+      courses: courseIds
+    });
+  }
+
+  addSites(siteIds: number[]): Observable<boolean> {
+    let url = '/user/site';
+    return this.http.post<boolean>(url, {
+      sites: siteIds
+    });
+  }
 
   getTakingCourses(): Observable<Course[]> {
     return this.http.get<Course[]>('/api/user/' + this.userNumber + '/courses');
   }
 
-  getUserId(): number {
+  getUserNumber(): number {
     return this.userNumber;
   }
 
-  getUserName(): string {
-    return this.username;
+  getUserId(): string {
+    return this.userId;
   }
 }
