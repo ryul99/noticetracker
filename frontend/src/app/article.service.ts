@@ -14,14 +14,13 @@ export class ArticleService {
 
   getNewsfeed() {}
 
-  getArticleByCourseId(courseID: number): Observable<Article[]> {
-    let url = this.httpCourseUrl + courseID + '/article';
+  getArticlesByCourseId(courseId: number): Observable<Article[]> {
+    let url = this.httpCourseUrl + courseId + '/article';
     return this.http.get<Article[]>(url);
   }
 
-  getMarkedArticles(userID: number) {}
-
-  setStar(articleID: number) {}
-
-  setIgnore(articleId: number) {}
+  getArticleByArticleId(articleId: number): Observable<Article> {
+    let url = this.httpArticleUrl + articleId;
+    return this.http.get<Article>(url);
+  }
 }
