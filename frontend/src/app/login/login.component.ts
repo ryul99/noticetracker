@@ -18,14 +18,34 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   signIn() {
-    this.userService.signIn(this.id, this.password);
-    console.log(`${this.id} ${this.password} sign in!\n`);
-    this.router.navigate(['/newsfeed']);
+    this.userService.signIn(this.id, this.password).then(bool => {
+      if (bool) {
+        console.log(`${this.id} ${this.password} sign in!\n`);
+        this.router.navigate(['/newsfeed']);
+      } else {
+        return;
+      }
+    });
   }
 
   signUp() {
-    this.userService.signUp(this.id, this.password);
-    console.log('sign up!\n');
-    this.router.navigate(['/submit_time_table']);
+    this.userService.signUp(this.id, this.password).then(bool => {
+      if (bool) {
+        console.log(`sign up!\n`);
+        this.router.navigate(['/submit_time_table']);
+      } else {
+        return;
+      }
+    });
+  }
+
+  signOut() {
+    this.userService.signOut().then(bool => {
+      if (bool) {
+        this.router.navigate(['/']);
+      } else {
+        return;
+      }
+    });
   }
 }
