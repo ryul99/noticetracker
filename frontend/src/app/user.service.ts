@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Course } from './course';
+import { Site } from './site';
 import { User } from './user';
+import { Article } from './article';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -55,22 +57,40 @@ export class UserService {
       );
   }
 
+  getCourses(userNumber: number): Observable<Course[]> {
+    let url = '/api/user/course';
+    return this.http.get<Course[]>(url);
+  }
+
+  getSites(userNumber: number): Observable<Site[]> {
+    let url = '/api/user/site';
+    return this.http.get<Site[]>(url);
+  }
+
   addCourses(courseIds: number[]): Observable<boolean> {
-    let url = '/user/course';
+    let url = '/api/user/course';
     return this.http.post<boolean>(url, {
       courses: courseIds
     });
   }
 
   addSites(siteIds: number[]): Observable<boolean> {
-    let url = '/user/site';
+    let url = '/api/user/site';
     return this.http.post<boolean>(url, {
       sites: siteIds
     });
   }
 
-  getTakingCourses(): Observable<Course[]> {
-    return this.http.get<Course[]>('/api/user/' + this.userNumber + '/courses');
+  getNewsfeed(userNumber: number, pageNumber: number): Observable<Site[]> {
+    let url = '/api/user/newsfeed/' + pageNumber;
+    return this.http.get<Site[]>(url);
+  }
+
+  updateArticle(article: Article): Observable<boolean> {
+    let url = '/api/user/article/' + article.id;
+    return this.http.put<boolean>(url, {
+      article: article
+    });
   }
 
   getUserNumber(): number {
