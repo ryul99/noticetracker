@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { mockCourses } from '../stub';
 import { Course } from '../course';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';
@@ -25,9 +24,12 @@ export class SubmitTimeTableComponent implements OnInit {
   ngOnInit() {}
 
   submit() {
+    let willBeAdded = [];
     for (let course of this.selectedCourse) {
-      this.userService.addCourse(course.id);
+      willBeAdded.push(course.id);
     }
+
+    this.userService.addCourses(willBeAdded);
     this.router.navigate(['/site_recommendation']);
   }
 

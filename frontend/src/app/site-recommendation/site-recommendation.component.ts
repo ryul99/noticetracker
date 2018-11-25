@@ -22,7 +22,7 @@ export class SiteRecommendationComponent implements OnInit {
   constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.getTakingCourses().subscribe(courses => {
+    this.userService.getCourses().subscribe(courses => {
       this.courses = courses;
       for (let course of this.courses) {
         this.expanded.push(false);

@@ -13,12 +13,12 @@ import { mockCourses } from '../stub';
 export class NewsfeedComponent implements OnInit {
   timeTable: Course[] = mockCourses;
   newsfeed: Article[] = [
-    { id: 1, url: 'https://www.naver.com/' },
-    { id: 2, url: 'https://github.com/' },
-    { id: 3, url: 'https://www.youtube.com/' },
-    { id: 4, url: 'https://www.daum.net/' },
-    { id: 5, url: 'https://www.google.com/' },
-    { id: 6, url: 'https://stackoverflow.com/' }
+    { id: 1, content: 'Naver', url: 'https://www.naver.com/' },
+    { id: 2, content: 'GitHub', url: 'https://github.com/' },
+    { id: 3, content: 'YouTube', url: 'https://www.youtube.com/' },
+    { id: 4, content: 'Daum', url: 'https://www.daum.net/' },
+    { id: 5, content: 'Google', url: 'https://www.google.com/' },
+    { id: 6, content: 'StackOverflow', url: 'https://stackoverflow.com/' }
   ];
   courseIdOfArticle: number[] = [1, 2, 3, 4, 5, 6];
   articleIsStar: boolean[] = [false, false, false, false, false, false];
