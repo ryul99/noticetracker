@@ -140,8 +140,124 @@ def deleteSiteFromCourse(request, courseId, siteId):
     elif request.method == 'DELETE':
         try:
             course = Course.objects.get(id=courseId)
-        except CourseDoesNotExist:
+        except Course.DoesNotExist:
             return HttpResponseNotFound()
         site = Site.objects.filter(id=siteId)
         course.siteList.remove(site)
-        HttpResponseOk()
+        return HttpResponseOk()
+
+
+def courseArticles(request, courseId):
+    if request.method not in ['GET']:
+        return HttpResponseNotAllowed(['GET'])
+    elif request.method == 'GET':
+        try:
+            course = Course.objects.get(id=courseId)
+        except Course.DoesNotExist:
+            return HttpResponseNotFound()
+        sites = list(course.siteList.all())
+        ret = list()
+        for site in sites:
+            ret.append({'url': site.url,
+                        'lastUpdated': site.lastUpdated})
+        return JsonResponse(ret, safe=false)
+    raise Exception("unreachable code")
+
+
+def articleOfArticleId(request, articleId):
+    if request.method not in ['GET']:
+        return HttpResponseNotAllowed(['GET'])
+    elif request.method == 'GET':
+        articles = list(Article.objects.filter(id=articleId))
+        ret = list()
+        for article in articles:
+            ret.append({'url': article.url})
+        return JsonResponse(ret, safe=false)
+    raise Exception("unreachable code")
+
+
+def userCourse(request):
+    if request.method not in ['GET', 'POST']:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+    elif request.method == 'GET':
+        if request.user.is_authenticated:
+            try:
+                user = UserDetail.objects.get(user=request.user)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            courses = list(user.courseList.all())
+            ret = list()
+            for course in courses:
+                ret.append({'name': course.name,
+                            'time': course.time,
+                            'lectureCode': course.lectureCode,
+                            'profName': course.profName,
+                            'classNumber': course.classNumber})
+            return JsonResponse(ret, safe=false)
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            try:
+                user = UserDetail.objects.get(user=request.user)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            user.courseList.clear()
+            # TODO
+            user.courseList.add()
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
+    raise Exception("unreachable code")
+
+
+def userSite(request):
+    if request.method not in ['GET', 'POST']:
+        return HttpResponseNotAllowed(['GET', 'POST'])
+    elif request.method == 'GET':
+        if request.user.is_authenticated:
+            try:
+                user = UserDetail.objects.get(user=request.user)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            courses = list(user.courseList.all())
+            ret = list()
+            for course in courses:
+                for site in list(course.siteList.all()):
+                    ret.append({'url': site.url,
+                                'lastUpdated': site.lastUpdated})
+            return JsonResponse(ret, safe=false)
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
+    elif request.method == 'POST':
+        # TODO
+    raise Exception("unreachable code")
+
+
+def newsfeedPage(request, pageId):
+    if request.method not in ['GET']:
+        return HttpResponseNotAllowed(['GET'])
+    elif request.method == 'GET':
+        if request.user.is_authenticated:
+            try:
+                user = UserDetail.objects.get(user=request.user)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            # TODO
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
+    raise Exception("unreachable code")
+
+
+def updateArticle(request, articleId):
+    if request.method not in ['PUT']:
+        return HttpResponseNotAllowed(['PUT'])
+    elif request.method == 'PUT':
+        if request.user.is_authenticated:
+            try:
+                user = UserDetail.objects.get(user=request.user)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            # TODO
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
+    raise Exception("unreachable code")
