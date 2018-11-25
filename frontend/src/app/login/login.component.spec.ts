@@ -31,30 +31,29 @@ describe('LoginComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // Not implemented for test.
-  // it('signIn_emptyID', () => {
-  //   spyOn(userService, 'signIn');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = '';
-  //   component.password = 'password';
-  //   component.signIn();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signIn).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
-  //
-  // it('signIn_emptyPW', () => {
-  //   spyOn(userService, 'signIn');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = 'admin';
-  //   component.password = '';
-  //   component.signIn();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signIn).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
+  it('signIn_emptyID', () => {
+    spyOn(userService, 'signIn').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = '';
+    component.password = 'password';
+    component.signIn();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signIn).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('signIn_emptyPW', () => {
+    spyOn(userService, 'signIn').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = 'admin';
+    component.password = '';
+    component.signIn();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signIn).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
 
   it('signIn_success', async(() => {
     spyOn(userService, 'signIn').and.callThrough();
@@ -70,32 +69,31 @@ describe('LoginComponent', () => {
     });
   }));
 
-  // Not implemented for test.
-  // it('signUp_emptyID', () => {
-  //   spyOn(userService, 'signUp');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = '';
-  //   component.password = 'password';
-  //   component.signUp();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signUp).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
-  //
-  // it('signUp_emptyPW', () => {
-  //   spyOn(userService, 'signUp');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = 'admin';
-  //   component.password = '';
-  //   component.signUp();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signUp).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
+  it('signUp_emptyID', () => {
+    spyOn(userService, 'signUp').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = '';
+    component.password = 'password';
+    component.signUp();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signUp).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
 
-  it('signUp', async(() => {
+  it('signUp_emptyPW', () => {
+    spyOn(userService, 'signUp').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = 'admin';
+    component.password = '';
+    component.signUp();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signUp).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('signUp_success', async(() => {
     spyOn(userService, 'signUp').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
