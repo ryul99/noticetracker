@@ -20,7 +20,7 @@ describe('SubmitTimeTableComponent', () => {
       imports: [FormsModule, RouterTestingModule],
       providers: [
         { provide: CourseService, useValue: stubCourseService },
-        { provide: UserService, useValue: stubUserService }
+        { provide: UserService, useClass: stubUserService }
       ]
     }).compileComponents();
   }));

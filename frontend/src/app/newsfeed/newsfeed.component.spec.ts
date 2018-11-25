@@ -16,7 +16,7 @@ describe('NewsfeedComponent', () => {
     TestBed.configureTestingModule({
       declarations: [NewsfeedComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useValue: stubUserService }]
+      providers: [{ provide: UserService, useClass: stubUserService }]
     }).compileComponents();
   }));
 

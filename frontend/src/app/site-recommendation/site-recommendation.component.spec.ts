@@ -15,7 +15,7 @@ describe('SiteRecommendationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SiteRecommendationComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useValue: stubUserService }]
+      providers: [{ provide: UserService, useClass: stubUserService }]
     }).compileComponents();
   }));
 
