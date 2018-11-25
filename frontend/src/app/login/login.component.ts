@@ -18,14 +18,51 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   signIn() {
-    this.userService.signIn(this.id, this.password);
-    console.log(`${this.id} ${this.password} sign in!\n`);
-    this.router.navigate(['/newsfeed']);
+    // for TEST
+    if (this.id === 'admin') {
+      this.router.navigate(['/newsfeed']);
+      return;
+    }
+    if (!this.id || !this.password) {
+      alert('Please enter both ID and password.');
+      return;
+    }
+    this.userService.signIn(this.id, this.password).then(success => {
+      if (success) {
+        this.router.navigate(['/newsfeed']);
+      } else {
+        alert('Wrong ID or password.');
+        return;
+      }
+    });
   }
 
   signUp() {
-    this.userService.signUp(this.id, this.password);
-    console.log('sign up!\n');
-    this.router.navigate(['/submit_time_table']);
+    // for TEST
+    if (this.id === 'admin') {
+      this.router.navigate(['/submit_time_table']);
+      return;
+    }
+    if (!this.id || !this.password) {
+      alert('Please enter both ID and password.');
+      return;
+    }
+    this.userService.signUp(this.id, this.password).then(success => {
+      if (success) {
+        this.router.navigate(['/submit_time_table']);
+      } else {
+        return;
+      }
+    });
+  }
+
+  signOut() {
+    this.userService.signOut().then(success => {
+      if (success) {
+        this.router.navigate(['/']);
+      } else {
+        return;
+      }
+    });
   }
 }
