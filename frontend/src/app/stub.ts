@@ -1,5 +1,6 @@
 import { Course } from './course';
 import { Site } from './site';
+import { Article } from './article';
 import { Observable, of } from 'rxjs';
 
 export const mockCourses: Course[] = [
@@ -65,21 +66,43 @@ export const mockCourses: Course[] = [
   }
 ];
 
+export const mockSites: Site[] = [
+  { id: 1, name: 'GitHub', url: 'https://github.com/swsnu/swppfall2018' },
+  { id: 2, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803' },
+  { id: 3, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=147656' },
+  { id: 4, name: 'PL Website', url: 'https://ropas.snu.ac.kr/~kwang/4190.310/18/' },
+  { id: 5, name: 'PL Webboard', url: 'https://ropas.snu.ac.kr/phpbb/viewforum.php?f=47' },
+  { id: 6, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803' },
+  { id: 7, name: 'Automata Bulletin Board', url: 'http://theory.snu.ac.kr/?page_id=1388' }
+];
+
+export const mockArticles: Article[] = [
+  { id: 1, content: 'New issue', url: 'https://github.com/swsnu/swppfall2018' },
+  { id: 2, content: 'New assignment', url: 'https://etl.snu.ac.kr' }
+];
+
 export const stubUserService = {
   signIn: function(username: string, pw: string) {
-    return;
+    console.log('in stub userservice');
+    return Promise.resolve(true);
   },
   signOut: function(username: string) {
-    return;
+    return Promise.resolve(true);
   },
   signUp: function(username: string, pw: string) {
-    return;
+    return Promise.resolve(true);
   },
-  addCourse: function(courseId: string) {
-    return;
-  },
-  getTakingCourses: function() {
+  getCourses: function() {
     return of([mockCourses[1], mockCourses[2]]);
+  },
+  getSites: function() {
+    return of([mockSites[0], mockSites[1]]);
+  },
+  addCourses: function(courseIds: number[]) {
+    return;
+  },
+  addSites: function(siteIds: number[]) {
+    return;
   }
 };
 
