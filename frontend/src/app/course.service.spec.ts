@@ -54,6 +54,13 @@ describe('CourseService', () => {
     req.flush(mockCourses[2]);
   });
 
+  it('deleteSiteById', () => {
+    service.deleteSiteById(3, 7).subscribe(list => {});
+    const req = httpMock.expectOne('api/course/3/site/7');
+    expect(req.request.method).toBe('DELETE');
+    req.flush([true]);
+  });
+
   it('addSiteByCourseId', () => {
     service.addSiteByCourseId(3, mockCourses[4].sites[0]).subscribe(list => {});
     const req = httpMock.expectOne('api/course/3/site');
