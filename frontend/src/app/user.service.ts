@@ -16,6 +16,7 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   signIn(userId: string, password: string): Promise<boolean> {
+    console.log('in real userservice');
     return this.http
       .post<User>('/api/sign_in/', {
         userId: userId,
@@ -57,12 +58,12 @@ export class UserService {
       );
   }
 
-  getCourses(userNumber: number): Observable<Course[]> {
+  getCourses(): Observable<Course[]> {
     let url = '/api/user/course';
     return this.http.get<Course[]>(url);
   }
 
-  getSites(userNumber: number): Observable<Site[]> {
+  getSites(): Observable<Site[]> {
     let url = '/api/user/site';
     return this.http.get<Site[]>(url);
   }
@@ -81,7 +82,7 @@ export class UserService {
     });
   }
 
-  getNewsfeed(userNumber: number, pageNumber: number): Observable<Article[]> {
+  getNewsfeed(pageNumber: number): Observable<Article[]> {
     let url = '/api/user/newsfeed/' + pageNumber;
     return this.http.get<Article[]>(url);
   }
