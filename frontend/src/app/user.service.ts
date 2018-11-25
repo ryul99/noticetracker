@@ -16,9 +16,8 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   signIn(userId: string, password: string): Promise<boolean> {
-    console.log('in real userservice');
     return this.http
-      .post<User>('/api/sign_in/', {
+      .post<User>('/api/sign_in', {
         userId: userId,
         password: password
       })
@@ -36,12 +35,12 @@ export class UserService {
   }
 
   signOut(): Promise<boolean> {
-    return this.http.get<boolean>('/api/sign_out/').toPromise();
+    return this.http.get<boolean>('/api/sign_out').toPromise();
   }
 
   signUp(userId: string, password: string): Promise<boolean> {
     return this.http
-      .post<User>('/api/sign_up/', {
+      .post<User>('/api/sign_up', {
         userId: userId,
         password: password
       })

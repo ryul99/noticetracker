@@ -1,7 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from './user.service';
-import { mockCourses, mockSites, mockArticles } from './stub';
+import { mockCourses, mockSites, mockArticles, mockUsers } from './stub';
 
 describe('UserService', () => {
   let httpMock: HttpTestingController;
@@ -19,108 +19,107 @@ describe('UserService', () => {
   });
 
   it('should be created', () => {
-    this.service = TestBed.get(UserService);
+    const service = TestBed.get(UserService);
     expect(service).toBeTruthy();
   });
 
-  it('signIn', () => {
-    let url = '/api/sign_in/';
-    const req = httpMock.expectOne(url);
-    service.signIn('minty', 'wow').then(success => {
-      expect(req.request.method).toBe('GET');
-      expect(service.userNumber).toBe(1);
-      expect(service.userId).toBe('minty');
+  it('signIn', async(() => {
+    let url = '/api/sign_in';
+    service.signIn('minty', 'wow').then(() => {
+      expect(req.request.method).toEqual('POST');
+      expect(service.userNumber).toEqual(1);
+      expect(service.userId).toEqual('minty');
     });
-
-    req.flush(true);
-  });
+    const req = httpMock.expectOne(url);
+    req.flush(mockUsers[0]);
+  }));
 
   it('signOut', () => {
-    let url = '/api/sign_out/';
-    const req = httpMock.expectOne(url);
+    let url = '/api/sign_out';
     service.signOut().then(success => {
-      expect(req.request.method).toBe('GET');
-      expect(service.userNumber).toBe(undefined);
-      expect(service.userId).toBe(undefined);
+      expect(req.request.method).toEqual('GET');
+      expect(service.userNumber).toEqual(undefined);
+      expect(service.userId).toEqual(undefined);
     });
-    req.flush(true);
+    const req = httpMock.expectOne(url);
+    req.flush([true]);
   });
 
   it('signUp', () => {
     let url = '/api/sign_up';
-    const req = httpMock.expectOne(url);
     service.signUp('minty', 'wow').then(() => {
-      expect(req.request.method).toBe('POST');
-      expect(service.userNumber).toBe(1);
-      expect(service.userId).toBe('minty');
+      expect(req.request.method).toEqual('POST');
+      expect(service.userNumber).toEqual(1);
+      expect(service.userId).toEqual('minty');
     });
-    req.flush(true);
+    const req = httpMock.expectOne(url);
+    req.flush(mockUsers[0]);
   });
 
   it('getCourses', () => {
     let url = '/api/user/course';
-    const req = httpMock.expectOne(url);
     service.getCourses().subscribe(courses => {
-      expect(req.request.method).toBe('GET');
-      expect(courses).toBe([mockCourses[1], mockCourses[5]]);
+      expect(req.request.method).toEqual('GET');
+      expect(courses).toEqual([mockCourses[1], mockCourses[5]]);
     });
+    const req = httpMock.expectOne(url);
     req.flush([mockCourses[1], mockCourses[5]]);
   });
 
   it('getSites', () => {
     let url = '/api/user/site';
-    const req = httpMock.expectOne(url);
     service.getSites().subscribe(sites => {
-      expect(req.request.method).toBe('GET');
-      expect(sites).toBe([mockSites[1], mockSites[3]]);
+      expect(req.request.method).toEqual('GET');
+      expect(sites).toEqual([mockSites[1], mockSites[3]]);
     });
+    const req = httpMock.expectOne(url);
     req.flush([mockSites[1], mockSites[3]]);
   });
 
   it('addCourses', () => {
     let url = '/api/user/course';
-    const req = httpMock.expectOne(url);
     service.addCourses([2, 3]).subscribe(() => {
-      expect(req.request.method).toBe('POST');
+      expect(req.request.method).toEqual('POST');
     });
-    req.flush(true);
+    const req = httpMock.expectOne(url);
+    req.flush([true]);
   });
 
   it('addSites', () => {
     let url = '/api/user/site';
-    const req = httpMock.expectOne(url);
     service.addSites([2, 3]).subscribe(() => {
-      expect(req.request.method).toBe('POST');
+      expect(req.request.method).toEqual('POST');
     });
-    req.flush(true);
+    const req = httpMock.expectOne(url);
+    req.flush([true]);
   });
 
   it('getNewsfeed', () => {
-    let url = '/api/user/nesfeed' + 1;
-    const req = httpMock.expectOne(url);
+    let url = '/api/user/newsfeed/' + 1;
     service.getNewsfeed(1).subscribe(articles => {
-      expect(req.request.method).toBe('GET');
-      expect(articles).toBe([mockArticles[0], mockArticles[1]]);
+      expect(req.request.method).toEqual('GET');
+      expect(articles).toEqual([mockArticles[0], mockArticles[1]]);
     });
+    const req = httpMock.expectOne(url);
     req.flush([mockArticles[0], mockArticles[1]]);
   });
 
   it('updateArticle', () => {
     let url = '/api/user/article/' + 2;
-    const req = httpMock.expectOne(url);
     service.updateArticle(mockArticles[1]).subscribe(() => {
-      expect(req.request.method).toBe('PUT');
+      expect(req.request.method).toEqual('PUT');
     });
-    req.flush(true);
+    const req = httpMock.expectOne(url);
+    req.flush([true]);
   });
 
   it('getUserNumber', () => {
     service.userNumber = 1;
-    expect(service.getUserNumber()).toBe(service.userNumber);
+    expect(service.getUserNumber()).toEqual(service.userNumber);
   });
 
   it('getUserId', () => {
     service.userId = 'minty';
-    expect(service.getUserId()).toBe(service.userId);
+    expect(service.getUserId()).toEqual(service.userId);
   });
 });
