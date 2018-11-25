@@ -4,7 +4,8 @@ import { NewsfeedComponent } from './newsfeed.component';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user.service';
-import { mockUserService } from '../mock';
+import { mockUserService, mockArticles } from '../mock';
+import { Article } from '../article';
 
 describe('NewsfeedComponent', () => {
   let component: NewsfeedComponent;
@@ -50,5 +51,17 @@ describe('NewsfeedComponent', () => {
     component.signOut();
     expect(router.navigate).toHaveBeenCalledWith(['']);
     expect(userService.signOut).toHaveBeenCalled();
+  });
+
+  it('star', () => {
+    var article = Object.assign(new Article(), mockArticles[0]);
+    component.toggleStar(article);
+    expect(article.star).not.toEqual(mockArticles[0].star);
+  });
+
+  it('ignore', () => {
+    var article = Object.assign(new Article(), mockArticles[0]);
+    component.setIgnore(article);
+    expect(article.ignore).toBeTruthy();
   });
 });
