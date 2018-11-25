@@ -81,9 +81,9 @@ export class UserService {
     });
   }
 
-  getNewsfeed(userNumber: number, pageNumber: number): Observable<Site[]> {
+  getNewsfeed(userNumber: number, pageNumber: number): Observable<Article[]> {
     let url = '/api/user/newsfeed/' + pageNumber;
-    return this.http.get<Site[]>(url);
+    return this.http.get<Article[]>(url);
   }
 
   updateArticle(article: Article): Observable<boolean> {
