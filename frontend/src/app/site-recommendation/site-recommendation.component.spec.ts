@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { SiteRecommendationComponent } from './site-recommendation.component';
-import { RouterModule, Routes, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user.service';
-import { mockCourses, stubUserService } from '../stub';
+import { mockCourses, mockUserService } from '../mock';
 
 describe('SiteRecommendationComponent', () => {
   let component: SiteRecommendationComponent;
@@ -15,7 +15,7 @@ describe('SiteRecommendationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SiteRecommendationComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useValue: stubUserService }]
+      providers: [{ provide: UserService, useClass: mockUserService }]
     }).compileComponents();
   }));
 

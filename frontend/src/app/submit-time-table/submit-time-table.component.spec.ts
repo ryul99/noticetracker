@@ -5,7 +5,7 @@ import { RouterModule, Routes, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';
-import { stubUserService, stubCourseService, mockCourses } from '../stub';
+import { mockUserService, mockCourseService, mockCourses } from '../mock';
 
 describe('SubmitTimeTableComponent', () => {
   let component: SubmitTimeTableComponent;
@@ -19,8 +19,8 @@ describe('SubmitTimeTableComponent', () => {
       declarations: [SubmitTimeTableComponent],
       imports: [FormsModule, RouterTestingModule],
       providers: [
-        { provide: CourseService, useValue: stubCourseService },
-        { provide: UserService, useValue: stubUserService }
+        { provide: CourseService, useClass: mockCourseService },
+        { provide: UserService, useClass: mockUserService }
       ]
     }).compileComponents();
   }));
@@ -39,13 +39,11 @@ describe('SubmitTimeTableComponent', () => {
   });
 
   it('submit', () => {
-    spyOn(userService, 'addCourse');
+    spyOn(userService, 'addCourses');
     spyOn(router, 'navigate');
     component.selectedCourse = [mockCourses[0], mockCourses[4]];
     component.submit();
-    expect(userService.addCourse).toHaveBeenCalledWith(mockCourses[0].id);
-    expect(userService.addCourse).toHaveBeenCalledWith(mockCourses[4].id);
-    expect(userService.addCourse).not.toHaveBeenCalledWith(mockCourses[1].id);
+    expect(userService.addCourses).toHaveBeenCalledWith([mockCourses[0].id, mockCourses[4].id]);
     expect(router.navigate).toHaveBeenCalledWith(['/site_recommendation']);
   });
 

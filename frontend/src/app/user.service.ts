@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Course } from './course';
 import { Site } from './site';
 import { User } from './user';
 import { Article } from './article';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class UserService {
 
   signIn(userId: string, password: string): Promise<boolean> {
     return this.http
-      .post<User>('/api/sign_in/', {
+      .post<User>('/api/sign_in', {
         userId: userId,
         password: password
       })
@@ -35,12 +35,12 @@ export class UserService {
   }
 
   signOut(): Promise<boolean> {
-    return this.http.get<boolean>('/api/sign_out/').toPromise();
+    return this.http.get<boolean>('/api/sign_out').toPromise();
   }
 
   signUp(userId: string, password: string): Promise<boolean> {
     return this.http
-      .post<User>('/api/sign_up/', {
+      .post<User>('/api/sign_up', {
         userId: userId,
         password: password
       })
@@ -57,12 +57,12 @@ export class UserService {
       );
   }
 
-  getCourses(userNumber: number): Observable<Course[]> {
+  getCourses(): Observable<Course[]> {
     let url = '/api/user/course';
     return this.http.get<Course[]>(url);
   }
 
-  getSites(userNumber: number): Observable<Site[]> {
+  getSites(): Observable<Site[]> {
     let url = '/api/user/site';
     return this.http.get<Site[]>(url);
   }
@@ -81,9 +81,9 @@ export class UserService {
     });
   }
 
-  getNewsfeed(userNumber: number, pageNumber: number): Observable<Site[]> {
+  getNewsfeed(pageNumber: number): Observable<Article[]> {
     let url = '/api/user/newsfeed/' + pageNumber;
-    return this.http.get<Site[]>(url);
+    return this.http.get<Article[]>(url);
   }
 
   updateArticle(article: Article): Observable<boolean> {

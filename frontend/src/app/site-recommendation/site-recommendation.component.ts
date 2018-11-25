@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { mockCourses } from '../stub';
+import { mockCourses } from '../mock';
 import { Course } from '../course';
 import { UserService } from '../user.service';
 
@@ -22,7 +22,7 @@ export class SiteRecommendationComponent implements OnInit {
   constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.getTakingCourses().subscribe(courses => {
+    this.userService.getCourses().subscribe(courses => {
       this.courses = courses;
       for (let course of this.courses) {
         this.expanded.push(false);
