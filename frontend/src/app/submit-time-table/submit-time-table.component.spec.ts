@@ -5,7 +5,7 @@ import { RouterModule, Routes, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CourseService } from '../course.service';
 import { UserService } from '../user.service';
-import { stubUserService, stubCourseService, mockCourses } from '../stub';
+import { mockUserService, mockCourseService, mockCourses } from '../mock';
 
 describe('SubmitTimeTableComponent', () => {
   let component: SubmitTimeTableComponent;
@@ -19,8 +19,8 @@ describe('SubmitTimeTableComponent', () => {
       declarations: [SubmitTimeTableComponent],
       imports: [FormsModule, RouterTestingModule],
       providers: [
-        { provide: CourseService, useValue: stubCourseService },
-        { provide: UserService, useClass: stubUserService }
+        { provide: CourseService, useClass: mockCourseService },
+        { provide: UserService, useClass: mockUserService }
       ]
     }).compileComponents();
   }));

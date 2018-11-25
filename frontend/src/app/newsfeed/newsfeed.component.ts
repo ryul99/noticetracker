@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { Article } from '../article';
 import { Course } from '../course';
-import { mockCourses } from '../stub';
+import { mockCourses } from '../mock';
 
 @Component({
   selector: 'app-newsfeed',

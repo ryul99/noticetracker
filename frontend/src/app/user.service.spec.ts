@@ -1,7 +1,7 @@
 import { async, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserService } from './user.service';
-import { mockCourses, mockSites, mockArticles, mockUsers } from './stub';
+import { mockCourses, mockSites, mockArticles, mockUsers } from './mock';
 
 describe('UserService', () => {
   let httpMock: HttpTestingController;

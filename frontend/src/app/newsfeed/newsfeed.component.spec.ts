@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NewsfeedComponent } from './newsfeed.component';
-import { RouterModule, Routes, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user.service';
-import { stubUserService } from '../stub';
+import { mockUserService } from '../mock';
 
 describe('NewsfeedComponent', () => {
   let component: NewsfeedComponent;
@@ -16,7 +16,7 @@ describe('NewsfeedComponent', () => {
     TestBed.configureTestingModule({
       declarations: [NewsfeedComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useClass: stubUserService }]
+      providers: [{ provide: UserService, useClass: mockUserService }]
     }).compileComponents();
   }));
 

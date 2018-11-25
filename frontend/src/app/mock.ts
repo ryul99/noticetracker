@@ -2,7 +2,7 @@ import { Course } from './course';
 import { Site } from './site';
 import { Article } from './article';
 import { User } from './user';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 export const mockCourses: Course[] = [
   {
@@ -89,38 +89,44 @@ export const mockUsers: User[] = [
   { id: 4, userId: 'ryul99' }
 ];
 
-export class stubUserService {
+export class mockUserService {
   signIn(username: string, pw: string) {
     return of(true).toPromise();
   }
+
   signOut(username: string) {
     return of(true).toPromise();
   }
+
   signUp(username: string, pw: string) {
     return of(true).toPromise();
   }
+
   getCourses() {
     return of([mockCourses[1], mockCourses[2]]);
   }
+
   getSites() {
     return of([mockSites[0], mockSites[1]]);
   }
+
   addCourses(courseIds: number[]) {
     return;
   }
+
   addSites(siteIds: number[]) {
     return;
   }
 }
 
-export const stubCourseService = {
+export class mockCourseService {
   searchByCode(courseCode: string) {
     var list: Course[] = [];
     for (var i = 0; i < 6; i++) {
       if (mockCourses[i].lectureCode.includes(courseCode)) list.push(mockCourses[i]);
     }
     return of(list);
-  },
+  }
 
   searchByName(courseName: string) {
     var list: Course[] = [];
@@ -128,17 +134,17 @@ export const stubCourseService = {
       if (mockCourses[i].name.includes(courseName)) list.push(mockCourses[i]);
     }
     return of(list);
-  },
+  }
 
   getCourseObjectById(courseId: number) {
     return;
-  },
+  }
 
   getRecommendedSitesById(courseId: number) {
     return;
-  },
+  }
 
   addSiteByCourseId(courseId: number, site: Site) {
     return;
   }
-};
+}
