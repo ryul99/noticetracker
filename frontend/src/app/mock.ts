@@ -78,8 +78,46 @@ export const mockSites: Site[] = [
 ];
 
 export const mockArticles: Article[] = [
-  { id: 1, content: 'New issue', url: 'https://github.com/swsnu/swppfall2018' },
-  { id: 2, content: 'New assignment', url: 'https://etl.snu.ac.kr' }
+  Object.assign(new Article(), {
+    id: 1,
+    course: mockCourses[0],
+    content: mockCourses[0].name,
+    url: 'https://www.naver.com/',
+    star: true,
+    ignore: false
+  }),
+  Object.assign(new Article(), {
+    id: 2,
+    course: mockCourses[1],
+    content: mockCourses[1].name,
+    url: 'https://github.com/',
+    star: true,
+    ignore: false
+  }),
+  Object.assign(new Article(), {
+    id: 3,
+    course: mockCourses[2],
+    content: mockCourses[2].name,
+    url: 'https://www.youtube.com/',
+    star: false,
+    ignore: false
+  }),
+  Object.assign(new Article(), {
+    id: 4,
+    course: mockCourses[3],
+    content: mockCourses[3].name,
+    url: 'https://www.daum.net/',
+    star: false,
+    ignore: true
+  }),
+  Object.assign(new Article(), {
+    id: 5,
+    course: mockCourses[4],
+    content: mockCourses[4].name,
+    url: 'https://www.google.com/',
+    star: false,
+    ignore: false
+  })
 ];
 
 export const mockUsers: User[] = [
