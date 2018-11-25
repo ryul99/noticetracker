@@ -15,16 +15,16 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useValue: stubUserService }]
+      providers: [{ provide: UserService, useClass: stubUserService }]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     userService = TestBed.get(UserService);
     router = TestBed.get(Router);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -56,17 +56,19 @@ describe('LoginComponent', () => {
   //   expect(router.navigateByUrl).not.toHaveBeenCalled();
   // });
 
-  it('signIn_success', () => {
-    spyOn(userService, 'signIn');
+  it('signIn_success', async(() => {
+    spyOn(userService, 'signIn').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
     component.id = 'admin';
     component.password = 'pw';
     component.signIn();
-    expect(window.alert).not.toHaveBeenCalled();
-    expect(userService.signIn).toHaveBeenCalledWith('admin', 'pw');
-    expect(router.navigate).toHaveBeenCalledWith(['/newsfeed']);
-  });
+    fixture.whenStable().then(() => {
+      expect(window.alert).not.toHaveBeenCalled();
+      expect(userService.signIn).toHaveBeenCalledWith('admin', 'pw');
+      expect(router.navigate).toHaveBeenCalledWith(['/newsfeed']);
+    });
+  }));
 
   // Not implemented for test.
   // it('signUp_emptyID', () => {
@@ -93,15 +95,17 @@ describe('LoginComponent', () => {
   //   expect(router.navigateByUrl).not.toHaveBeenCalled();
   // });
 
-  it('signUp', () => {
-    spyOn(userService, 'signUp');
+  it('signUp', async(() => {
+    spyOn(userService, 'signUp').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
     component.id = 'admin';
     component.password = 'pw';
     component.signUp();
-    expect(window.alert).not.toHaveBeenCalled();
-    expect(userService.signUp).toHaveBeenCalledWith('admin', 'pw');
-    expect(router.navigate).toHaveBeenCalledWith(['/submit_time_table']);
-  });
+    fixture.whenStable().then(() => {
+      expect(window.alert).not.toHaveBeenCalled();
+      expect(userService.signUp).toHaveBeenCalledWith('admin', 'pw');
+      expect(router.navigate).toHaveBeenCalledWith(['/submit_time_table']);
+    });
+  }));
 });
