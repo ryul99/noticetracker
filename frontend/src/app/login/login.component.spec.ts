@@ -47,7 +47,7 @@ describe('LoginComponent', () => {
     spyOn(userService, 'signIn').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
-    component.id = 'admin';
+    component.id = 'minty';
     component.password = '';
     component.signIn();
     expect(window.alert).toHaveBeenCalled();
@@ -59,12 +59,12 @@ describe('LoginComponent', () => {
     spyOn(userService, 'signIn').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
-    component.id = 'admin';
+    component.id = 'minty';
     component.password = 'pw';
     component.signIn();
     fixture.whenStable().then(() => {
       expect(window.alert).not.toHaveBeenCalled();
-      expect(userService.signIn).toHaveBeenCalledWith('admin', 'pw');
+      expect(userService.signIn).toHaveBeenCalledWith('minty', 'pw');
       expect(router.navigate).toHaveBeenCalledWith(['/newsfeed']);
     });
   }));
@@ -85,7 +85,7 @@ describe('LoginComponent', () => {
     spyOn(userService, 'signUp').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
-    component.id = 'admin';
+    component.id = 'minty';
     component.password = '';
     component.signUp();
     expect(window.alert).toHaveBeenCalled();
@@ -97,12 +97,12 @@ describe('LoginComponent', () => {
     spyOn(userService, 'signUp').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
-    component.id = 'admin';
+    component.id = 'minty';
     component.password = 'pw';
     component.signUp();
     fixture.whenStable().then(() => {
       expect(window.alert).not.toHaveBeenCalled();
-      expect(userService.signUp).toHaveBeenCalledWith('admin', 'pw');
+      expect(userService.signUp).toHaveBeenCalledWith('minty', 'pw');
       expect(router.navigate).toHaveBeenCalledWith(['/submit_time_table']);
     });
   }));
