@@ -74,15 +74,6 @@ class NoticeTrackerTestCase(TestCase):
         self.assertFalse(user.is_authenticated)
         self.checkInvalidRequest(['GET'], '/api/signout')
 
-    def test_userInst(self):
-        client = Client()
-        response = client.get('/api/user/5')
-        self.assertEqual(response.status_code, 404)
-        response = client.get('/api/user/1')
-        self.assertEqual(response.status_code, 200)
-        self.assertIn('\"userId\": 1', str(response.content))
-        self.assertIn('\"username\": \"minty\"', str(response.content))
-
     def test_crawl(self):
         courseDataResult = crawler(1)
         # (name, lectureCode, profName, classNumber)
@@ -107,13 +98,3 @@ class NoticeTrackerTestCase(TestCase):
                   ('기초영어', 'L0441.000400', '조충환', '007',
                    [(1, 180, 190), (5, 110, 130)])]
         self.assertEqual(courseDataResult, answer)
-
-    def test_course(self):
-        client = Client()
-        temp_course = Course(
-            name='SWPP',
-            lectureCode='A02',
-            profName='skystar',
-            classNumber=1)
-        temp_course.save()
-        response = client.get('/api/course')
