@@ -53,33 +53,6 @@ def signout(request):
         return HttpResponseNotAllowed(['GET'])
 
 
-def userInst(request, userId):
-    if request.method == 'GET':
-        try:
-            user = User.objects.get(id=userId)
-        except User.DoesNotExist:
-            return HttpResponseNotFound()
-        dict = {'userId': user.id, 'username': user.username}
-        return JsonResponse(dict)
-    else:
-        return HttpResponseNotAllowed(['GET'])
-
-
-def course(request):
-    if request.method == 'GET':
-        courseAll = list(Course.objects.all().values())
-        ret = list()
-        for item in courseAll:
-            ret.append({'name': item['name'],
-                        'id': item['id'],
-                        'lectureCode': item['lectureCode'],
-                        'profName': item['profName'],
-                        'classNumber': item['classNumber']})
-        return JsonResponse(ret, safe=False)
-    else:
-        return HttpResponseNotAllowed(['GET'])
-
-
 def courseDetail(request, courseId):
     if request.method == 'GET':
         try:
@@ -126,6 +99,7 @@ def searchByCode(request, courseCode):
     else:
         return HttpResponseNotAllowed(['GET'])
 
+
 def sitesByCourseId(request, courseId):
     if request.method not in ['GET', 'POST']:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -158,6 +132,7 @@ def sitesByCourseId(request, courseId):
         except (KeyError, JSONDecodeError) as e:
             return HttpResponseBadRequest()
     raise Exception("unreachable code")
+
 
 def deleteSiteFromCourse(request, courseId, siteId):
     if request.method not in ['DELETE']:
