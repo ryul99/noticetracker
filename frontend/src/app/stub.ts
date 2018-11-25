@@ -1,6 +1,7 @@
 import { Course } from './course';
 import { Site } from './site';
 import { Article } from './article';
+import { User } from './user';
 import { Observable, of } from 'rxjs';
 
 export const mockCourses: Course[] = [
@@ -81,33 +82,39 @@ export const mockArticles: Article[] = [
   { id: 2, content: 'New assignment', url: 'https://etl.snu.ac.kr' }
 ];
 
-export const stubUserService = {
-  signIn: function(username: string, pw: string) {
-    console.log('in stub userservice');
-    return Promise.resolve(true);
-  },
-  signOut: function(username: string) {
-    return Promise.resolve(true);
-  },
-  signUp: function(username: string, pw: string) {
-    return Promise.resolve(true);
-  },
-  getCourses: function() {
+export const mockUsers: User[] = [
+  { id: 1, userId: 'minty' },
+  { id: 2, userId: '16silver' },
+  { id: 3, userId: 'MountGuy' },
+  { id: 4, userId: 'ryul99' }
+];
+
+export class stubUserService {
+  signIn(username: string, pw: string) {
+    return of(true).toPromise();
+  }
+  signOut(username: string) {
+    return of(true).toPromise();
+  }
+  signUp(username: string, pw: string) {
+    return of(true).toPromise();
+  }
+  getCourses() {
     return of([mockCourses[1], mockCourses[2]]);
-  },
-  getSites: function() {
+  }
+  getSites() {
     return of([mockSites[0], mockSites[1]]);
-  },
-  addCourses: function(courseIds: number[]) {
-    return;
-  },
-  addSites: function(siteIds: number[]) {
+  }
+  addCourses(courseIds: number[]) {
     return;
   }
-};
+  addSites(siteIds: number[]) {
+    return;
+  }
+}
 
 export const stubCourseService = {
-  searchByCode: function(courseCode: string) {
+  searchByCode(courseCode: string) {
     var list: Course[] = [];
     for (var i = 0; i < 6; i++) {
       if (mockCourses[i].lectureCode.includes(courseCode)) list.push(mockCourses[i]);
@@ -115,7 +122,7 @@ export const stubCourseService = {
     return of(list);
   },
 
-  searchByName: function(courseName: string) {
+  searchByName(courseName: string) {
     var list: Course[] = [];
     for (var i = 0; i < 6; i++) {
       if (mockCourses[i].name.includes(courseName)) list.push(mockCourses[i]);
@@ -123,15 +130,15 @@ export const stubCourseService = {
     return of(list);
   },
 
-  getCourseObjectById: function(courseId: number) {
+  getCourseObjectById(courseId: number) {
     return;
   },
 
-  getRecommendedSitesById: function(courseId: number) {
+  getRecommendedSitesById(courseId: number) {
     return;
   },
 
-  addSiteByCourseId: function(courseId: number, site: Site) {
+  addSiteByCourseId(courseId: number, site: Site) {
     return;
   }
 };
