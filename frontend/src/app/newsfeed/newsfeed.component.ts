@@ -31,11 +31,11 @@ export class NewsfeedComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  star(article: Article) {
+  toggleStar(article: Article) {
     article.toggleStar();
   }
 
-  ignore(article: Article) {
+  setIgnore(article: Article) {
     article.toggleIgnore();
   }
 }

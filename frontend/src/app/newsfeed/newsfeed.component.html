@@ -27,8 +27,8 @@
                     <div class="card-body">
                         <a href="{{article.url}}">{{ article.url }}</a>
                         <div class="d-flex flex-row-reverse">
-                            <button class="btn btn-primary btn-space" (click)="star(article)">star</button>
-                            <button class="btn btn-primary btn-space" (click)="ignore(article)">ignore</button>
+                            <button class="btn btn-primary btn-space" (click)="toggleStar(article)">Star</button>
+                            <button class="btn btn-primary btn-space" (click)="setIgnore(article)">Ignore</button>
                         </div>
                         <span *ngIf="article.star">★</span>
                     </div>
