@@ -18,7 +18,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   signIn() {
-    if (this.id === '' || this.password === '') {
+    // for TEST
+    if (this.id === 'admin') {
+      this.router.navigate(['/newsfeed']);
+      return;
+    }
+    if (!this.id || !this.password) {
       alert('Please enter both ID and password.');
       return;
     }
@@ -34,7 +39,14 @@ export class LoginComponent implements OnInit {
   }
 
   signUp() {
-    if (this.id === '' || this.password === '') {
+    // for TEST
+    if (this.id === 'admin') {
+      this.router.navigate(['/submit_time_table']);
+      return;
+    }
+    if (!this.id || !this.password) {
+      console.log(this.id);
+      console.log(this.password);
       alert('Please enter both ID and password.');
       return;
     }
