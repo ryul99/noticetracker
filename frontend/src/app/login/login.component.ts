@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
     }
     this.userService.signIn(this.id, this.password).then(success => {
       if (success) {
-        console.log('${this.id} ${this.password} signed in\n');
         this.router.navigate(['/newsfeed']);
       } else {
         alert('Wrong ID or password.');
@@ -45,14 +44,11 @@ export class LoginComponent implements OnInit {
       return;
     }
     if (!this.id || !this.password) {
-      console.log(this.id);
-      console.log(this.password);
       alert('Please enter both ID and password.');
       return;
     }
     this.userService.signUp(this.id, this.password).then(success => {
       if (success) {
-        console.log('${this.id} ${this.password} signed up.\n');
         this.router.navigate(['/submit_time_table']);
       } else {
         return;
