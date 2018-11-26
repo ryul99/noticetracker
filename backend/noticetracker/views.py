@@ -203,8 +203,12 @@ def userCourse(request):
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
             user.courseList.clear()
-            # TODO
-            user.courseList.add()
+            requestData = json.loads(request.body.decode())
+            for course in requestData:
+                # this line doesn't add course when code is not matched
+                user.courseList.add(Course.objects.filter(
+                    lectureCode=course.lectureCode))
+            return HttpResponseOk()
         else:
             return HttpResponse(status=404)  # user is not authenticated
     raise Exception("unreachable code")
