@@ -74,6 +74,95 @@ class NoticeTrackerTestCase(TestCase):
         self.assertFalse(user.is_authenticated)
         self.checkInvalidRequest(['GET'], '/api/signout')
 
+    def test_search_name(self):
+        client = Client()
+        response = client.get('/api/search/name/프로그래밍')
+        # TODO
+        self.assertEqual(response.json(), [])
+
+        response = client.get('/api/search/name/프랑스')
+        # TODO
+        self.assertEqual(response.json(), [])
+        self.checkInvalidRequest(['GET'], '/api/search/name/dummy')
+
+    def test_search_code(self):
+        client = Client()
+        response = client.get('/api/search/code/M')
+        # TODO
+        self.assertEqual(response.json(), [])
+
+        response = client.get('/api/search/code/100')
+        # TODO
+        self.assertEqual(response.json(), [])
+        self.checkInvalidRequest(['GET'], '/api/search/code/dummy')
+
+    def test_course(self):
+        client = Client()
+        response = client.get('/api/course/1')
+        # TODO
+        self.assertEqual(response.json(), [])
+        self.checkInvalidRequest(['GET'], '/api/course/1')
+
+    def test_course_site(self):
+        client = Client()
+        response = client.get('/api/course/1/site')
+        # TODO
+        self.assertEqual(response.json(), [])
+
+        # TODO
+        response = client.post(
+            '/api/course/1/site', json.dumps({}),  content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.checkInvalidRequest(['GET', 'POST'], '/api/course/1/site')
+
+    def test_user_course(self):
+        client = Client()
+        response = client.post(
+            '/api/signup', json.dumps(self.mock_16silver), content_type='application/json')
+        response = client.get('/api/user/course')
+        # TODO
+        self.assertEqual(response.json(), [])
+
+        # TODO
+        response = client.post(
+            '/api/user/course', json.dumps({}), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.checkInvalidRequest(['GET', 'POST'], '/api/user/course')
+
+    def test_user_course_article(self):
+        client = Client()
+        response = client.post(
+            '/api/signup', json.dumps(self.mock_16silver), content_type='application/json')
+        response = client.get('/api/user/course/1/article/1')
+        # TODO
+        self.assertEqual(response.json(), [])
+
+        self.checkInvalidRequest(['GET'], '/api/user/course/1/article/1')
+
+    def test_user_newsfeed(self):
+        client = Client()
+        response = client.post(
+            '/api/signup', json.dumps(self.mock_16silver), content_type='application/json')
+        response = client.get('/api/user/newsfeed/1')
+        # TODO
+        self.assertEqual(response.json(), [])
+
+        self.checkInvalidRequest(['GET'], '/api/user/newsfeed/1')
+
+    def test_user_article(self):
+        client = Client()
+        response = client.post(
+            '/api/signup', json.dumps(self.mock_16silver), content_type='application/json')
+        response = client.get('/api/user/article/1')
+        # TODO
+        self.assertEqual(response.json(), [])
+
+        # TODO
+        response = client.put('/api/user/article/1', json.dumps({}))
+        self.assertEqual(response.status_code, 201)
+
+        self.checkInvalidRequest(['GET', 'PUT'], '/api/user/article/1')
+
     def test_crawl(self):
         courseDataResult = crawler(1)
         # (name, lectureCode, profName, classNumber)
