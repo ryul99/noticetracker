@@ -22,11 +22,6 @@ class Site(models.Model):
     lastUpdated = models.DateTimeField()
 
 
-Article.fromCourse = models.ForeignKey(
-    Course, on_delete=models.CASCADE, related_name='article_set')
-Site.articleList = models.ManyToManyField(Article)
-
-
 class Course(models.Model):
     name = models.CharField(max_length=120)  # ex) Principles and Practices ...
     time = models.ManyToManyField(LectureTime)
@@ -34,6 +29,11 @@ class Course(models.Model):
     lectureCode = models.CharField(max_length=120)  # ex) M1522.000100
     profName = models.CharField(max_length=120)
     classNumber = models.IntegerField()
+
+
+Article.fromCourse = models.ForeignKey(
+    Course, on_delete=models.CASCADE, related_name='article_set')
+Site.articleList = models.ManyToManyField(Article)
 
 
 class CourseCustom(models.Model):

@@ -22,7 +22,7 @@ def signin(request):
                 return HttpResponse(status=204)
             else:
                 return HttpResponse(status=401)
-        except (KeyError, JSONDecodeError) as e:
+        except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -36,7 +36,7 @@ def signup(request):
             password = requestData['password']
             User.objects.create_user(username=username, password=password)
             return HttpResponse(status=201)
-        except (KeyError, JSONDecodeError) as e:
+        except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest()
     else:
         return HttpResponseNotAllowed(['POST'])
@@ -61,14 +61,14 @@ def courseDetail(request, courseId):
             return HttpResponseNotFound()
         timeList = list(course.time.all())
         siteList = list(course.siteList.all())
-        dict = {'name': course.name,
-                'time': timeList,
-                'sites': siteList,
-                'lectureCode': course.lectureCode,
-                'profName': course.profName,
-                'classNumber': course.classNumber,
-                'id': course.id}
-        return JsonResponse(dict)
+        dic = {'name': course.name,
+               'time': timeList,
+               'sites': siteList,
+               'lectureCode': course.lectureCode,
+               'profName': course.profName,
+               'classNumber': course.classNumber,
+               'id': course.id}
+        return JsonResponse(dic)
     else:
         return HttpResponseNotAllowed(['GET'])
 
@@ -127,7 +127,7 @@ def sitesByCourseId(request, courseId):
             ret.append({'name': site.name,
                         'url': site.url,
                         'id': site.id})
-        return JsonResponse(ret, safe=false)
+        return JsonResponse(ret, safe=False)
 
     elif request.method == 'POST':
         try:
@@ -142,7 +142,7 @@ def sitesByCourseId(request, courseId):
             site.save()
             course.siteList.add(site)
             return HttpResponse(status=201)
-        except (KeyError, JSONDecodeError) as e:
+        except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest()
     raise Exception("unreachable code")
 
@@ -162,7 +162,7 @@ def courseArticles(request, courseId):  # changed
             for article in articles:
                 ret.append({'url': article.url,
                             'id': article.id})
-        return JsonResponse(ret, safe=false)
+        return JsonResponse(ret, safe=False)
     raise Exception("unreachable code")
 
 
@@ -175,7 +175,7 @@ def courseArticles(request, courseId):  # changed
 #         for article in articles:
 #             ret.append({'id': article.id
 #                         'url': article.url})
-#         return JsonResponse(ret, safe=false)
+#         return JsonResponse(ret, safe=False)
 #     raise Exception("unreachable code")
 
 
@@ -195,11 +195,11 @@ def userCourse(request):
                 siteList = list(course.siteList.all())
                 ret.append({'name': course.name,
                             'time': timeList,
-                            'sites': siteList
+                            'sites': siteList,
                             'lectureCode': course.lectureCode,
                             'profName': course.profName,
                             'classNumber': course.classNumber})
-            return JsonResponse(ret, safe=false)
+            return JsonResponse(ret, safe=False)
         else:
             return HttpResponse(status=404)  # user is not authenticated
     elif request.method == 'POST':
@@ -218,7 +218,7 @@ def userCourse(request):
                     course=filteredCourse, siteList=course.sites)
                 courseCustom.save()
                 user.courseList.add(courseCustom)
-            return HttpResponseOk()
+            return HttpResponse(status=200)
         else:
             return HttpResponse(status=404)  # user is not authenticated
     raise Exception("unreachable code")
@@ -240,7 +240,7 @@ def userCourse(request):
 #                     ret.append({'id': site.id
 #                                 'url': site.url,
 #                                 'name': site.name})
-#             return JsonResponse(ret, safe=false)
+#             return JsonResponse(ret, safe=False)
 #         else:
 #             return HttpResponse(status=404)  # user is not authenticated
 #     elif request.method == 'POST':
@@ -264,13 +264,14 @@ def newsfeedPage(request, pageId):
                 sites = list(courseCustom.siteList.all())
                 for site in sites:
                     articles.append(site.articleList.all())
-            articles.order_by('datetime__hour', 'datetime__minute')
+            # TODO: fix syntax error
+            # articles.order_by('datetime__hour', 'datetime__minute')
             for article in articles:
                 ret.append({'content': article.content,
                             'id': article.id,
                             'url': article.url,
                             'course': article.fromCourse})
-            return JsonResponse(ret, safe = false)
+            return JsonResponse(ret, safe=False)
         else:
             return HttpResponse(status=404)  # user is not authenticated
     raise Exception("unreachable code")
@@ -313,5 +314,5 @@ def userArticle(request, articleId):  # changed
                 ret.append({'id': article.id,
                             'content': article.content,
                             'url': article.url})
-            return JsonResponse(ret, safe=false)
+            return JsonResponse(ret, safe=False)
     raise Exception("unreachable code")
