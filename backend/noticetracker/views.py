@@ -40,9 +40,10 @@ def signup(request):
             password = requestData['password']
             user = User.objects.create_user(
                 username=username, password=password)
+            userDetail = UserDetail(user=user)
+            userDetail.save()
             dic = {'userId': user.username, 'userNumber': user.id}
             return JsonResponse(dic)
-            # return HttpResponse(status=201)
         except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest()
     else:
