@@ -22,7 +22,8 @@ class Site(models.Model):
     lastUpdated = models.DateTimeField()
 
 
-Article.fromCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
+Article.fromCourse = models.ForeignKey(
+    Course, on_delete=models.CASCADE, related_name='article_set')
 Site.articleList = models.ManyToManyField(Article)
 
 
