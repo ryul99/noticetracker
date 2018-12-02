@@ -11,7 +11,7 @@ export class CourseService {
   constructor(private http: HttpClient) {}
 
   searchByCode(courseCode: string): Observable<Course[]> {
-    let url = 'api/search/id/' + courseCode;
+    let url = 'api/search/code/' + courseCode;
     return this.http.get<Course[]>(url);
   }
 
