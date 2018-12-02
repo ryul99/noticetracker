@@ -1,30 +1,50 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
     <title>Log In</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body class="text-center">
+  <body class="text-center">
     <form class="form-signin">
-        <h1 class="h3 mb-3 font-weight-normal">Welcome to Notice Tracker!</h1>
-        <h1 class="h5 mb-3 font-weight-normal">Team 8: 김무환, 심유근, 이준혁, 최창민</h1>
-        <label for="inputID" class="sr-only">Username</label>
-        <input type="text" [(ngModel)]="this.id" [ngModelOptions]="{standalone: true}" id="inputID" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPW" class="sr-only">Password</label>
-        <input type="text" [(ngModel)]="this.password" [ngModelOptions]="{standalone: true}" id="inputPW" class="form-control" placeholder="Password" required>
-        <br>
-        <button id="signin-button" class="btn btn-lg btn-primary btn-block" (click)="signIn()">Sign in</button>
-        <button id="signup-button" class="btn btn-lg btn-primary btn-block" (click)="signUp()">Sign up</button>
-        <div class="alert alert-danger" role="alert" *ngIf=this.errorMessage>{{this.errorMessage}}</div>
-        <br>
-        <h1 class="h6 mb-3 font-weight-normal">ver. Demo (2018-11-14)</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Welcome to Notice Tracker!</h1>
+      <h1 class="h5 mb-3 font-weight-normal">Team 8: 김무환, 심유근, 이준혁, 최창민</h1>
+      <label for="inputID" class="sr-only">Username</label>
+      <input
+        type="text"
+        [(ngModel)]="this.id"
+        [ngModelOptions]="{ standalone: true }"
+        id="inputID"
+        class="form-control"
+        placeholder="Username"
+        required
+        autofocus
+      />
+      <label for="inputPW" class="sr-only">Password</label>
+      <input
+        type="text"
+        [(ngModel)]="this.password"
+        [ngModelOptions]="{ standalone: true }"
+        id="inputPW"
+        class="form-control"
+        placeholder="Password"
+        required
+      />
+      <br />
+      <button id="signin-button" class="btn btn-lg btn-primary btn-block" (click)="signIn()">Sign in</button>
+      <button id="signup-button" class="btn btn-lg btn-primary btn-block" (click)="signUp()">Sign up</button>
+      <div class="alert alert-danger" role="alert" *ngIf="this.errorMessage">{{ this.errorMessage }}</div>
+      <br />
+      <h1 class="h6 mb-3 font-weight-normal">ver. Demo (2018-11-14)</h1>
     </form>
-</body>
-
+  </body>
 </html>
