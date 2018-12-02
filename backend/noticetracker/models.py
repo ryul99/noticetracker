@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 # Create your models here.
 
@@ -11,15 +12,15 @@ class LectureTime(models.Model):
 
 
 class Article(models.Model):
-    content = models.TextField()
-    url = models.TextField()
-    updated = models.DateTimeField()
+    content = models.TextField(default="")
+    url = models.TextField(default="")
+    updated = models.DateTimeField(default=now)
 
 
 class Site(models.Model):
-    name = models.TextField()
-    url = models.TextField()  # ex) https://github.com/swsnu/swppfall2018
-    lastUpdated = models.DateTimeField()
+    name = models.TextField(default="")
+    url = models.TextField(default="")
+    lastUpdated = models.DateTimeField(default=now)
 
 
 class Course(models.Model):

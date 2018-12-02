@@ -85,18 +85,18 @@ def courseDetail(request, courseId):
 @csrf_exempt
 def searchByName(request, courseName):
     if request.method == 'GET':
-        items = list(Course.objects.filter(name__contains=courseName).values())
+        items = list(Course.objects.filter(name__contains=courseName).all())
         ret = list()
         for item in items:
-            timeList = list(item.time.all())
-            siteList = list(item.siteList.all())
-            ret.append({'name': item['name'],
+            timeList = list(item.time.values())
+            siteList = list(item.siteList.values())
+            ret.append({'name': item.name,
                         'time': timeList,
                         'sites': siteList,
-                        'id': item['id'],
-                        'lectureCode': item['lectureCode'],
-                        'profName': item['profName'],
-                        'classNumber': item['classNumber']})
+                        'id': item.id,
+                        'lectureCode': item.lectureCode,
+                        'profName': item.profName,
+                        'classNumber': item.classNumber})
         return JsonResponse(ret, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
@@ -106,18 +106,18 @@ def searchByName(request, courseName):
 def searchByCode(request, courseCode):
     if request.method == 'GET':
         items = list(Course.objects.filter(
-            lectureCode__startswith=courseCode).values())
+            lectureCode__startswith=courseCode).all())
         ret = list()
         for item in items:
-            timeList = list(item.time.all())
-            siteList = list(item.siteList.all())
-            ret.append({'name': item['name'],
+            timeList = list(item.time.values())
+            siteList = list(item.siteList.values())
+            ret.append({'name': item.name,
                         'time': timeList,
                         'sites': siteList,
-                        'id': item['id'],
-                        'lectureCode': item['lectureCode'],
-                        'profName': item['profName'],
-                        'classNumber': item['classNumber']})
+                        'id': item.id,
+                        'lectureCode': item.lectureCode,
+                        'profName': item.profName,
+                        'classNumber': item.classNumber})
         return JsonResponse(ret, safe=False)
     else:
         return HttpResponseNotAllowed(['GET'])
