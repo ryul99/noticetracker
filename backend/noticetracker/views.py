@@ -265,19 +265,42 @@ def newsfeedPage(request, pageId):
     raise Exception("unreachable code")
 
 
-def userArticle(request, articleId):  # TODO
-    if request.method not in ['PUT']:
-        return HttpResponseNotAllowed(['PUT'])
+def userArticle(request, articleId):  # changed
+    if request.method not in ['GET', 'PUT']:
+        return HttpResponseNotAllowed(['GET', 'PUT'])
     elif request.method == 'PUT':
         if request.user.is_authenticated:
             try:
                 user = UserDetail.objects.get(user=request.user)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
-            # TODO
             requestData = json.loads(request.body.decode())
-            id = requestData['id']
+            reqId = requestData['id']
             star = requestData['star']
+            ignore = requestData['ignore']
+            if star:
+                user.starList.add(Article.objects.filter(id=reqId))
+            else:
+                user.starList.remove(
+                    Article.objects.filter(id=reqId))  # danger
+            if ignore:
+                user.ignoreList.add(Article.objects.filter(id=reqId))
+            else:
+                user.ignoreList.remove(
+                    Article.objects.filter(id=reqId))  # danger
         else:
             return HttpResponse(status=404)  # user is not authenticated
+    elif request.method == 'GET':
+        if request.user.is_authenticated:
+            try:
+                user = UserDetail.objects.get(user=request.user)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            articles = list(Article.objects.filter(id=articleId))
+            ret = list()
+            for article in articles:
+                ret.append({'id': article.id,
+                            'content': article.content,
+                            'url': article.url})
+            return JsonResponse(ret, safe=false)
     raise Exception("unreachable code")

@@ -11,6 +11,7 @@ class LectureTime(models.Model):
 
 
 class Article(models.Model):
+    content = models.TextField()
     url = models.TextField()
     updated = models.DateTimeField()
 
@@ -21,7 +22,7 @@ class Site(models.Model):
     lastUpdated = models.DateTimeField()
 
 
-Article.fromSite = models.ForeignKey(Site, on_delete=models.CASCADE)
+Article.fromCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
 Site.articleList = models.ManyToManyField(Article)
 
 
