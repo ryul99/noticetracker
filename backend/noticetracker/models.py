@@ -12,9 +12,11 @@ class LectureTime(models.Model):
 
 class Article(models.Model):
     url = models.TextField()
+    updated = models.DateTimeField()
 
 
 class Site(models.Model):
+    name = models.TextField()
     url = models.TextField()  # ex) https://github.com/swsnu/swppfall2018
     lastUpdated = models.DateTimeField()
 

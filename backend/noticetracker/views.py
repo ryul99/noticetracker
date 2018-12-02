@@ -59,7 +59,11 @@ def courseDetail(request, courseId):
             course = Course.objects.get(id=courseId)
         except Course.DoesNotExist:
             return HttpResponseNotFound()
+        timeList = list(course.time.all())
+        siteList = list(course.siteList.all())
         dict = {'name': course.name,
+                'time': timeList,
+                'sites': siteList,
                 'lectureCode': course.lectureCode,
                 'profName': course.profName,
                 'classNumber': course.classNumber,
@@ -74,7 +78,11 @@ def searchByName(request, courseName):
         items = list(Course.objects.filter(name__contains=courseName).values())
         ret = list()
         for item in items:
+            timeList = list(item.time.all())
+            siteList = list(item.siteList.all())
             ret.append({'name': item['name'],
+                        'time': timeList,
+                        'sites': siteList,
                         'id': item['id'],
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
@@ -90,7 +98,11 @@ def searchByCode(request, courseCode):
             lectureCode__startswith=courseCode).values())
         ret = list()
         for item in items:
+            timeList = list(item.time.all())
+            siteList = list(item.siteList.all())
             ret.append({'name': item['name'],
+                        'time': timeList,
+                        'sites': siteList,
                         'id': item['id'],
                         'lectureCode': item['lectureCode'],
                         'profName': item['profName'],
@@ -112,8 +124,9 @@ def sitesByCourseId(request, courseId):
         sites = list(course.siteList.all())
         ret = list()
         for site in sites:
-            ret.append({'url': site.url,
-                        'lastUpdated': site.lastUpdated})
+            ret.append({'name': site.name,
+                        'url': site.url,
+                        'id': site.id})
         return JsonResponse(ret, safe=false)
 
     elif request.method == 'POST':
@@ -124,8 +137,8 @@ def sitesByCourseId(request, courseId):
         try:
             requestData = json.loads(request.body.decode())
             reqUrl = requestData['url']
-            reqLastUpdated = requestData['lastUpdated']
-            site = Site(url=reqUrl, lastUpdated=reqLastUpdated)
+            reqName = requestData['name']
+            site = Site(url=reqUrl, name=reqName)
             site.save()
             course.siteList.add(site)
             return HttpResponse(status=201)
@@ -134,20 +147,7 @@ def sitesByCourseId(request, courseId):
     raise Exception("unreachable code")
 
 
-def deleteSiteFromCourse(request, courseId, siteId):
-    if request.method not in ['DELETE']:
-        return HttpResponseNotAllowed(['DELETE'])
-    elif request.method == 'DELETE':
-        try:
-            course = Course.objects.get(id=courseId)
-        except Course.DoesNotExist:
-            return HttpResponseNotFound()
-        site = Site.objects.filter(id=siteId)
-        course.siteList.remove(site)
-        return HttpResponseOk()
-
-
-def courseArticles(request, courseId):
+def courseArticles(request, courseId):  # changed
     if request.method not in ['GET']:
         return HttpResponseNotAllowed(['GET'])
     elif request.method == 'GET':
@@ -158,22 +158,25 @@ def courseArticles(request, courseId):
         sites = list(course.siteList.all())
         ret = list()
         for site in sites:
-            ret.append({'url': site.url,
-                        'lastUpdated': site.lastUpdated})
+            articles = list(site.articleList.all())
+            for article in articles:
+                ret.append({'url': article.url,
+                            'id': article.id})
         return JsonResponse(ret, safe=false)
     raise Exception("unreachable code")
 
 
-def articleOfArticleId(request, articleId):
-    if request.method not in ['GET']:
-        return HttpResponseNotAllowed(['GET'])
-    elif request.method == 'GET':
-        articles = list(Article.objects.filter(id=articleId))
-        ret = list()
-        for article in articles:
-            ret.append({'url': article.url})
-        return JsonResponse(ret, safe=false)
-    raise Exception("unreachable code")
+# def articleOfArticleId(request, articleId):
+#     if request.method not in ['GET']:
+#         return HttpResponseNotAllowed(['GET'])
+#     elif request.method == 'GET':
+#         articles = list(Article.objects.filter(id=articleId))
+#         ret = list()
+#         for article in articles:
+#             ret.append({'id': article.id
+#                         'url': article.url})
+#         return JsonResponse(ret, safe=false)
+#     raise Exception("unreachable code")
 
 
 def userCourse(request):
@@ -188,8 +191,11 @@ def userCourse(request):
             courses = list(user.courseList.all())
             ret = list()
             for course in courses:
+                timeList = list(course.time.all())
+                siteList = list(course.siteList.all())
                 ret.append({'name': course.name,
-                            'time': course.time,
+                            'time': timeList,
+                            'sites': siteList
                             'lectureCode': course.lectureCode,
                             'profName': course.profName,
                             'classNumber': course.classNumber})
@@ -206,6 +212,7 @@ def userCourse(request):
             requestData = json.loads(request.body.decode())
             for course in requestData:
                 # this line doesn't add course when code is not matched
+                # TODO: change Course to CourseCustom
                 user.courseList.add(Course.objects.filter(
                     lectureCode=course.lectureCode))
             return HttpResponseOk()
@@ -214,27 +221,28 @@ def userCourse(request):
     raise Exception("unreachable code")
 
 
-def userSite(request):
-    if request.method not in ['GET', 'POST']:
-        return HttpResponseNotAllowed(['GET', 'POST'])
-    elif request.method == 'GET':
-        if request.user.is_authenticated:
-            try:
-                user = UserDetail.objects.get(user=request.user)
-            except UserDetail.DoesNotExist:
-                return HttpResponseNotFound()
-            courses = list(user.courseList.all())
-            ret = list()
-            for course in courses:
-                for site in list(course.siteList.all()):
-                    ret.append({'url': site.url,
-                                'lastUpdated': site.lastUpdated})
-            return JsonResponse(ret, safe=false)
-        else:
-            return HttpResponse(status=404)  # user is not authenticated
-    elif request.method == 'POST':
-        # TODO
-    raise Exception("unreachable code")
+# def userSite(request):
+#     if request.method not in ['GET', 'POST']:
+#         return HttpResponseNotAllowed(['GET', 'POST'])
+#     elif request.method == 'GET':
+#         if request.user.is_authenticated:
+#             try:
+#                 user = UserDetail.objects.get(user=request.user)
+#             except UserDetail.DoesNotExist:
+#                 return HttpResponseNotFound()
+#             courses = list(user.courseList.all())
+#             ret = list()
+#             for course in courses:
+#                 for site in list(course.siteList.all()):
+#                     ret.append({'id': site.id
+#                                 'url': site.url,
+#                                 'name': site.name})
+#             return JsonResponse(ret, safe=false)
+#         else:
+#             return HttpResponse(status=404)  # user is not authenticated
+#     elif request.method == 'POST':
+#         # TODO
+#     raise Exception("unreachable code")
 
 
 def newsfeedPage(request, pageId):
@@ -247,12 +255,17 @@ def newsfeedPage(request, pageId):
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
             # TODO
+            courses = list(user.courseList.all())
+            for course in courses:
+                sites = list(course.siteList.all())
+                for site in sites:
+                    # TODO
         else:
             return HttpResponse(status=404)  # user is not authenticated
     raise Exception("unreachable code")
 
 
-def updateArticle(request, articleId):
+def userArticle(request, articleId):  # TODO
     if request.method not in ['PUT']:
         return HttpResponseNotAllowed(['PUT'])
     elif request.method == 'PUT':
@@ -262,6 +275,9 @@ def updateArticle(request, articleId):
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
             # TODO
+            requestData = json.loads(request.body.decode())
+            id = requestData['id']
+            star = requestData['star']
         else:
             return HttpResponse(status=404)  # user is not authenticated
     raise Exception("unreachable code")
