@@ -257,11 +257,20 @@ def newsfeedPage(request, pageId):
                 user = UserDetail.objects.get(user=request.user)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
+            articles = list()
+            ret = list()
             courses = list(user.courseList.all())
-            for course in courses:
-                sites = list(course.siteList.all())
+            for courseCustom in courses:
+                sites = list(courseCustom.siteList.all())
                 for site in sites:
-                    # TODO
+                    articles.append(site.articleList.all())
+            articles.order_by('datetime__hour', 'datetime__minute')
+            for article in articles:
+                ret.append({'content': article.content,
+                            'id': article.id,
+                            'url': article.url,
+                            'course': article.fromCourse})
+            return JsonResponse(ret, safe = false)
         else:
             return HttpResponse(status=404)  # user is not authenticated
     raise Exception("unreachable code")
