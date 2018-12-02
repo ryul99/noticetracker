@@ -62,23 +62,9 @@ export class UserService {
     return this.http.get<Course[]>(url);
   }
 
-  getSites(): Observable<Site[]> {
-    let url = '/api/user/site';
-    return this.http.get<Site[]>(url);
-  }
-
-  addCourses(courseIds: number[]): Observable<boolean> {
+  addCourses(courses: Course[]): Observable<boolean> {
     let url = '/api/user/course';
-    return this.http.post<boolean>(url, {
-      courses: courseIds
-    });
-  }
-
-  addSites(siteIds: number[]): Observable<boolean> {
-    let url = '/api/user/site';
-    return this.http.post<boolean>(url, {
-      sites: siteIds
-    });
+    return this.http.post<boolean>(url, courses);
   }
 
   getNewsfeed(pageNumber: number): Observable<Article[]> {
@@ -88,9 +74,7 @@ export class UserService {
 
   updateArticle(article: Article): Observable<boolean> {
     let url = '/api/user/article/' + article.id;
-    return this.http.put<boolean>(url, {
-      article: article
-    });
+    return this.http.put<boolean>(url, article);
   }
 
   getUserNumber(): number {
