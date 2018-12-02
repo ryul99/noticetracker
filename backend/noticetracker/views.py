@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse, HttpResponseNotAllowed
 from django.http import HttpResponseNotFound, HttpResponseBadRequest
 from django.contrib.auth.models import User
@@ -10,6 +11,7 @@ import json
 # Create your views here.
 
 
+@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         try:
@@ -28,6 +30,7 @@ def signin(request):
         return HttpResponseNotAllowed(['POST'])
 
 
+@csrf_exempt
 def signup(request):
     if request.method == 'POST':
         try:
@@ -42,6 +45,7 @@ def signup(request):
         return HttpResponseNotAllowed(['POST'])
 
 
+@csrf_exempt
 def signout(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -53,6 +57,7 @@ def signout(request):
         return HttpResponseNotAllowed(['GET'])
 
 
+@csrf_exempt
 def courseDetail(request, courseId):
     if request.method == 'GET':
         try:
@@ -73,6 +78,7 @@ def courseDetail(request, courseId):
         return HttpResponseNotAllowed(['GET'])
 
 
+@csrf_exempt
 def searchByName(request, courseName):
     if request.method == 'GET':
         items = list(Course.objects.filter(name__contains=courseName).values())
@@ -92,6 +98,7 @@ def searchByName(request, courseName):
         return HttpResponseNotAllowed(['GET'])
 
 
+@csrf_exempt
 def searchByCode(request, courseCode):
     if request.method == 'GET':
         items = list(Course.objects.filter(
@@ -112,6 +119,7 @@ def searchByCode(request, courseCode):
         return HttpResponseNotAllowed(['GET'])
 
 
+@csrf_exempt
 def sitesByCourseId(request, courseId):
     if request.method not in ['GET', 'POST']:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -147,6 +155,7 @@ def sitesByCourseId(request, courseId):
     raise Exception("unreachable code")
 
 
+@csrf_exempt
 def courseArticles(request, courseId):  # changed
     if request.method not in ['GET']:
         return HttpResponseNotAllowed(['GET'])
@@ -178,7 +187,7 @@ def courseArticles(request, courseId):  # changed
 #         return JsonResponse(ret, safe=False)
 #     raise Exception("unreachable code")
 
-
+@csrf_exempt
 def userCourse(request):
     if request.method not in ['GET', 'POST']:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -247,7 +256,7 @@ def userCourse(request):
 #
 #     raise Exception("unreachable code")
 
-
+@csrf_exempt
 def newsfeedPage(request, pageId):
     if request.method not in ['GET']:
         return HttpResponseNotAllowed(['GET'])
@@ -277,6 +286,7 @@ def newsfeedPage(request, pageId):
     raise Exception("unreachable code")
 
 
+@csrf_exempt
 def userArticle(request, articleId):  # changed
     if request.method not in ['GET', 'PUT']:
         return HttpResponseNotAllowed(['GET', 'PUT'])
