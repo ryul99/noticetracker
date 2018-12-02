@@ -211,10 +211,13 @@ def userCourse(request):
             user.courseList.clear()
             requestData = json.loads(request.body.decode())
             for course in requestData:
-                # this line doesn't add course when code is not matched
-                # TODO: change Course to CourseCustom
-                user.courseList.add(Course.objects.filter(
-                    lectureCode=course.lectureCode))
+                # TODO: erase legacy data and test needed
+                filteredCourse = Course.objects.filter(
+                    lectureCode=course.lectureCode)
+                courseCustom = CourseCustom.objects.create(
+                    course=filteredCourse, siteList=course.sites)
+                courseCustom.save()
+                user.courseList.add(courseCustom)
             return HttpResponseOk()
         else:
             return HttpResponse(status=404)  # user is not authenticated
@@ -241,7 +244,7 @@ def userCourse(request):
 #         else:
 #             return HttpResponse(status=404)  # user is not authenticated
 #     elif request.method == 'POST':
-#         # TODO
+#
 #     raise Exception("unreachable code")
 
 
@@ -254,7 +257,6 @@ def newsfeedPage(request, pageId):
                 user = UserDetail.objects.get(user=request.user)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
-            # TODO
             courses = list(user.courseList.all())
             for course in courses:
                 sites = list(course.siteList.all())
