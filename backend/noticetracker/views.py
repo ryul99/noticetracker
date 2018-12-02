@@ -16,12 +16,13 @@ def signin(request):
     if request.method == 'POST':
         try:
             requestData = json.loads(request.body.decode())
-            username = requestData['username']
+            username = requestData['userId']
             password = requestData['password']
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return HttpResponse(status=204)
+                dic = {'userId': user.username, 'userNumber': user.id}
+                return JsonResponse(dic)
             else:
                 return HttpResponse(status=401)
         except (KeyError, JSONDecodeError):
@@ -35,10 +36,13 @@ def signup(request):
     if request.method == 'POST':
         try:
             requestData = json.loads(request.body.decode())
-            username = requestData['username']
+            username = requestData['userId']
             password = requestData['password']
-            User.objects.create_user(username=username, password=password)
-            return HttpResponse(status=201)
+            user = User.objects.create_user(
+                username=username, password=password)
+            dic = {'userId': user.username, 'userNumber': user.id}
+            return JsonResponse(dic)
+            # return HttpResponse(status=201)
         except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest()
     else:
