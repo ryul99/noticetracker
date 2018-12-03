@@ -226,7 +226,6 @@ def userCourse(request):
             user.courseList.clear()
             requestData = json.loads(request.body.decode())
             for course in requestData:
-                # TODO: erase legacy data and test needed
                 filteredCourse = Course.objects.get(
                     lectureCode=course['lectureCode'], classNumber=course['classNumber'])
                 courseCustom = CourseCustom.objects.create(
