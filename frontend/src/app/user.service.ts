@@ -15,20 +15,27 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   authorized(): boolean {
-    return this.userNumber >= 0;
+    if (this.userId === undefined) return false;
+    return this.userId.length > 0;
   }
 
-  signIn(userId: string, password: string): Promise<any> {
+  signIn(userId: string, password: string): Promise<boolean> {
     return this.http
       .post<User>('/api/sign_in', {
         userId: userId,
         password: password
       })
       .toPromise()
-      .then(user => {
-        this.userId = user.userId;
-        this.userNumber = user.id;
-      });
+      .then(
+        user => {
+          this.userId = user.userId;
+          this.userNumber = user.id;
+          return true;
+        },
+        error => {
+          return false;
+        }
+      );
   }
 
   signOut(): Promise<any> {
@@ -37,17 +44,23 @@ export class UserService {
     return this.http.get<any>('/api/sign_out').toPromise();
   }
 
-  signUp(userId: string, password: string): Promise<any> {
+  signUp(userId: string, password: string): Promise<boolean> {
     return this.http
       .post<User>('/api/sign_up', {
         userId: userId,
         password: password
       })
       .toPromise()
-      .then(user => {
-        this.userId = user.userId;
-        this.userNumber = user.id;
-      });
+      .then(
+        user => {
+          this.userId = user.userId;
+          this.userNumber = user.id;
+          return true;
+        },
+        error => {
+          return false;
+        }
+      );
   }
 
   getCourses(): Observable<Course[]> {
