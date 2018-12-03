@@ -73,7 +73,7 @@ def courseDetail(request, courseId):
         timeList = list(course.time.all())
         siteList = list(course.siteList.all())
         dic = {'name': course.name,
-               'time': timeList,
+               'time': [it.toDict() for it in timeList],
                'sites': siteList,
                'lectureCode': course.lectureCode,
                'profName': course.profName,
@@ -93,7 +93,7 @@ def searchByName(request, courseName):
             timeList = list(item.time.values())
             siteList = list(item.siteList.values())
             ret.append({'name': item.name,
-                        'time': timeList,
+                        'time': [it.toDict() for it in timeList],
                         'sites': siteList,
                         'id': item.id,
                         'lectureCode': item.lectureCode,
@@ -114,7 +114,7 @@ def searchByCode(request, courseCode):
             timeList = list(item.time.values())
             siteList = list(item.siteList.values())
             ret.append({'name': item.name,
-                        'time': timeList,
+                        'time': [it.toDict() for it in timeList],
                         'sites': siteList,
                         'id': item.id,
                         'lectureCode': item.lectureCode,
@@ -331,4 +331,6 @@ def userArticle(request, articleId):  # changed
                             'content': article.content,
                             'url': article.url})
             return JsonResponse(ret, safe=False)
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
     raise Exception("unreachable code")
