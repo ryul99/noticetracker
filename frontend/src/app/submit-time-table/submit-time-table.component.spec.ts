@@ -39,11 +39,11 @@ describe('SubmitTimeTableComponent', () => {
   });
 
   it('submit', () => {
-    spyOn(userService, 'addCourses');
+    spyOn(userService, 'addCourses').and.callThrough();
     spyOn(router, 'navigate');
     component.selectedCourse = [mockCourses[0], mockCourses[4]];
     component.submit();
-    expect(userService.addCourses).toHaveBeenCalledWith([mockCourses[0].id, mockCourses[4].id]);
+    expect(userService.addCourses).toHaveBeenCalledWith([mockCourses[0], mockCourses[4]]);
     expect(router.navigate).toHaveBeenCalledWith(['/site_recommendation']);
   });
 

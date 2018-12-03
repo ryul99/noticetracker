@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Course } from './course';
-import { Site } from './site';
 import { User } from './user';
 import { Article } from './article';
 import { Observable } from 'rxjs';
@@ -14,6 +13,11 @@ export class UserService {
   userId: string;
 
   constructor(private http: HttpClient) {}
+
+  authorized(): boolean {
+    if (this.userId === undefined) return false;
+    return this.userId.length > 0;
+  }
 
   signIn(userId: string, password: string): Promise<boolean> {
     return this.http
@@ -34,8 +38,10 @@ export class UserService {
       );
   }
 
-  signOut(): Promise<boolean> {
-    return this.http.get<boolean>('/api/sign_out').toPromise();
+  signOut(): Promise<any> {
+    this.userNumber = -1;
+    this.userId = '';
+    return this.http.get<any>('/api/sign_out').toPromise();
   }
 
   signUp(userId: string, password: string): Promise<boolean> {
@@ -62,23 +68,9 @@ export class UserService {
     return this.http.get<Course[]>(url);
   }
 
-  getSites(): Observable<Site[]> {
-    let url = '/api/user/site';
-    return this.http.get<Site[]>(url);
-  }
-
-  addCourses(courseIds: number[]): Observable<boolean> {
+  addCourses(courses: Course[]): Observable<any> {
     let url = '/api/user/course';
-    return this.http.post<boolean>(url, {
-      courses: courseIds
-    });
-  }
-
-  addSites(siteIds: number[]): Observable<boolean> {
-    let url = '/api/user/site';
-    return this.http.post<boolean>(url, {
-      sites: siteIds
-    });
+    return this.http.post<any>(url, courses);
   }
 
   getNewsfeed(pageNumber: number): Observable<Article[]> {
@@ -86,11 +78,9 @@ export class UserService {
     return this.http.get<Article[]>(url);
   }
 
-  updateArticle(article: Article): Observable<boolean> {
+  updateArticle(article: Article): Observable<any> {
     let url = '/api/user/article/' + article.id;
-    return this.http.put<boolean>(url, {
-      article: article
-    });
+    return this.http.put<any>(url, article);
   }
 
   getUserNumber(): number {

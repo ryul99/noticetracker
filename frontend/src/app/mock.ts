@@ -128,15 +128,19 @@ export const mockUsers: User[] = [
 ];
 
 export class mockUserService {
+  authorized() {
+    return true;
+  }
+
   signIn(username: string, pw: string) {
     return of(true).toPromise();
   }
 
-  signOut(username: string) {
+  signOut() {
     return of(true).toPromise();
   }
 
-  signUp(username: string, pw: string) {
+  signUp(username: string, password: string) {
     return of(true).toPromise();
   }
 
@@ -144,16 +148,24 @@ export class mockUserService {
     return of([mockCourses[1], mockCourses[2]]);
   }
 
-  getSites() {
-    return of([mockSites[0], mockSites[1]]);
+  addCourses(courses: Course[]) {
+    return of(courses);
   }
 
-  addCourses(courseIds: number[]) {
+  getNewsfeed(pageNumber: number) {
     return;
   }
 
-  addSites(siteIds: number[]) {
-    return;
+  updateArticle(article: Article) {
+    return of(article);
+  }
+
+  getUserNumber() {
+    return 1;
+  }
+
+  getUserId() {
+    return 'minty99';
   }
 }
 

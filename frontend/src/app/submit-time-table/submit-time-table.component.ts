@@ -21,16 +21,17 @@ export class SubmitTimeTableComponent implements OnInit {
 
   constructor(private courseService: CourseService, private userService: UserService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.userService.authorized()) this.router.navigate(['']);
+    this.userService.getCourses().subscribe(courses => {
+      this.selectedCourse = courses;
+    });
+  }
 
   submit() {
-    let willBeAdded = [];
-    for (let course of this.selectedCourse) {
-      willBeAdded.push(course.id);
-    }
-
-    this.userService.addCourses(willBeAdded);
-    this.router.navigate(['/site_recommendation']);
+    this.userService.addCourses(this.selectedCourse).subscribe(() => {
+      this.router.navigate(['/site_recommendation']);
+    });
   }
 
   skip() {
@@ -79,7 +80,6 @@ export class SubmitTimeTableComponent implements OnInit {
 
   toggleOnSearchedList(course: Course) {
     const searchIndex: number = this.searchedCourse.indexOf(course);
-    const selectIndex: number = this.selectedCourse.indexOf(course);
 
     if (!this.searchedCourseSelected[searchIndex]) {
       this.selectedCourse = this.selectedCourse.filter(c => c.id != course.id);
