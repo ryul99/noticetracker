@@ -24,13 +24,9 @@ export class SubmitTimeTableComponent implements OnInit {
   ngOnInit() {}
 
   submit() {
-    let willBeAdded = [];
-    for (let course of this.selectedCourse) {
-      willBeAdded.push(course.id);
-    }
-
-    this.userService.addCourses(willBeAdded);
-    this.router.navigate(['/site_recommendation']);
+    this.userService.addCourses(this.selectedCourse).subscribe(() => {
+      this.router.navigate(['/site_recommendation']);
+    });
   }
 
   skip() {
