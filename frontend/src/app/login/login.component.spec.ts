@@ -1,10 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login.component';
-import { RouterModule, Routes, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user.service';
-import { stubUserService } from '../stub';
+import { mockUserService } from '../mock';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -15,93 +15,95 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useValue: stubUserService }]
+      providers: [{ provide: UserService, useClass: mockUserService }]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
     userService = TestBed.get(UserService);
     router = TestBed.get(Router);
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  // Not implemented for test.
-  // it('signIn_emptyID', () => {
-  //   spyOn(userService, 'signIn');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = '';
-  //   component.password = 'password';
-  //   component.signIn();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signIn).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
-  //
-  // it('signIn_emptyPW', () => {
-  //   spyOn(userService, 'signIn');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = 'admin';
-  //   component.password = '';
-  //   component.signIn();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signIn).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
-
-  it('signIn_success', () => {
-    spyOn(userService, 'signIn');
+  it('signIn_emptyID', () => {
+    spyOn(userService, 'signIn').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
-    component.id = 'admin';
+    component.id = '';
+    component.password = 'password';
+    component.signIn();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signIn).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('signIn_emptyPW', () => {
+    spyOn(userService, 'signIn').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = 'minty';
+    component.password = '';
+    component.signIn();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signIn).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('signIn_success', async(() => {
+    spyOn(userService, 'signIn').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = 'minty';
     component.password = 'pw';
     component.signIn();
-    expect(window.alert).not.toHaveBeenCalled();
-    expect(userService.signIn).toHaveBeenCalledWith('admin', 'pw');
-    expect(router.navigate).toHaveBeenCalledWith(['/newsfeed']);
-  });
+    fixture.whenStable().then(() => {
+      expect(window.alert).not.toHaveBeenCalled();
+      expect(userService.signIn).toHaveBeenCalledWith('minty', 'pw');
+      expect(router.navigate).toHaveBeenCalledWith(['/newsfeed']);
+    });
+  }));
 
-  // Not implemented for test.
-  // it('signUp_emptyID', () => {
-  //   spyOn(userService, 'signUp');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = '';
-  //   component.password = 'password';
-  //   component.signUp();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signUp).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
-  //
-  // it('signUp_emptyPW', () => {
-  //   spyOn(userService, 'signUp');
-  //   spyOn(router, 'navigate');
-  //   spyOn(window, 'alert');
-  //   component.id = 'admin';
-  //   component.password = '';
-  //   component.signUp();
-  //   expect(window.alert).toHaveBeenCalled();
-  //   expect(userService.signUp).not.toHaveBeenCalled();
-  //   expect(router.navigateByUrl).not.toHaveBeenCalled();
-  // });
-
-  it('signUp', () => {
-    spyOn(userService, 'signUp');
+  it('signUp_emptyID', () => {
+    spyOn(userService, 'signUp').and.callThrough();
     spyOn(router, 'navigate');
     spyOn(window, 'alert');
-    component.id = 'admin';
+    component.id = '';
+    component.password = 'password';
+    component.signUp();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signUp).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('signUp_emptyPW', () => {
+    spyOn(userService, 'signUp').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = 'minty';
+    component.password = '';
+    component.signUp();
+    expect(window.alert).toHaveBeenCalled();
+    expect(userService.signUp).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('signUp_success', async(() => {
+    spyOn(userService, 'signUp').and.callThrough();
+    spyOn(router, 'navigate');
+    spyOn(window, 'alert');
+    component.id = 'minty';
     component.password = 'pw';
     component.signUp();
-    expect(window.alert).not.toHaveBeenCalled();
-    expect(userService.signUp).toHaveBeenCalledWith('admin', 'pw');
-    expect(router.navigate).toHaveBeenCalledWith(['/submit_time_table']);
-  });
+    fixture.whenStable().then(() => {
+      expect(window.alert).not.toHaveBeenCalled();
+      expect(userService.signUp).toHaveBeenCalledWith('minty', 'pw');
+      expect(router.navigate).toHaveBeenCalledWith(['/submit_time_table']);
+    });
+  }));
 });

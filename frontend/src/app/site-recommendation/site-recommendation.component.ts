@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { mockCourses } from '../stub';
+import { mockCourses } from '../mock';
 import { Course } from '../course';
 import { UserService } from '../user.service';
 
@@ -10,7 +10,7 @@ import { UserService } from '../user.service';
   styleUrls: ['./site-recommendation.component.css']
 })
 export class SiteRecommendationComponent implements OnInit {
-  courses: Course[] = mockCourses;
+  courses: Course[];
   expanded: boolean[] = [];
   urlToAdd: string[] = [];
 
@@ -22,7 +22,8 @@ export class SiteRecommendationComponent implements OnInit {
   constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.getTakingCourses().subscribe(courses => {
+    if (!this.userService.authorized()) this.router.navigate(['']);
+    this.userService.getCourses().subscribe(courses => {
       this.courses = courses;
       for (let course of this.courses) {
         this.expanded.push(false);

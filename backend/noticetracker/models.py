@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 
 # Create your models here.
 
@@ -9,18 +10,20 @@ class LectureTime(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
 
+    def toDict(self):
+        return {'day': self.day, 'start': self.start, 'end': self.end}
+
 
 class Article(models.Model):
-    url = models.TextField()
+    content = models.TextField(default="")
+    url = models.TextField(default="")
+    updated = models.DateTimeField(default=now)
 
 
 class Site(models.Model):
-    url = models.TextField()  # ex) https://github.com/swsnu/swppfall2018
-    lastUpdated = models.DateTimeField()
-
-
-Article.fromSite = models.ForeignKey(Site, on_delete=models.CASCADE)
-Site.articleList = models.ManyToManyField(Article)
+    name = models.TextField(default="")
+    url = models.TextField(default="")
+    lastUpdated = models.DateTimeField(default=now)
 
 
 class Course(models.Model):
@@ -32,10 +35,15 @@ class Course(models.Model):
     classNumber = models.IntegerField()
 
 
+Article.fromCourse = models.ForeignKey(
+    Course, on_delete=models.CASCADE, related_name='article_set')
+Site.articleList = models.ManyToManyField(Article)
+
+
 class CourseCustom(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     siteList = models.ManyToManyField(Site)
-    lastUpdated = models.DateTimeField()
+    lastUpdated = models.DateTimeField(default=now)
 
 
 class UserDetail(models.Model):

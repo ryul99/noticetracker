@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Course } from './course';
 import { Site } from './site';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class CourseService {
   constructor(private http: HttpClient) {}
 
   searchByCode(courseCode: string): Observable<Course[]> {
-    let url = 'api/search/id/' + courseCode;
+    let url = 'api/search/code/' + courseCode;
     return this.http.get<Course[]>(url);
   }
 
@@ -28,6 +28,11 @@ export class CourseService {
   getRecommendedSitesById(courseId: number): Observable<Site[]> {
     let url = 'api/course/' + courseId + '/site';
     return this.http.get<Site[]>(url);
+  }
+
+  deleteSiteById(courseId: number, siteId: number): Observable<boolean> {
+    let url = 'api/course/' + courseId + '/site/' + siteId;
+    return this.http.delete<boolean>(url);
   }
 
   addSiteByCourseId(courseId: number, site: Partial<Site>): Observable<Site> {
