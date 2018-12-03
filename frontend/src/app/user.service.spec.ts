@@ -38,8 +38,8 @@ describe('UserService', () => {
     let url = '/api/sign_out';
     service.signOut().then(success => {
       expect(req.request.method).toEqual('GET');
-      expect(service.userNumber).toEqual(undefined);
-      expect(service.userId).toEqual(undefined);
+      expect(service.userNumber).toEqual(-1);
+      expect(service.userId).toEqual('');
     });
     const req = httpMock.expectOne(url);
     req.flush([true]);
@@ -66,28 +66,9 @@ describe('UserService', () => {
     req.flush([mockCourses[1], mockCourses[5]]);
   });
 
-  it('getSites', () => {
-    let url = '/api/user/site';
-    service.getSites().subscribe(sites => {
-      expect(req.request.method).toEqual('GET');
-      expect(sites).toEqual([mockSites[1], mockSites[3]]);
-    });
-    const req = httpMock.expectOne(url);
-    req.flush([mockSites[1], mockSites[3]]);
-  });
-
   it('addCourses', () => {
     let url = '/api/user/course';
-    service.addCourses([2, 3]).subscribe(() => {
-      expect(req.request.method).toEqual('POST');
-    });
-    const req = httpMock.expectOne(url);
-    req.flush([true]);
-  });
-
-  it('addSites', () => {
-    let url = '/api/user/site';
-    service.addSites([2, 3]).subscribe(() => {
+    service.addCourses([mockCourses[2], mockCourses[3]]).subscribe(() => {
       expect(req.request.method).toEqual('POST');
     });
     const req = httpMock.expectOne(url);

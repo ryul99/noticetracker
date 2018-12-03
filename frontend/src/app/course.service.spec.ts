@@ -26,7 +26,7 @@ describe('CourseService', () => {
 
   it('searchByCode', () => {
     service.searchByCode('M1522').subscribe(() => {});
-    const req = httpMock.expectOne('api/search/id/M1522');
+    const req = httpMock.expectOne('api/search/code/M1522');
     expect(req.request.method).toBe('GET');
     req.flush([mockCourses[0], mockCourses[1]]);
   });

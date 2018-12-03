@@ -16,7 +16,9 @@ export class NewsfeedComponent implements OnInit {
 
   constructor(private router: Router, private userService: UserService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.userService.authorized()) this.router.navigate(['']);
+  }
 
   submitTimeTable() {
     this.router.navigate(['/submit_time_table']);
