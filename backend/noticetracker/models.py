@@ -10,6 +10,9 @@ class LectureTime(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
 
+    def toJson(self):
+        return {'day': self.day, 'start': self.start, 'end': self.end}
+
 
 class Article(models.Model):
     content = models.TextField(default="")
@@ -40,7 +43,7 @@ Site.articleList = models.ManyToManyField(Article)
 class CourseCustom(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     siteList = models.ManyToManyField(Site)
-    lastUpdated = models.DateTimeField()
+    lastUpdated = models.DateTimeField(default=now)
 
 
 class UserDetail(models.Model):

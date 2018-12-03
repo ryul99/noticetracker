@@ -40,6 +40,7 @@ def signup(request):
             password = requestData['password']
             user = User.objects.create_user(
                 username=username, password=password)
+            login(request, user)
             userDetail = UserDetail(user=user)
             userDetail.save()
             dic = {'userId': user.username, 'userNumber': user.id}
@@ -199,20 +200,21 @@ def userCourse(request):
     elif request.method == 'GET':
         if request.user.is_authenticated:
             try:
+                print(list(UserDetail.objects.values()))
                 user = UserDetail.objects.get(user=request.user)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
-            courses = list(user.courseList.all())
+            customizedCourses = list(user.courseList.all())
             ret = list()
-            for course in courses:
-                timeList = list(course.time.all())
-                siteList = list(course.siteList.all())
-                ret.append({'name': course.name,
-                            'time': timeList,
-                            'sites': siteList,
-                            'lectureCode': course.lectureCode,
-                            'profName': course.profName,
-                            'classNumber': course.classNumber})
+            for item in customizedCourses:
+                timeList = list(item.course.time.all())
+                siteList = list(item.siteList.all())
+                ret.append({'name': item.course.name,
+                            'time': json.dumps([it.toJson() for it in timeList]),
+                            'sites': json.dumps([it.toJson() for it in siteList]),
+                            'lectureCode': item.course.lectureCode,
+                            'profName': item.course.profName,
+                            'classNumber': item.course.classNumber})
             return JsonResponse(ret, safe=False)
         else:
             return HttpResponse(status=404)  # user is not authenticated
@@ -226,10 +228,11 @@ def userCourse(request):
             requestData = json.loads(request.body.decode())
             for course in requestData:
                 # TODO: erase legacy data and test needed
-                filteredCourse = Course.objects.filter(
-                    lectureCode=course.lectureCode)
+                filteredCourse = Course.objects.get(
+                    lectureCode=course['lectureCode'], classNumber=course['classNumber'])
                 courseCustom = CourseCustom.objects.create(
-                    course=filteredCourse, siteList=course.sites)
+                    course=filteredCourse)
+                courseCustom.siteList.set(course['sites'])
                 courseCustom.save()
                 user.courseList.add(courseCustom)
             return HttpResponse(status=200)
