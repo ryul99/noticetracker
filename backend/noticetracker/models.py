@@ -10,7 +10,7 @@ class LectureTime(models.Model):
     start = models.IntegerField()
     end = models.IntegerField()
 
-    def toJson(self):
+    def toDict(self):
         return {'day': self.day, 'start': self.start, 'end': self.end}
 
 

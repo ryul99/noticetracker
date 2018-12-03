@@ -10,7 +10,7 @@ import { UserService } from '../user.service';
   styleUrls: ['./site-recommendation.component.css']
 })
 export class SiteRecommendationComponent implements OnInit {
-  courses: Course[] = mockCourses;
+  courses: Course[];
   expanded: boolean[] = [];
   urlToAdd: string[] = [];
 

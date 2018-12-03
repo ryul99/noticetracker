@@ -200,7 +200,6 @@ def userCourse(request):
     elif request.method == 'GET':
         if request.user.is_authenticated:
             try:
-                print(list(UserDetail.objects.values()))
                 user = UserDetail.objects.get(user=request.user)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
@@ -210,8 +209,8 @@ def userCourse(request):
                 timeList = list(item.course.time.all())
                 siteList = list(item.siteList.all())
                 ret.append({'name': item.course.name,
-                            'time': json.dumps([it.toJson() for it in timeList]),
-                            'sites': json.dumps([it.toJson() for it in siteList]),
+                            'time': [it.toDict() for it in timeList],
+                            'sites': siteList,
                             'lectureCode': item.course.lectureCode,
                             'profName': item.course.profName,
                             'classNumber': item.course.classNumber})
