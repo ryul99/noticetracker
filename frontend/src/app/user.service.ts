@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Course } from './course';
-import { Site } from './site';
 import { User } from './user';
 import { Article } from './article';
 import { Observable } from 'rxjs';
@@ -15,46 +14,40 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  signIn(userId: string, password: string): Promise<boolean> {
+  authorized(): boolean {
+    return this.userNumber >= 0;
+  }
+
+  signIn(userId: string, password: string): Promise<any> {
     return this.http
       .post<User>('/api/sign_in', {
         userId: userId,
         password: password
       })
       .toPromise()
-      .then(
-        user => {
-          this.userId = user.userId;
-          this.userNumber = user.id;
-          return true;
-        },
-        error => {
-          return false;
-        }
-      );
+      .then(user => {
+        this.userId = user.userId;
+        this.userNumber = user.id;
+      });
   }
 
-  signOut(): Promise<boolean> {
-    return this.http.get<boolean>('/api/sign_out').toPromise();
+  signOut(): Promise<any> {
+    this.userNumber = -1;
+    this.userId = '';
+    return this.http.get<any>('/api/sign_out').toPromise();
   }
 
-  signUp(userId: string, password: string): Promise<boolean> {
+  signUp(userId: string, password: string): Promise<any> {
     return this.http
       .post<User>('/api/sign_up', {
         userId: userId,
         password: password
       })
       .toPromise()
-      .then(
-        user => {
-          this.userId = user.userId;
-          this.userNumber = user.id;
-          return true;
-        },
-        error => {
-          return false;
-        }
-      );
+      .then(user => {
+        this.userId = user.userId;
+        this.userNumber = user.id;
+      });
   }
 
   getCourses(): Observable<Course[]> {
@@ -62,9 +55,9 @@ export class UserService {
     return this.http.get<Course[]>(url);
   }
 
-  addCourses(courses: Course[]): Observable<boolean> {
+  addCourses(courses: Course[]): Observable<any> {
     let url = '/api/user/course';
-    return this.http.post<boolean>(url, courses);
+    return this.http.post<any>(url, courses);
   }
 
   getNewsfeed(pageNumber: number): Observable<Article[]> {
@@ -72,9 +65,9 @@ export class UserService {
     return this.http.get<Article[]>(url);
   }
 
-  updateArticle(article: Article): Observable<boolean> {
+  updateArticle(article: Article): Observable<any> {
     let url = '/api/user/article/' + article.id;
-    return this.http.put<boolean>(url, article);
+    return this.http.put<any>(url, article);
   }
 
   getUserNumber(): number {
