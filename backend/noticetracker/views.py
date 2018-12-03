@@ -93,7 +93,7 @@ def searchByName(request, courseName):
             timeList = list(item.time.values())
             siteList = list(item.siteList.values())
             ret.append({'name': item.name,
-                        'time': [it.toDict() for it in timeList],
+                        'time': timeList,
                         'sites': siteList,
                         'id': item.id,
                         'lectureCode': item.lectureCode,
@@ -114,7 +114,7 @@ def searchByCode(request, courseCode):
             timeList = list(item.time.values())
             siteList = list(item.siteList.values())
             ret.append({'name': item.name,
-                        'time': [it.toDict() for it in timeList],
+                        'time': timeList,
                         'sites': siteList,
                         'id': item.id,
                         'lectureCode': item.lectureCode,
