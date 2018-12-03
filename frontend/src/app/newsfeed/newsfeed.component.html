@@ -24,17 +24,24 @@
         <button class="btn btn-secondary btn-space" (click)="siteRecommendation()">Edit Site List</button>
       </div>
       <br />
-      <li *ngFor="let article of newsfeed; let index = index">
-        <div class="card bg-light mb-3" style="max-width: 40rem;">
-          <div class="card-header">{{ timeTable[courseIdOfArticle[index] - 1].name }}</div>
-          <div class="card-body">
-            <a href="{{article.url}}">Article </a>
-            <button class="btn btn-secondary btn-space" (click)="star(article)">star</button>
-            <button class="btn btn-secondary btn-space" (click)="ignore(article)">ignore</button>
-            <span *ngIf="articleIsStar[index]">★</span> <span *ngIf="articleIsIgnore[index]">㉿</span>
+      <div *ngFor="let article of newsfeed; let index = index">
+        <span *ngIf="!article.ignore">
+          <div
+            [ngClass]="{ 'border-primary': article.star, 'bg-light': !article.star }"
+            class="card mb-3"
+            style="max-width: 40rem;"
+          >
+            <div class="card-header">{{ article.course.name }}</div>
+            <div [ngClass]="{ 'text-primary': article.star }" class="card-body">
+              <a href="{{ article.url }}">{{ article.url }}</a>
+              <div class="d-flex flex-row-reverse">
+                <button class="btn btn-primary btn-space" (click)="toggleStar(article)">Star</button>
+                <button class="btn btn-primary btn-space" (click)="setIgnore(article)">Ignore</button>
+              </div>
+            </div>
           </div>
-        </div>
-      </li>
+        </span>
+      </div>
     </div>
   </body>
 </html>
