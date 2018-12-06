@@ -74,7 +74,7 @@ def courseDetail(request, courseId):
         siteList = list(course.siteList.all())
         dic = {'name': course.name,
                'time': [it.toDict() for it in timeList],
-               'sites': siteList,
+               'sites': [it.toDict() for it in siteList],
                'lectureCode': course.lectureCode,
                'profName': course.profName,
                'classNumber': course.classNumber,
@@ -90,11 +90,11 @@ def searchByName(request, courseName):
         items = list(Course.objects.filter(name__contains=courseName).all())
         ret = list()
         for item in items:
-            timeList = list(item.time.values())
-            siteList = list(item.siteList.values())
+            timeList = list(item.time.all())
+            siteList = list(item.siteList.all())
             ret.append({'name': item.name,
-                        'time': timeList,
-                        'sites': siteList,
+                        'time': list(map(LectureTime.toDict, timeList)),
+                        'sites': list(map(Site.toDict, siteList)),
                         'id': item.id,
                         'lectureCode': item.lectureCode,
                         'profName': item.profName,
@@ -111,11 +111,11 @@ def searchByCode(request, courseCode):
             lectureCode__startswith=courseCode).all())
         ret = list()
         for item in items:
-            timeList = list(item.time.values())
-            siteList = list(item.siteList.values())
+            timeList = list(item.time.all())
+            siteList = list(item.siteList.all())
             ret.append({'name': item.name,
-                        'time': timeList,
-                        'sites': siteList,
+                        'time': list(map(LectureTime.toDict, timeList)),
+                        'sites': list(map(Site.toDict, siteList)),
                         'id': item.id,
                         'lectureCode': item.lectureCode,
                         'profName': item.profName,
@@ -138,9 +138,7 @@ def sitesByCourseId(request, courseId):
         sites = list(course.siteList.all())
         ret = list()
         for site in sites:
-            ret.append({'name': site.name,
-                        'url': site.url,
-                        'id': site.id})
+            ret.append(site.toDict())
         return JsonResponse(ret, safe=False)
 
     elif request.method == 'POST':

@@ -25,6 +25,9 @@ class Site(models.Model):
     url = models.TextField(default="")
     lastUpdated = models.DateTimeField(default=now)
 
+    def toDict(self):
+        return {'name': self.name, 'url': self.url, 'lastUpdated': self.lastUpdated}
+
 
 class Course(models.Model):
     name = models.CharField(max_length=120)  # ex) Principles and Practices ...

@@ -5,6 +5,7 @@ from django.core import serializers
 from .crawl import crawl, crawler
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
+from datetime import datetime, timezone
 
 # Create your tests here.
 
@@ -12,6 +13,7 @@ import json
 class NoticeTrackerTestCase(TestCase):
     mock_minty = {'userId': 'minty', 'password': 'pw1'}
     mock_16silver = {'userId': '16silver', 'password': 'pw2'}
+    maxDiff = None
 
     def checkInvalidRequest(self, allowed, url):
         client = Client()
@@ -30,6 +32,31 @@ class NoticeTrackerTestCase(TestCase):
             response = client.delete(url)
             self.assertEqual(response.status_code, 405)
 
+    def courseToDict(self, course):
+        return {
+            'id': course.id,
+            'name': course.name,
+            'lectureCode': course.lectureCode,
+            'profName': course.profName,
+            'classNumber': int(course.classNumber),
+            'time': [self.lectureTimeToDict(c) for c in course.time.all()],
+            'sites': [self.siteToDict(s) for s in course.siteList.all()]
+        }
+
+    def lectureTimeToDict(self, lectureTime):
+        return {
+            'day': lectureTime.day,
+            'start': lectureTime.start,
+            'end': lectureTime.end
+        }
+
+    def siteToDict(self, site):
+        return {
+            'name': site.name,
+            'url': site.url,
+            'lastUpdated': site.lastUpdated.strftime('%Y-%m-%dT%H:%M:%SZ')
+        }
+
     def setUp(self):
         User.objects.create_user(username='minty', password='pw1')
         self.time1 = LectureTime(day=1, start=155, end=185)
@@ -40,6 +67,17 @@ class NoticeTrackerTestCase(TestCase):
             id=1, name='핀란드어 1', lectureCode='L0441.000100', profName='정도상', classNumber='001')
         self.course1.save()
         self.course1.time.add(*[self.time1, self.time2])
+        self.site1 = Site(name='SNU', url='www.snu.ac.kr',
+                          lastUpdated=datetime(year=2018, month=12, day=6, tzinfo=timezone.utc))
+
+        self.site2 = Site(name='ropas', url='ropas.snu.ac.kr',
+                          lastUpdated=datetime(year=2018, month=12, day=7, tzinfo=timezone.utc))
+        self.site3 = Site(name='IU', url='twitter.com/_IUofficial',
+                          lastUpdated=datetime(year=2018, month=12, day=8, tzinfo=timezone.utc))
+        self.site1.save()
+        self.site2.save()
+        self.site3.save()
+        self.course1.siteList.add(self.site1)
 
         self.time3 = LectureTime(day=1, start=125, end=140)
         self.time4 = LectureTime(day=1, start=170, end=180)
@@ -115,59 +153,45 @@ class NoticeTrackerTestCase(TestCase):
     def test_search_name(self):
         client = Client()
         response = client.get('/api/search/name/핀란드어')
-        self.assertEqual(
-            response.json(),
-            [
-                {
-                    'id': 1,
-                    'name': '핀란드어 1',
-                    'lectureCode': 'L0441.000100',
-                    'profName': '정도상',
-                    'classNumber': 1,
-                    'time':
-                        [
-                            {'id': 1, 'day': 1, 'start': 155, 'end': 185},
-                            {'id': 2, 'day': 4, 'start': 170, 'end': 180}
-                        ],
-                    'sites': []
-                }
-            ]
-        )
+        self.assertEqual(response.json(), [self.courseToDict(self.course1)])
+        self.assertEqual(response.status_code, 200)
 
         response = client.get('/api/search/name/프랑스')
         self.assertEqual(response.json(), [])
+        self.assertEqual(response.status_code, 200)
+
         self.checkInvalidRequest(['GET'], '/api/search/name/dummy')
 
     def test_search_code(self):
-        pass
-        # client = Client()
-        # response = client.get('/api/search/code/M')
-        # # TODO
-        # self.assertEqual(response.json(), ['GET'])
+        client = Client()
+        response = client.get('/api/search/code/L0441.000400')
+        self.assertEqual(response.json(), [self.courseToDict(self.course4)])
+        self.assertEqual(response.status_code, 200)
 
-        # response = client.get('/api/search/code/100')
-        # # TODO
-        # # self.assertEqual(response.json(), [])
-        # self.checkInvalidRequest(['GET'], '/api/search/code/dummy')
+        response = client.get('/api/search/code/M')
+        self.assertEqual(response.json(), [])
+        self.assertEqual(response.status_code, 200)
+        self.checkInvalidRequest(['GET'], '/api/search/code/dummy')
 
     def test_course(self):
         client = Client()
         response = client.get('/api/course/1')
-        # TODO
-        # self.assertEqual(response.json(), [])
+
+        self.assertEqual(response.json(), self.courseToDict(self.course1))
+        self.assertEqual(response.status_code, 200)
         self.checkInvalidRequest(['GET'], '/api/course/1')
 
     def test_course_site(self):
         client = Client()
         response = client.get('/api/course/1/site')
-        # TODO
-        # self.assertEqual(response.json(), [])
+        self.assertEqual(response.json(), [self.siteToDict(self.site1)])
+        self.assertEqual(response.status_code, 200)
 
-        # TODO
-        # response = client.post(
-        #     '/api/course/1/site', json.dumps({}),  content_type='application/json')
-        # self.assertEqual(response.status_code, 201)
-        # self.checkInvalidRequest(['GET', 'POST'], '/api/course/1/site')
+        response = client.post(
+            '/api/course/1/site', self.siteToDict(self.site2), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(self.course1.siteList.all()[1].name, self.site2.name)
+        self.checkInvalidRequest(['GET', 'POST'], '/api/course/1/site')
 
     def test_user_course(self):
         client = Client()
