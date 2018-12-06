@@ -236,29 +236,32 @@ def userCourseArticle(request, courseId):
 
 
 @csrf_exempt
-def newsfeedPage(request):
+def userNewsfeed(request):
     if request.method not in ['GET']:
         return HttpResponseNotAllowed(['GET'])
     elif request.method == 'GET':
         if request.user.is_authenticated:
             try:
-                user = UserDetail.objects.get(user=request.user)
+                userDetail = UserDetail.objects.get(user=request.user)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
             articles = list()
             ret = list()
-            courses = list(user.courseList.all())
+            courses = list(userDetail.courseList.all())
             for courseCustom in courses:
                 sites = list(courseCustom.siteList.all())
-                for site in sites:
-                    articles.append(site.articleList.all())
-            # TODO: fix syntax error
-            # articles.order_by('datetime__hour', 'datetime__minute')
-            for article in articles:
-                ret.append({'content': article.content,
-                            'id': article.id,
-                            'url': article.url,
-                            'course': article.fromCourse})
+                articles += list(Article.objects.filter(
+                    fromSite__in=sites).all())
+            # TODO: ordering articles
+            for art in articles:
+                ret.append({
+                    'id': art.id,
+                    'course': art.fromCourse.toDict(),
+                    'content': art.content,
+                    'url': art.url,
+                    'star': userDetail.starList.filter(id=art.id).exists(),
+                    'ignore': userDetail.ignoreList.filter(id=art.id).exists()
+                })
             return JsonResponse(ret, safe=False)
         else:
             return HttpResponse(status=404)  # user is not authenticated
@@ -266,13 +269,31 @@ def newsfeedPage(request):
 
 
 @csrf_exempt
-def userArticle(request, articleId):  # changed
+def userArticle(request, articleId):
     if request.method not in ['GET', 'PUT']:
         return HttpResponseNotAllowed(['GET', 'PUT'])
+    elif request.method == 'GET':
+        if request.user.is_authenticated:
+            try:
+                userDetail = UserDetail.objects.get(user=request.user)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            article = Article.objects.get(id=articleId)
+            ret = {
+                'id': article.id,
+                'course': article.fromCourse.toDict(),
+                'content': article.content,
+                'url': article.url,
+                'star': userDetail.starList.filter(id=article.id).exists(),
+                'ignore': userDetail.ignoreList.filter(id=article.id).exists()
+            }
+            return JsonResponse(ret, safe=False)
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
     elif request.method == 'PUT':
         if request.user.is_authenticated:
             try:
-                user = UserDetail.objects.get(user=request.user)
+                userDetail = UserDetail.objects.get(user=request.user)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
             requestData = json.loads(request.body.decode())
@@ -280,30 +301,15 @@ def userArticle(request, articleId):  # changed
             star = requestData['star']
             ignore = requestData['ignore']
             if star:
-                user.starList.add(Article.objects.filter(id=reqId))
+                userDetail.starList.add(Article.objects.get(id=reqId))
             else:
-                user.starList.remove(
-                    Article.objects.filter(id=reqId))  # danger
+                userDetail.starList.remove(Article.objects.get(id=reqId))
             if ignore:
-                user.ignoreList.add(Article.objects.filter(id=reqId))
+                userDetail.ignoreList.add(Article.objects.get(id=reqId))
             else:
-                user.ignoreList.remove(
-                    Article.objects.filter(id=reqId))  # danger
+                userDetail.ignoreList.remove(Article.objects.get(id=reqId))
+            return HttpResponse(status=200)
         else:
             return HttpResponse(status=404)  # user is not authenticated
-    elif request.method == 'GET':
-        if request.user.is_authenticated:
-            try:
-                user = UserDetail.objects.get(user=request.user)
-            except UserDetail.DoesNotExist:
-                return HttpResponseNotFound()
-            articles = list(Article.objects.filter(id=articleId))
-            ret = list()
-            for article in articles:
-                ret.append({'id': article.id,
-                            'content': article.content,
-                            'url': article.url})
-            return JsonResponse(ret, safe=False)
-        else:
-            return HttpResponse(status=404)  # user is not authenticated
+
     raise Exception("unreachable code")

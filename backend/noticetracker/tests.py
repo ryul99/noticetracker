@@ -277,24 +277,28 @@ class NoticeTrackerTestCase(TestCase):
         client = Client()
         client.force_login(self.user)
         response = client.get('/api/user/newsfeed/')
-        # TODO
-        # self.assertEqual(response.json(), [])
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), [self.articleToDict(
+            self.article2), self.articleToDict(self.article3)])
 
         self.checkInvalidRequest(['GET'], '/api/user/newsfeed/')
 
     def test_user_article(self):
         client = Client()
-        response = client.post(
-            '/api/signup/', json.dumps(self.mock_16silver), content_type='application/json')
-        response = client.get('/api/user/article/1/')
-        # TODO
-        # self.assertEqual(str(response.content), json.dumps([]))
+        client.force_login(self.user)
+        response = client.get('/api/user/article/2/')
+        self.assertEqual(response.json(), self.articleToDict(self.article2))
 
         # TODO
-        response = client.put('/api/user/article/1/', json.dumps({}))
-        # self.assertEqual(response.status_code, 201)
+        new_art2 = self.articleToDict(self.article2)
+        new_art2['star'] = True
+        new_art2['ignore'] = False
+        response = client.put('/api/user/article/2/', json.dumps(new_art2))
+        self.assertIn(self.article2, self.userDetail.starList.all())
+        self.assertNotIn(self.article2, self.userDetail.ignoreList.all())
+        self.assertEqual(response.status_code, 200)
 
-        self.checkInvalidRequest(['GET', 'PUT'], '/api/user/article/1/')
+        self.checkInvalidRequest(['GET', 'PUT'], '/api/user/article/2/')
 
     def test_crawl(self):
         courseDataResult = crawler(1)
