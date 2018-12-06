@@ -13,8 +13,8 @@ urlpatterns = [
     path('course/<int:courseId>/site/',
          views.sitesByCourseId, name='sitesByCourseId'),
     path('user/course/', views.userCourse, name='userCourse'),
-    path('user/course/<int: courseId>/article/',
-         views.courseArticles, name='courseArticles'),
+    path('user/course/<int:courseId>/article/',
+         views.userCourseArticle, name='userCourseArticle'),
     path('user/newsfeed/', views.newsfeedPage, name='newsfeedPage'),
     path('user/article/<int:articleId>/',
          views.userArticle, name='userArticle')

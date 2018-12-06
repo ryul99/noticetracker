@@ -74,7 +74,7 @@ def courseDetail(request, courseId):
         siteList = list(course.siteList.all())
         dic = {'name': course.name,
                'time': [it.toDict() for it in timeList],
-               'sites': [it.toDict() for it in siteList],
+               'siteList': [it.toDict() for it in siteList],
                'lectureCode': course.lectureCode,
                'profName': course.profName,
                'classNumber': course.classNumber,
@@ -94,7 +94,7 @@ def searchByName(request, courseName):
             siteList = list(item.siteList.all())
             ret.append({'name': item.name,
                         'time': list(map(LectureTime.toDict, timeList)),
-                        'sites': list(map(Site.toDict, siteList)),
+                        'siteList': list(map(Site.toDict, siteList)),
                         'id': item.id,
                         'lectureCode': item.lectureCode,
                         'profName': item.profName,
@@ -115,7 +115,7 @@ def searchByCode(request, courseCode):
             siteList = list(item.siteList.all())
             ret.append({'name': item.name,
                         'time': list(map(LectureTime.toDict, timeList)),
-                        'sites': list(map(Site.toDict, siteList)),
+                        'siteList': list(map(Site.toDict, siteList)),
                         'id': item.id,
                         'lectureCode': item.lectureCode,
                         'profName': item.profName,
@@ -160,38 +160,6 @@ def sitesByCourseId(request, courseId):
 
 
 @csrf_exempt
-def courseArticles(request, courseId):  # changed
-    if request.method not in ['GET']:
-        return HttpResponseNotAllowed(['GET'])
-    elif request.method == 'GET':
-        try:
-            course = Course.objects.get(id=courseId)
-        except Course.DoesNotExist:
-            return HttpResponseNotFound()
-        sites = list(course.siteList.all())
-        ret = list()
-        for site in sites:
-            articles = list(site.articleList.all())
-            for article in articles:
-                ret.append({'url': article.url,
-                            'id': article.id})
-        return JsonResponse(ret, safe=False)
-    raise Exception("unreachable code")
-
-
-# def articleOfArticleId(request, articleId):
-#     if request.method not in ['GET']:
-#         return HttpResponseNotAllowed(['GET'])
-#     elif request.method == 'GET':
-#         articles = list(Article.objects.filter(id=articleId))
-#         ret = list()
-#         for article in articles:
-#             ret.append({'id': article.id
-#                         'url': article.url})
-#         return JsonResponse(ret, safe=False)
-#     raise Exception("unreachable code")
-
-@csrf_exempt
 def userCourse(request):
     if request.method not in ['GET', 'POST']:
         return HttpResponseNotAllowed(['GET', 'POST'])
@@ -206,9 +174,10 @@ def userCourse(request):
             for item in customizedCourses:
                 timeList = list(item.course.time.all())
                 siteList = list(item.siteList.all())
-                ret.append({'name': item.course.name,
-                            'time': [it.toDict() for it in timeList],
-                            'sites': siteList,
+                ret.append({'id': item.course.id,
+                            'name': item.course.name,
+                            'time': list(map(LectureTime.toDict, timeList)),
+                            'siteList': list(map(Site.toDict, siteList)),
                             'lectureCode': item.course.lectureCode,
                             'profName': item.course.profName,
                             'classNumber': item.course.classNumber})
@@ -228,7 +197,13 @@ def userCourse(request):
                     lectureCode=course['lectureCode'], classNumber=course['classNumber'])
                 courseCustom = CourseCustom.objects.create(
                     course=filteredCourse)
-                courseCustom.siteList.set(course['sites'])
+
+                siteList = []
+                for site in course['siteList']:
+                    siteObj = Site(**site)
+                    siteObj.save()
+                    siteList.append(siteObj)
+                courseCustom.siteList.set(siteList)
                 courseCustom.save()
                 user.courseList.add(courseCustom)
             return HttpResponse(status=200)
@@ -237,31 +212,31 @@ def userCourse(request):
     raise Exception("unreachable code")
 
 
-# def userSite(request):
-#     if request.method not in ['GET', 'POST']:
-#         return HttpResponseNotAllowed(['GET', 'POST'])
-#     elif request.method == 'GET':
-#         if request.user.is_authenticated:
-#             try:
-#                 user = UserDetail.objects.get(user=request.user)
-#             except UserDetail.DoesNotExist:
-#                 return HttpResponseNotFound()
-#             courses = list(user.courseList.all())
-#             ret = list()
-#             for course in courses:
-#                 for site in list(course.siteList.all()):
-#                     ret.append({'id': site.id
-#                                 'url': site.url,
-#                                 'name': site.name})
-#             return JsonResponse(ret, safe=False)
-#         else:
-#             return HttpResponse(status=404)  # user is not authenticated
-#     elif request.method == 'POST':
-#
-#     raise Exception("unreachable code")
+@csrf_exempt
+def userCourseArticle(request, courseId):
+    if request.method not in ['GET']:
+        return HttpResponseNotAllowed(['GET'])
+    elif request.method == 'GET':
+        userDetail = UserDetail.objects.get(user=request.user)
+        courseCustom = userDetail.courseList.get(id=courseId)
+        sites = list(courseCustom.siteList.all())
+        articles = list(Article.objects.filter(fromSite__in=sites).all())
+        ret = []
+        for art in articles:
+            ret.append({
+                'id': art.id,
+                'course': art.fromCourse.toDict(),
+                'content': art.content,
+                'url': art.url,
+                'star': userDetail.starList.filter(id=art.id).exists(),
+                'ignore': userDetail.ignoreList.filter(id=art.id).exists()
+            })
+        return JsonResponse(ret, safe=False)
+    raise Exception("unreachable code")
+
 
 @csrf_exempt
-def newsfeedPage(request, pageId):
+def newsfeedPage(request):
     if request.method not in ['GET']:
         return HttpResponseNotAllowed(['GET'])
     elif request.method == 'GET':
