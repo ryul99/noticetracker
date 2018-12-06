@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.contrib import auth
+from django.core import serializers
 from .crawl import crawl, crawler
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
@@ -35,32 +36,39 @@ class NoticeTrackerTestCase(TestCase):
         self.time2 = LectureTime(day=4, start=170, end=180)
         self.time1.save()
         self.time2.save()
-        self.course1 = Course(id = 1, name='핀란드어 1', lectureCode='L0441.000100',profName='정도상', classNumber='001')
+        self.course1 = Course(
+            id=1, name='핀란드어 1', lectureCode='L0441.000100', profName='정도상', classNumber='001')
         self.course1.save()
         self.course1.time.add(*[self.time1, self.time2])
-        
+
         self.time3 = LectureTime(day=1, start=125, end=140)
         self.time4 = LectureTime(day=1, start=170, end=180)
         self.time5 = LectureTime(day=3, start=125, end=140)
         self.time3.save()
         self.time4.save()
         self.time5.save()
-        self.course2 = Course(id = 1, name='히브리어 1', lectureCode='L0441.000200',profName='김동혁', classNumber='001')
+        self.course2 = Course(
+            id=2, name='히브리어 1', lectureCode='L0441.000200', profName='김동혁', classNumber='001')
         self.course2.save()
         self.course2.time.add(*[self.time3, self.time4, self.time5])
-        
-        #self.course2 = Course(name='히브리어 1', lectureCode='L0441.000200',profName='김동혁', classNumber='001', 
-        # time=[(1, 125, 140), (1, 170, 180), (3, 125, 140)])
-        #self.course2.save()
 
-        #self.course3 = Course(name='독문강독', lectureCode='L0441.000300',profName='이호성', classNumber='001', time=[(1, 140, 155), (3, 140, 155)])
-        #self.course3.save()
-        #
-        #self.course4 = Course(name='기초영어', lectureCode='L0441.000400',profName='백혜정', classNumber='001', time=[(1, 160, 180), (3, 180, 190)])
-        #self.course4.save()
-        
+        self.time6 = LectureTime(day=1, start=140, end=155)
+        self.time7 = LectureTime(day=3, start=140, end=155)
+        self.time6.save()
+        self.time7.save()
+        self.course3 = Course(name='독문강독', lectureCode='L0441.000300', profName='이호성',
+                              classNumber='001')
+        self.course3.save()
+        self.course3.time.add(*[self.time6, self.time7])
 
-
+        self.time8 = LectureTime(day=1, start=160, end=180)
+        self.time9 = LectureTime(day=3, start=180, end=190)
+        self.time8.save()
+        self.time9.save()
+        self.course4 = Course(name='기초영어', lectureCode='L0441.000400', profName='백혜정',
+                              classNumber='001')
+        self.course4.save()
+        self.course4.time.add(*[self.time8, self.time9])
 
     def test_signup(self):
         client = Client()
@@ -105,16 +113,30 @@ class NoticeTrackerTestCase(TestCase):
         self.checkInvalidRequest(['GET'], '/api/sign_out')
 
     def test_search_name(self):
-        pass
-        # client = Client()
-        # response = client.get('/api/search/name/핀란드어')
-        # # TODO
-        # self.assertEqual(response.json(), ['GET'])
+        client = Client()
+        response = client.get('/api/search/name/핀란드어')
+        self.assertEqual(
+            response.json(),
+            [
+                {
+                    'id': 1,
+                    'name': '핀란드어 1',
+                    'lectureCode': 'L0441.000100',
+                    'profName': '정도상',
+                    'classNumber': 1,
+                    'time':
+                        [
+                            {'id': 1, 'day': 1, 'start': 155, 'end': 185},
+                            {'id': 2, 'day': 4, 'start': 170, 'end': 180}
+                        ],
+                    'sites': []
+                }
+            ]
+        )
 
-        # response = client.get('/api/search/name/프랑스')
-        # # TODO
-        # # self.assertEqual(response.json(), [])
-        # self.checkInvalidRequest(['GET'], '/api/search/name/dummy')
+        response = client.get('/api/search/name/프랑스')
+        self.assertEqual(response.json(), [])
+        self.checkInvalidRequest(['GET'], '/api/search/name/dummy')
 
     def test_search_code(self):
         pass
