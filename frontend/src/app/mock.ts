@@ -13,8 +13,8 @@ export const mockCourses: Course[] = [
     profName: '전병곤',
     classNumber: 1,
     sites: [
-      { id: 1, name: 'GitHub', url: 'https://github.com/swsnu/swppfall2018' },
-      { id: 2, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803' }
+      { name: 'GitHub', url: 'https://github.com/swsnu/swppfall2018', lastUpdated: new Date() },
+      { name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803', lastUpdated: new Date() }
     ]
   },
   {
@@ -24,7 +24,7 @@ export const mockCourses: Course[] = [
     time: [{ day: 1, start: 170, end: 185 }, { day: 1, start: 185, end: 205 }, { day: 3, start: 170, end: 185 }],
     profName: 'Bernhard Egger',
     classNumber: 1,
-    sites: [{ id: 3, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=147656' }]
+    sites: [{ name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=147656', lastUpdated: new Date() }]
   },
   {
     name: '프로그래밍언어',
@@ -34,8 +34,8 @@ export const mockCourses: Course[] = [
     profName: '이광근',
     classNumber: 1,
     sites: [
-      { id: 4, name: 'PL Website', url: 'https://ropas.snu.ac.kr/~kwang/4190.310/18/' },
-      { id: 5, name: 'PL Webboard', url: 'https://ropas.snu.ac.kr/phpbb/viewforum.php?f=47' }
+      { name: 'PL Website', url: 'https://ropas.snu.ac.kr/~kwang/4190.310/18/', lastUpdated: new Date() },
+      { name: 'PL Webboard', url: 'https://ropas.snu.ac.kr/phpbb/viewforum.php?f=47', lastUpdated: new Date() }
     ]
   },
   {
@@ -45,7 +45,7 @@ export const mockCourses: Course[] = [
     time: [{ day: 1, start: 140, end: 155 }, { day: 3, start: 140, end: 155 }],
     profName: '서진욱',
     classNumber: 2,
-    sites: [{ id: 6, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803' }]
+    sites: [{ name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803', lastUpdated: new Date() }]
   },
   {
     name: '오토마타이론',
@@ -54,7 +54,7 @@ export const mockCourses: Course[] = [
     time: [{ day: 2, start: 155, end: 170 }, { day: 4, start: 155, end: 170 }],
     profName: '박근수',
     classNumber: 1,
-    sites: [{ id: 7, name: 'Automata Bulletin Board', url: 'http://theory.snu.ac.kr/?page_id=1388' }]
+    sites: [{ name: 'Automata Bulletin Board', url: 'http://theory.snu.ac.kr/?page_id=1388', lastUpdated: new Date() }]
   },
   {
     name: '컴퓨터공학세미나',
@@ -68,13 +68,13 @@ export const mockCourses: Course[] = [
 ];
 
 export const mockSites: Site[] = [
-  { id: 1, name: 'GitHub', url: 'https://github.com/swsnu/swppfall2018' },
-  { id: 2, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803' },
-  { id: 3, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=147656' },
-  { id: 4, name: 'PL Website', url: 'https://ropas.snu.ac.kr/~kwang/4190.310/18/' },
-  { id: 5, name: 'PL Webboard', url: 'https://ropas.snu.ac.kr/phpbb/viewforum.php?f=47' },
-  { id: 6, name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803' },
-  { id: 7, name: 'Automata Bulletin Board', url: 'http://theory.snu.ac.kr/?page_id=1388' }
+  { name: 'GitHub', url: 'https://github.com/swsnu/swppfall2018', lastUpdated: new Date() },
+  { name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803', lastUpdated: new Date() },
+  { name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=147656', lastUpdated: new Date() },
+  { name: 'PL Website', url: 'https://ropas.snu.ac.kr/~kwang/4190.310/18/', lastUpdated: new Date() },
+  { name: 'PL Webboard', url: 'https://ropas.snu.ac.kr/phpbb/viewforum.php?f=47', lastUpdated: new Date() },
+  { name: 'SNU eTL', url: 'http://etl.snu.ac.kr/course/view.php?id=146803', lastUpdated: new Date() },
+  { name: 'Automata Bulletin Board', url: 'http://theory.snu.ac.kr/?page_id=1388', lastUpdated: new Date() }
 ];
 
 export const mockArticles: Article[] = [

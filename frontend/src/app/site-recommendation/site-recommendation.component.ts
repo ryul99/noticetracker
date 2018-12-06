@@ -14,9 +14,6 @@ export class SiteRecommendationComponent implements OnInit {
   expanded: boolean[] = [];
   urlToAdd: string[] = [];
 
-  siteIDList: number[] = [];
-  siteSelected: boolean[] = [];
-
   initialized: boolean = false;
 
   constructor(private router: Router, private userService: UserService) {}
@@ -28,10 +25,6 @@ export class SiteRecommendationComponent implements OnInit {
       for (let course of this.courses) {
         this.expanded.push(false);
         this.urlToAdd.push('');
-        for (let site of course.sites) {
-          this.siteIDList.push(site.id);
-          this.siteSelected.push(false);
-        }
       }
 
       this.initialized = true;
@@ -59,6 +52,6 @@ export class SiteRecommendationComponent implements OnInit {
 
   addUrl(course: Course) {
     let index: number = this.courses.indexOf(course);
-    course.sites.push({ id: 100, name: 'added', url: this.urlToAdd[index] });
+    course.sites.push({ name: 'added', url: this.urlToAdd[index], lastUpdated: new Date() });
   }
 }
