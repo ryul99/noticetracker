@@ -14,16 +14,13 @@ class LectureTime(models.Model):
         return {'day': self.day, 'start': self.start, 'end': self.end}
 
 
-class Article(models.Model):
-    content = models.TextField(default="")
-    url = models.TextField(default="")
-    updated = models.DateTimeField(default=now)
-
-
 class Site(models.Model):
     name = models.TextField(default="")
     url = models.TextField(default="")
     lastUpdated = models.DateTimeField(default=now)
+
+    def toDict(self):
+        return {'name': self.name, 'url': self.url, 'lastUpdated': self.lastUpdated}
 
 
 class Course(models.Model):
@@ -34,10 +31,26 @@ class Course(models.Model):
     profName = models.CharField(max_length=120)
     classNumber = models.IntegerField()
 
+    def toDict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'time': list(map(LectureTime.toDict, self.time.all())),
+            'siteList': list(map(Site.toDict, self.siteList.all())),
+            'lectureCode': self.lectureCode,
+            'profName': self.profName,
+            'classNumber': self.classNumber
+        }
 
-Article.fromCourse = models.ForeignKey(
-    Course, on_delete=models.CASCADE, related_name='article_set')
-Site.articleList = models.ManyToManyField(Article)
+
+class Article(models.Model):
+    content = models.TextField(default="")
+    url = models.TextField(default="")
+    updated = models.DateTimeField(default=now)
+    fromCourse = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name='articles')
+    fromSite = models.ForeignKey(
+        Site, on_delete=models.CASCADE, related_name='articles')
 
 
 class CourseCustom(models.Model):
