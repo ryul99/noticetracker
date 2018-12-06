@@ -52,6 +52,6 @@ export class SiteRecommendationComponent implements OnInit {
 
   addUrl(course: Course) {
     let index: number = this.courses.indexOf(course);
-    course.sites.push({ name: 'added', url: this.urlToAdd[index], lastUpdated: new Date() });
+    course.siteList.push({ name: 'added', url: this.urlToAdd[index], lastUpdated: new Date() });
   }
 }
