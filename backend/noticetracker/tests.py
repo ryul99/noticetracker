@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core import serializers
-from .crawl import crawl, crawler
+from .crawl import crawler
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
 from datetime import datetime, timezone
@@ -289,11 +289,10 @@ class NoticeTrackerTestCase(TestCase):
         response = client.get('/api/user/article/2/')
         self.assertEqual(response.json(), self.articleToDict(self.article2))
 
-        # TODO
-        new_art2 = self.articleToDict(self.article2)
-        new_art2['star'] = True
-        new_art2['ignore'] = False
-        response = client.put('/api/user/article/2/', json.dumps(new_art2))
+        newArt = self.articleToDict(self.article2)
+        newArt['star'] = True
+        newArt['ignore'] = False
+        response = client.put('/api/user/article/2/', json.dumps(newArt))
         self.assertIn(self.article2, self.userDetail.starList.all())
         self.assertNotIn(self.article2, self.userDetail.ignoreList.all())
         self.assertEqual(response.status_code, 200)
