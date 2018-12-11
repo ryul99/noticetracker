@@ -1,4 +1,4 @@
-# from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail, SiteHref
+from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail, SiteHref
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
 import requests
@@ -23,8 +23,9 @@ def rawHref2Url(href, root, slicedUrl):
     return ret
 
 
-def crawl(url, site):
+def crawl(url):
     req = requests.get(url)
+    ret = list()
     if req.status_code == 200 and req.ok:
         slicedUrl = re.findall('([^/]+[/]{2})?([^/]+)', url)
         root = slicedUrl[0][1]  # e.g. stackoverflow.com
@@ -35,7 +36,14 @@ def crawl(url, site):
             if href == None or href == "":
                 continue
             href = rawHref2Url(href, root, slicedUrl)
-            siteHref = SiteHref(href=href, site=site)
-            siteHref.save()
+            ret.append(href)
+        return ret
     else:
         raise Exception('HttpResponse is not 200')  # this should be caught
+
+
+def save2DB(url, site):
+    hrefs = crawl(url)
+    for href in hrefs:
+        sitehref = SiteHref(href=href, site=site)
+        sitehref.save()
