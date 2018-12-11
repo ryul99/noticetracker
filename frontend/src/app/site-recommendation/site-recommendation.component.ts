@@ -19,7 +19,11 @@ export class SiteRecommendationComponent implements OnInit {
   constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit() {
-    if (!this.userService.authorized()) this.router.navigate(['']);
+    this.userService.authorized().then(success => {
+      if (!success) {
+        this.router.navigate(['']);
+      }
+    });
     this.userService.getCourses().subscribe(courses => {
       this.courses = courses;
       for (let course of this.courses) {

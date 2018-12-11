@@ -16,10 +16,11 @@ export class UserService {
 
   authorized(): Promise<boolean> {
     return this.http
-      .get<User>('/api/auth/')
+      .get<User>('/api/auth/', { observe: 'response' })
       .toPromise()
       .then(
-        user => {
+        response => {
+          var user = response.body;
           this.userId = user.userId;
           this.userNumber = user.id;
           return true;

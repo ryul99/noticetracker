@@ -15,7 +15,13 @@ export class LoginComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userService.authorized().then(success => {
+      if (success) {
+        this.router.navigate(['/newsfeed']);
+      }
+    });
+  }
 
   signIn() {
     if (!this.id || !this.password) {
