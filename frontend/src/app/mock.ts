@@ -131,7 +131,7 @@ export const mockUsers: User[] = [
 
 export class mockUserService {
   authorized() {
-    return true;
+    return of(true).toPromise();
   }
 
   signIn(username: string, pw: string) {
