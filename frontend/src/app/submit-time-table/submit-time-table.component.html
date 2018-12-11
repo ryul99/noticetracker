@@ -79,19 +79,18 @@
       </div>
 
       <div class="container">
-        <div class="btn-group">
-          <button class="btn btn-info btn-space" (click)="chooseListView()">List</button>
-          <button class="btn btn-info" (click)="chooseTableView()">Table</button>
-          <button class="btn btn-info" (click)="toggleDeleteButton()">Edit</button>
-        </div>
+        <div class="btn-group"><button class="btn btn-info" (click)="toggleDeleteButton()">Edit</button></div>
         <br /><br />
 
         <div *ngIf="selectedCourse">
           <div *ngIf="viewAsList">
             <ul class="list-group">
               <li class="list-group-item" *ngFor="let course of selectedCourse">
-                {{ course.name }} {{ course.code }}
-                <div *ngIf="removeActivated"><button (click)="removeCourse(course)">X</button></div>
+                {{ course.name
+                }}<span style="float: right;" *ngIf="removeActivated"
+                  ><button class="btn btn-dark" (click)="removeCourse(course)">X</button></span
+                ><br />
+                {{ course.lectureCode }}
               </li>
             </ul>
           </div>
