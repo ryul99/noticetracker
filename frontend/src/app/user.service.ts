@@ -14,9 +14,20 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  authorized(): boolean {
-    if (this.userId === undefined) return false;
-    return this.userId.length > 0;
+  authorized(): Promise<boolean> {
+    return this.http
+      .get<User>('/api/auth/')
+      .toPromise()
+      .then(
+        user => {
+          this.userId = user.userId;
+          this.userNumber = user.id;
+          return true;
+        },
+        error => {
+          return false;
+        }
+      );
   }
 
   signIn(userId: string, password: string): Promise<boolean> {
