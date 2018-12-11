@@ -3,6 +3,7 @@ import requests
 import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
+from django.utils.timezone import now
 
 def getArticles(site, course): # theory.snu.ac.kr/?page_id=<id>
     pageNum = 1
@@ -15,5 +16,17 @@ def getArticles(site, course): # theory.snu.ac.kr/?page_id=<id>
             if len(articles) == 0:
                 break
             for article in articles:
-                pass
+                titleObject = article.find('a')
+                content = titleObject.get_text()
+                url = titleObject.get('href')
+                articleData = Article(
+                    content=content,
+                    url=url,
+                    updated=now,
+                    fromCourse=course,
+                    fromSite=site
+                )
+                articleData.save()
+        else:
+            break
         pageNum += 1
