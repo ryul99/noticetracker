@@ -37,6 +37,12 @@
           </div>
         </div>
         <br />
+        <div>
+          <button class="btn btn-success btn-space" (click)="submit()">Submit</button>
+          <button class="btn btn-secondary btn-space" (click)="skip()">Skip</button>
+          <button class="btn btn-secondary btn-space" (click)="goHome()">Home</button>
+        </div>
+        <br />
         <div style="overflow-y: scroll; width: 600px; height:500px;">
           <div *ngIf="searchedCourse">
             <ul class="list-group">
@@ -59,7 +65,7 @@
                       <tr>
                         <td height="10" class="center" width="80">{{ course.profName }}</td>
                         <td height="10" class="center" width="130">{{ course.lectureCode }}</td>
-                        <td height="10" class="center" width="80">{{ course.classNumber }}</td>
+                        <td height="10" class="center" width="80">({{ course.classNumber }})</td>
                         <td height="10" width="200"></td>
                       </tr>
                     </tbody>
@@ -70,12 +76,6 @@
           </div>
         </div>
         <br />
-
-        <div class="d-flex flex-row-reverse">
-          <button class="btn btn-success" (click)="submit()">Submit</button>
-          <button class="btn btn-secondary btn-space" (click)="skip()">Skip</button>
-          <button class="btn btn-secondary btn-space" (click)="goHome()">Home</button>
-        </div>
       </div>
 
       <div class="container">
@@ -83,19 +83,15 @@
         <br /><br />
 
         <div *ngIf="selectedCourse">
-          <div *ngIf="viewAsList">
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let course of selectedCourse">
-                {{ course.name
-                }}<span style="float: right;" *ngIf="removeActivated"
-                  ><button class="btn btn-dark" (click)="removeCourse(course)">X</button></span
-                ><br />
-                {{ course.lectureCode }}
-              </li>
-            </ul>
-          </div>
-
-          <div *ngIf="!viewAsList">Mon Tue Wed Thu Fri</div>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let course of selectedCourse">
+              <strong>{{ course.name }}</strong
+              ><span style="float: right;" *ngIf="removeActivated"
+                ><button class="btn btn-dark" (click)="removeCourse(course)">X</button></span
+              ><br />
+              {{ course.profName }} ({{ course.classNumber }})
+            </li>
+          </ul>
         </div>
       </div>
     </div>
