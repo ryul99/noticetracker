@@ -67,5 +67,6 @@ class UserDetail(models.Model):
 
 
 class SiteHref(models.Model):
-    href = models.TextField(default="")
-    site = models.OneToOneField(Site, related_name="href")
+    href = models.TextField(default="")  # valid url
+    site = models.ForeignKey(
+        Site, on_delete=models.CASCADE, related_name="href")

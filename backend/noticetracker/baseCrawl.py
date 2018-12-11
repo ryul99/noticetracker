@@ -42,7 +42,8 @@ def crawl(url):
         raise Exception('HttpResponse is not 200')  # this should be caught
 
 
-def save2DB(url, site):
+def save2DB(site):
+    url = site.url
     hrefs = crawl(url)
     for href in hrefs:
         sitehref = SiteHref(href=href, site=site)
