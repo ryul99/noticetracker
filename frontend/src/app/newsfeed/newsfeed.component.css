@@ -1,3 +1,7 @@
+.scroll-safe {
+  overflow-y: scroll;
+}
+
 .container {
   height: 100vh;
   padding-top: 30px;
