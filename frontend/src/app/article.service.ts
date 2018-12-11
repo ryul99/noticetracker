@@ -10,7 +10,7 @@ export class ArticleService {
   constructor(private http: HttpClient) {}
 
   getArticlesByCourseId(courseId: number): Observable<Article[]> {
-    let url = 'api/course/' + courseId + '/article';
+    let url = 'api/course/' + courseId + '/article/';
     return this.http.get<Article[]>(url);
   }
 
