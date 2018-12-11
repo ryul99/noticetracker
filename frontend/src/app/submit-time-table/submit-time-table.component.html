@@ -37,18 +37,37 @@
           </div>
         </div>
         <br />
-
-        <div *ngIf="searchedCourse">
-          <ul class="list-group">
-            <li class="list-group-item" *ngFor="let course of searchedCourse; let index = index">
-              <input
-                type="checkbox"
-                [(ngModel)]="searchedCourseSelected[index]"
-                (change)="this.toggleOnSearchedList(course)"
-              />
-              {{ course.name }} {{ course.code }}
-            </li>
-          </ul>
+        <div style="overflow-y: scroll; width: 600px; height:500px;">
+          <div *ngIf="searchedCourse">
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let course of searchedCourse; let index = index">
+                <font size="2">
+                  <table class="table table-borderless" cellspacing="0" cellpadding="0">
+                    <thead>
+                      <tr style="height:15px;">
+                        <th width="200" colspan="4">{{ course.name }}</th>
+                        <th class="center">
+                          <input
+                            type="checkbox"
+                            [(ngModel)]="searchedCourseSelected[index]"
+                            (change)="this.toggleOnSearchedList(course)"
+                          />
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td height="10" class="center" width="80">{{ course.profName }}</td>
+                        <td height="10" class="center" width="130">{{ course.lectureCode }}</td>
+                        <td height="10" class="center" width="80">{{ course.classNumber }}</td>
+                        <td height="10" width="200"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </font>
+              </li>
+            </ul>
+          </div>
         </div>
         <br />
 
