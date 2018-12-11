@@ -32,7 +32,7 @@ def crawl(url, site):
         hyperLinks = bsObject.find_all("a")
         for hyperLink in hyperLinks:
             href = hyperLink.get('href')
-            if href == None:
+            if href == None or href == "":
                 continue
             href = rawHref2Url(href, root, slicedUrl)
             siteHref = SiteHref(href=href, site=site)
