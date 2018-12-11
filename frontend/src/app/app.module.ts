@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { SubmitTimeTableComponent } from './submit-time-table/submit-time-table.component';
 import { NewsfeedComponent } from './newsfeed/newsfeed.component';
-import { SingleLectureComponent } from './single-lecture/single-lecture.component';
 import { SiteRecommendationComponent } from './site-recommendation/site-recommendation.component';
 
 @NgModule({
@@ -16,7 +15,6 @@ import { SiteRecommendationComponent } from './site-recommendation/site-recommen
     LoginComponent,
     SubmitTimeTableComponent,
     NewsfeedComponent,
-    SingleLectureComponent,
     SiteRecommendationComponent
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule, HttpClientModule],

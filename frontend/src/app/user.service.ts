@@ -21,7 +21,7 @@ export class UserService {
 
   signIn(userId: string, password: string): Promise<boolean> {
     return this.http
-      .post<User>('/api/sign_in', {
+      .post<User>('/api/sign_in/', {
         userId: userId,
         password: password
       })
@@ -41,12 +41,12 @@ export class UserService {
   signOut(): Promise<any> {
     this.userNumber = -1;
     this.userId = '';
-    return this.http.get<any>('/api/sign_out').toPromise();
+    return this.http.get<any>('/api/sign_out/').toPromise();
   }
 
   signUp(userId: string, password: string): Promise<boolean> {
     return this.http
-      .post<User>('/api/sign_up', {
+      .post<User>('/api/sign_up/', {
         userId: userId,
         password: password
       })
@@ -64,12 +64,12 @@ export class UserService {
   }
 
   getCourses(): Observable<Course[]> {
-    let url = '/api/user/course';
+    let url = '/api/user/course/';
     return this.http.get<Course[]>(url);
   }
 
   addCourses(courses: Course[]): Observable<any> {
-    let url = '/api/user/course';
+    let url = '/api/user/course/';
     return this.http.post<any>(url, courses);
   }
 
