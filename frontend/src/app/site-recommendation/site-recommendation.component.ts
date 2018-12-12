@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { mockCourses } from '../mock';
 import { Course } from '../course';
+import { Site } from '../site';
 import { UserService } from '../user.service';
+import { CourseService } from '../course.service';
 
 @Component({
   selector: 'app-site-recommendation',
@@ -12,11 +13,12 @@ import { UserService } from '../user.service';
 export class SiteRecommendationComponent implements OnInit {
   courses: Course[];
   expanded: boolean[] = [];
-  urlToAdd: string[] = [];
+  siteName: string[] = [];
+  siteUrl: string[] = [];
 
   initialized: boolean = false;
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private courseService: CourseService) {}
 
   ngOnInit() {
     this.userService.authorized().then(success => {
@@ -26,9 +28,11 @@ export class SiteRecommendationComponent implements OnInit {
     });
     this.userService.getCourses().subscribe(courses => {
       this.courses = courses;
+      console.log(courses);
       for (let course of this.courses) {
         this.expanded.push(false);
-        this.urlToAdd.push('');
+        this.siteUrl.push('');
+        this.siteName.push('');
       }
 
       this.initialized = true;
@@ -56,7 +60,11 @@ export class SiteRecommendationComponent implements OnInit {
 
   addUrl(course: Course) {
     let index: number = this.courses.indexOf(course);
-    course.siteList.push({ name: 'added', url: this.urlToAdd[index], lastUpdated: new Date() });
+    let s: Site = { name: this.siteName[index], url: this.siteUrl[index], lastUpdated: new Date() };
+    course.siteList.push({ name: this.siteName[index], url: this.siteUrl[index], lastUpdated: new Date() });
+    // Course와 연동된 siteList가 제대로 작동하지 않는 것으로 보임.
+    this.courseService.addSiteByCourseId(course.id, s).subscribe();
+    this.userService.addCourses(this.courses).subscribe();
   }
 
   signOut() {
