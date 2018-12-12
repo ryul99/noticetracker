@@ -357,3 +357,13 @@ class NoticeTrackerTestCase(TestCase):
             content__contains="[Practice Session] 12/12 Bug Report"))
         self.assertEqual(len(s), 1)
         self.assertIn("163", s[0].url)
+    
+    def test_user_course_site(self):
+        client = Client()
+        client.force_login(self.user)
+        response = client.post(
+            '/api/user/course/1/site/',self.siteToDict(self.site1), content_type='application/json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(self.cc1.siteList.filter(name='SNU').count(), 1)
+        self.checkInvalidRequest(['POST'], '/api/user/course/1/site/')
+
