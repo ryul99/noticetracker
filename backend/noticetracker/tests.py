@@ -4,6 +4,7 @@ from django.contrib import auth
 from django.core import serializers
 from .crawl import crawler
 from .getarticles import getArticles
+from .crawlers.theory import Theory
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
 from datetime import datetime, timezone
@@ -339,6 +340,8 @@ class NoticeTrackerTestCase(TestCase):
 
     def test_article_crawl(self):
         getArticles(self.site4, self.course1)
+        getArticles(self.site4, self.course1)
         s = list(Article.objects.filter(
             content__contains="[HW2] HW2의 성적을 공지드립니다.").all())
+        self.assertEqual(len(s), 1)
         self.assertIn("uid=437", s[0].url)
