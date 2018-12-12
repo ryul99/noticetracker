@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core import serializers
 from .timetable_crawl import crawler
-from .getarticles import getArticles
+from .db_update import getArticles
 from .crawlers.theory import Theory
+from .crawlers.github import Github
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
 from datetime import datetime, timezone
@@ -76,6 +77,7 @@ class NoticeTrackerTestCase(TestCase):
             'course': self.courseToDict(article.fromCourse),
             'content': article.content,
             'url': article.url,
+            'updated': article.updated.strftime('%Y-%m-%dT%H:%M:%SZ'),
             'star': article in self.userDetail.starList.all(),
             'ignore': article in self.userDetail.ignoreList.all()
         }
@@ -97,10 +99,13 @@ class NoticeTrackerTestCase(TestCase):
                           lastUpdated=datetime(year=2018, month=12, day=8, tzinfo=timezone.utc))
         self.site4 = Site(name='automata', url='http://theory.snu.ac.kr/?page_id=1388',
                           lastUpdated=datetime(year=2018, month=12, day=9, tzinfo=timezone.utc))
+        self.site5 = Site(name='SWPP', url='https://github.com/swsnu/swppfall2018',
+                          lastUpdated=datetime(year=2018, month=12, day=10, tzinfo=timezone.utc))
         self.site1.save()
         self.site2.save()
         self.site3.save()
         self.site4.save()
+        self.site5.save()
 
         self.course1 = Course(
             id=1, name='핀란드어 1', lectureCode='L0441.000100', profName='정도상', classNumber='001')
@@ -338,10 +343,17 @@ class NoticeTrackerTestCase(TestCase):
                    [(1, 180, 190), (5, 110, 130)])]
         self.assertEqual(courseDataResult, answer)
 
-    def test_article_crawl(self):
-        getArticles(self.site4, self.course1)
-        getArticles(self.site4, self.course1)
+    def test_theory_crawl(self):
+        getArticles(self.site4, self.cc1)
+        getArticles(self.site4, self.cc1)
         s = list(Article.objects.filter(
             content__contains="[HW2] HW2의 성적을 공지드립니다.").all())
         self.assertEqual(len(s), 1)
         self.assertIn("uid=437", s[0].url)
+
+    def test_github_crawl(self):
+        Github.crawlPage(self.site5, self.cc1, 1)
+        s = list(Article.objects.filter(
+            content__contains="[Practice Session] 12/12 Bug Report"))
+        self.assertEqual(len(s), 1)
+        self.assertIn("163", s[0].url)
