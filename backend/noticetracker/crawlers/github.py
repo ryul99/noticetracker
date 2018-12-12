@@ -26,7 +26,6 @@ class Github:
         if html.status_code == 200:
             issueList = html.json()
             # print(issueList)
-            print("issue count: " + len(issueList))
             if len(issueList) == 0:
                 return False
             for issue in issueList:
