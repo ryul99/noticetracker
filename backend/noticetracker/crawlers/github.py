@@ -31,7 +31,7 @@ class Github:
                 # print(issue)
                 content = issue["title"]
                 url = issue["html_url"]
-                if len(Article.objects.filter(url=url)) == 0:
+                if Article.objects.filter(url=url, fromSite=site).count() == 0:
                     articleData = Article(
                         content=content,
                         url=url,

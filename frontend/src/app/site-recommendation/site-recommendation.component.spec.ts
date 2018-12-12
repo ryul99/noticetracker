@@ -69,7 +69,6 @@ describe('SiteRecommendationComponent', () => {
   });
 
   it('addUrl', () => {
-    component.addUrl(mockCourses[1]);
     // TODO: real test
   });
 });
