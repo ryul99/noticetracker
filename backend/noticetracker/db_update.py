@@ -27,7 +27,7 @@ def update():
 
 
 def getArticles(site, course):
-    # print(site.url)
+    print(site.url)
     if "theory.snu.ac.kr" in site.url:
         Theory.getArticles(site, course)
     elif "github.com" in site.url:

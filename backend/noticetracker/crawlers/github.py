@@ -19,16 +19,17 @@ class Github:
             site.url = "https://" + site.url
         repoUrl = site.url[site.url.find('github.com') + len('github.com'):]
         apiUrl = "https://api.github.com/repos"
-        # print(apiUrl + repoUrl + '/issues?page=' + str(pageNum))
-        html = requests.get(apiUrl + repoUrl + '/issues?page=' + str(pageNum))
+        print(apiUrl + repoUrl + '/issues?page=' + str(pageNum))
+        headers = { 'User-Agent': 'NoticeTracker' }
+        html = requests.get(apiUrl + repoUrl + '/issues?page=' + str(pageNum), headers=headers)
 
         if html.status_code == 200:
             issueList = html.json()
             # print(issueList)
+            print("issue count: " + len(issueList))
             if len(issueList) == 0:
                 return False
             for issue in issueList:
-                # print(issue)
                 content = issue["title"]
                 url = issue["html_url"]
                 if Article.objects.filter(url=url, fromSite=site).count() == 0:
@@ -39,7 +40,10 @@ class Github:
                         fromCourse=course.course,
                         fromSite=site
                     )
+                    print("NEW article: " + url)
                     articleData.save()
             return True
         else:
+            print("Github returned " + str(html.status_code))
+            print(html.text)
             return False
