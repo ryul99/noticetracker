@@ -16,6 +16,8 @@ urlpatterns = [
     path('user/course/', views.userCourse, name='userCourse'),
     path('user/course/<int:courseId>/article/',
          views.userCourseArticle, name='userCourseArticle'),
+    path('user/course/<int:courseId>/site/',
+         views.userCourseSite, name='userCourseSite'),
     path('user/newsfeed/', views.userNewsfeed, name='userNewsfeed'),
     path('user/article/<int:articleId>/',
          views.userArticle, name='userArticle')

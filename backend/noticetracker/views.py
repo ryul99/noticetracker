@@ -226,6 +226,31 @@ def userCourse(request):
 
 
 @csrf_exempt
+def userCourseSite(request, courseId):
+    if request.method not in ['POST']:
+        return HttpResponseNotAllowed(['POST'])
+    elif request.method == 'POST':
+        if request.user.is_authenticated:
+            try:
+                user = UserDetail.objects.get(user=request.user)
+                course = user.courseList.get(id=courseId)
+            except UserDetail.DoesNotExist:
+                return HttpResponseNotFound()
+            try:
+                requestData = json.loads(request.body.decode())
+                reqUrl = requestData['url']
+                reqName = requestData['name']
+                site = Site(url=reqUrl, name=reqName)
+                site.save()
+                course.siteList.add(site)
+                return HttpResponse(status=201)
+            except (KeyError, JSONDecodeError):
+                return HttpResponseBadRequest()
+        else:
+            return HttpResponse(status=404)  # user is not authenticated
+
+
+@csrf_exempt
 def userCourseArticle(request, courseId):
     if request.method not in ['GET']:
         return HttpResponseNotAllowed(['GET'])

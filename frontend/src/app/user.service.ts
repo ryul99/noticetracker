@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Course } from './course';
+import { Site } from './site';
 import { User } from './user';
 import { Article } from './article';
 import { Observable } from 'rxjs';
@@ -82,6 +83,11 @@ export class UserService {
   addCourses(courses: Course[]): Observable<any> {
     let url = '/api/user/course/';
     return this.http.post<any>(url, courses);
+  }
+
+  addSiteByCourseId(course: Course, site: Site): Observable<any> {
+    let url = '/api/user/course/' + course.id + '/site';
+    return this.http.post<any>(url, site);
   }
 
   getNewsfeed(): Observable<Article[]> {
