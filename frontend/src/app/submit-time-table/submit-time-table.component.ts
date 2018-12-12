@@ -111,4 +111,9 @@ export class SubmitTimeTableComponent implements OnInit {
       this.searchedCourseSelected[i] = false;
     }
   }
+
+  signOut() {
+    this.userService.signOut();
+    this.router.navigate(['']);
+  }
 }

@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <body class="bg-light scroll-safe">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <body class="scroll-safe">
+    <nav class="navbar navbar-expand fixed-top navbar-dark shadow bg-dark">
       <a class="navbar-brand" href="../newsfeed">Notice Tracker</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="../newsfeed">Newsfeed <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="../submit_time_table">Timetable <span class="sr-only">(current)</span></a>
-          </li>
-        </ul>
-      </div>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="../newsfeed">Newsfeed <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="../submit_time_table">Timetable <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../site_recommendation">SiteList <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="#" (click)="signOut()">Log out</a></li>
+      </ul>
     </nav>
-
     <div class="d-flex">
-      <div class="container">
+      <div class="container container-center">
         <h2>Submit your timetable</h2>
         <br />
 
@@ -48,59 +38,48 @@
           </div>
         </div>
         <br />
-        <div>
-          <button class="btn btn-success btn-space" (click)="submit()">Submit</button>
-          <button class="btn btn-secondary btn-space" (click)="skip()">Skip</button>
-          <button class="btn btn-secondary btn-space" (click)="goHome()">Home</button>
-        </div>
         <br />
-        <div style="overflow-y: scroll; width: 600px; height:500px;">
-          <div *ngIf="searchedCourse">
-            <ul class="list-group">
-              <li class="list-group-item" *ngFor="let course of searchedCourse; let index = index">
-                <font size="2">
-                  <table class="table table-borderless" cellspacing="0" cellpadding="0">
-                    <thead>
-                      <tr style="height:15px;">
-                        <th width="200" colspan="4">{{ course.name }}</th>
-                        <th class="center">
-                          <input
-                            type="checkbox"
-                            [(ngModel)]="searchedCourseSelected[index]"
-                            (change)="this.toggleOnSearchedList(course)"
-                          />
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td height="10" class="center" width="80">{{ course.profName }}</td>
-                        <td height="10" class="center" width="130">{{ course.lectureCode }}</td>
-                        <td height="10" class="center" width="80">({{ course.classNumber }})</td>
-                        <td height="10" width="200"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </font>
-              </li>
-            </ul>
-          </div>
+        <div *ngIf="searchedCourse">
+          <ul class="list-group" style="margin: 0; max-height: 300px; overflow: scroll">
+            <li
+              class="list-group-item"
+              [ngClass]="{ active: searchedCourseSelected[index] }"
+              *ngFor="let course of searchedCourse; let index = index"
+            >
+              <div class="d-flex">
+                <div class="container">
+                  <strong>{{ course.name }}</strong> / {{ course.profName }} <br />
+                  {{ course.lectureCode }} ({{ course.classNumber }})
+                </div>
+
+                <input
+                  type="checkbox"
+                  [(ngModel)]="searchedCourseSelected[index]"
+                  (change)="this.toggleOnSearchedList(course)"
+                />
+              </div>
+            </li>
+          </ul>
         </div>
         <br />
       </div>
 
-      <div class="container">
-        <div class="btn-group"><button class="btn btn-info" (click)="toggleDeleteButton()">Edit</button></div>
-        <br /><br />
+      <div class="container container-center">
+        <div class="d-flex flex-row-reverse">
+          <button class="btn btn-info btn-space" (click)="toggleDeleteButton()">Edit</button>
+          <button class="btn btn-success btn-space" (click)="submit()">Submit</button>
+        </div>
+        <br />
 
         <div *ngIf="selectedCourse">
           <ul class="list-group">
             <li class="list-group-item" *ngFor="let course of selectedCourse">
-              <strong>{{ course.name }}</strong
-              ><span style="float: right;" *ngIf="removeActivated"
-                ><button class="btn btn-dark" (click)="removeCourse(course)">X</button></span
-              ><br />
-              {{ course.profName }} ({{ course.classNumber }})
+              <strong>{{ course.name }}</strong> / {{ course.profName }}
+              <span style="float: right;" *ngIf="removeActivated"
+                ><button class="btn btn-dark" (click)="removeCourse(course)">X</button>
+              </span>
+              <br />
+              {{ course.lectureCode }} ({{ course.classNumber }})
             </li>
           </ul>
         </div>
