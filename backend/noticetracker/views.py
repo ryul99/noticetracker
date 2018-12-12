@@ -299,7 +299,7 @@ def userArticle(request, articleId):
                 'course': article.fromCourse.toDict(),
                 'content': article.content,
                 'url': article.url,
-                'updated': art.updated,
+                'updated': article.updated,
                 'star': userDetail.starList.filter(id=article.id).exists(),
                 'ignore': userDetail.ignoreList.filter(id=article.id).exists()
             }

@@ -17,7 +17,7 @@ class Theory:
     def crawlPage(site, course, pageNum):
         if "http" not in site.url:
             site.url = "http://" + site.url
-        print(site.url)
+        # print(site.url)
         html = requests.get(site.url + "&pageid=" + str(pageNum))
         if html.status_code == 200:
             bsObject = BeautifulSoup(html.text, "html.parser")
