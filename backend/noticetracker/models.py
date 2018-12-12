@@ -69,4 +69,4 @@ class UserDetail(models.Model):
 class SiteHref(models.Model):
     href = models.TextField(default="")  # valid url
     site = models.ForeignKey(
-        Site, on_delete=models.CASCADE, related_name="href")
+        Site, on_delete=models.CASCADE, related_name="hrefs")
