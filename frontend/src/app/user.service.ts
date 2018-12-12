@@ -86,7 +86,7 @@ export class UserService {
   }
 
   addSiteByCourseId(course: Course, site: Site): Observable<any> {
-    let url = '/api/user/course/' + course.id + '/site';
+    let url = '/api/user/course/' + course.id + '/site/';
     return this.http.post<any>(url, site);
   }
 
