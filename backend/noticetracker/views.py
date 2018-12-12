@@ -12,6 +12,19 @@ import json
 
 
 @csrf_exempt
+def checkAuth(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            dic = {'userId': request.user.username,
+                   'userNumber': request.user.id}
+            return JsonResponse(dic)
+        else:
+            return HttpResponse(status=404)
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
+@csrf_exempt
 def signin(request):
     if request.method == 'POST':
         try:

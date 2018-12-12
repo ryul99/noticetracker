@@ -162,6 +162,15 @@ class NoticeTrackerTestCase(TestCase):
         self.userDetail.starList.add(self.article2)
         self.userDetail.ignoreList.add(self.article3)
 
+    def test_auth(self):
+        client = Client()
+        response = client.get('/api/auth/')
+        self.assertEqual(response.status_code, 404)
+        client.force_login(self.user)
+        response = client.get('/api/auth/')
+        self.assertEqual(response.status_code, 200)
+        self.checkInvalidRequest(['GET'], '/api/auth/')
+
     def test_signup(self):
         client = Client()
         response = client.post(

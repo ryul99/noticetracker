@@ -5,6 +5,13 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user.service';
 import { mockUserService } from '../mock';
+import { of } from 'rxjs';
+
+class notAuth_mockUserService extends mockUserService {
+  authorized() {
+    return of(false).toPromise();
+  }
+}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -15,7 +22,7 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LoginComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useClass: mockUserService }]
+      providers: [{ provide: UserService, useClass: notAuth_mockUserService }]
     }).compileComponents();
   }));
 

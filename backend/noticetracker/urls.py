@@ -2,6 +2,7 @@ from django.urls import path
 from noticetracker import views
 
 urlpatterns = [
+    path('auth/', views.checkAuth, name='checkAuth'),
     path('sign_in/', views.signin, name='signin'),
     path('sign_up/', views.signup, name='signup'),
     path('sign_out/', views.signout, name='signout'),

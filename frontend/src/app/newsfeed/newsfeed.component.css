@@ -1,5 +1,12 @@
-.container {
-  height: 100vh;
+body {
+  padding-top: 70px;
+}
+
+.scroll-safe {
+  overflow-y: scroll;
+}
+
+.container-center {
   padding-top: 30px;
   padding-bottom: 30px;
   max-width: 500px;
