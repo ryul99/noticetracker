@@ -10,7 +10,7 @@ from datetime import datetime, timezone
 
 def update_auto():
     while True:
-        print("Update start: " + datetime.now(timezone.utc))
+        print("Update start: " + str(datetime.now(timezone.utc)))
         update()
         time.sleep(15)
 
