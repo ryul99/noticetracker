@@ -31,7 +31,7 @@ class Theory:
                 url = titleObject.get('href')
                 uid = url[url.find('uid'):]
                 newUrl = site.url + '&' + uid
-                if len(Article.objects.filter(url=newUrl)) == 0:
+                if Article.objects.filter(url=newUrl, fromSite=site).count() == 0:
                     articleData = Article(
                         content=content,
                         url=(site.url + '&' + uid),

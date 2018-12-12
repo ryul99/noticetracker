@@ -233,7 +233,7 @@ def userCourseSite(request, courseId):
         if request.user.is_authenticated:
             try:
                 user = UserDetail.objects.get(user=request.user)
-                course = user.courseList.get(id=courseId)
+                course = user.courseList.get(course__id=courseId)
             except UserDetail.DoesNotExist:
                 return HttpResponseNotFound()
             try:
