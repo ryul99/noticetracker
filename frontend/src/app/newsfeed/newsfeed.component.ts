@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { UserService } from '../user.service';
 import { Article } from '../article';
 import { Course } from '../course';
-import { mockCourses, mockArticles } from '../mock';
 
 @Component({
   selector: 'app-newsfeed',
@@ -11,8 +10,8 @@ import { mockCourses, mockArticles } from '../mock';
   styleUrls: ['./newsfeed.component.css']
 })
 export class NewsfeedComponent implements OnInit {
-  timeTable: Course[] = mockCourses;
-  newsfeed: Article[] = mockArticles;
+  courses: Course[];
+  newsfeed: Article[];
 
   constructor(private router: Router, private userService: UserService) {}
 
@@ -21,6 +20,14 @@ export class NewsfeedComponent implements OnInit {
       if (!success) {
         this.router.navigate(['']);
       }
+    });
+
+    this.userService.getCourses().subscribe(courses => {
+      this.courses = courses;
+    });
+
+    this.userService.getNewsfeed().subscribe(newsfeed => {
+      this.newsfeed = newsfeed;
     });
   }
 

@@ -76,8 +76,8 @@ describe('UserService', () => {
   });
 
   it('getNewsfeed', () => {
-    let url = '/api/user/newsfeed/' + 1;
-    service.getNewsfeed(1).subscribe(articles => {
+    let url = '/api/user/newsfeed/';
+    service.getNewsfeed().subscribe(articles => {
       expect(req.request.method).toEqual('GET');
       expect(articles).toEqual([mockArticles[0], mockArticles[1]]);
     });

@@ -28,7 +28,6 @@ export class SiteRecommendationComponent implements OnInit {
     });
     this.userService.getCourses().subscribe(courses => {
       this.courses = courses;
-      console.log(courses);
       for (let course of this.courses) {
         this.expanded.push(false);
         this.siteUrl.push('');

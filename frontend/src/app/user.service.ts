@@ -84,8 +84,8 @@ export class UserService {
     return this.http.post<any>(url, courses);
   }
 
-  getNewsfeed(pageNumber: number): Observable<Article[]> {
-    let url = '/api/user/newsfeed/' + pageNumber;
+  getNewsfeed(): Observable<Article[]> {
+    let url = '/api/user/newsfeed/';
     return this.http.get<Article[]>(url);
   }
 
