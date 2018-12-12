@@ -9,25 +9,33 @@ class Theory:
     def getArticles(site, course): # theory.snu.ac.kr/?page_id=<id>
         pageNum = 1
         while True:
-            html = requests.get(site.url + "&pageid=" + str(pageNum))
-            if html.status_code == 200:
-                bsObject = BeautifulSoup(html.text, "html.parser")
-                tbody = bsObject.find('tbody')
-                articles = tbody.find_all('tr')
-                if len(articles) == 0:
-                    break
-                for article in articles:
-                    titleObject = article.find('a')
-                    content = titleObject.get_text()
-                    url = titleObject.get('href')
+            if not Theory.crawlPage(site, course, pageNum):
+                break
+            pageNum += 1
+
+    def crawlPage(site, course, pageNum):
+        html = requests.get(site.url + "&pageid=" + str(pageNum))
+        if html.status_code == 200:
+            bsObject = BeautifulSoup(html.text, "html.parser")
+            tbody = bsObject.find('tbody')
+            articles = tbody.find_all('tr')
+            if len(articles) == 0:
+                return False
+            for article in articles:
+                titleObject = article.find('a')
+                content = titleObject.get_text()
+                url = titleObject.get('href')
+                uid = url[url.find('uid'):]
+                newUrl = site.url + '&' + uid
+                if len(Article.objects.filter(url=newUrl)) == 0:
                     articleData = Article(
                         content=content,
-                        url=(site.url + url),
+                        url=(site.url + '&' + uid),
                         updated=datetime.now(timezone.utc),
                         fromCourse=course,
                         fromSite=site
                     )
                     articleData.save()
-            else:
-                break
-            pageNum += 1
+            return True
+        else:
+            return False
