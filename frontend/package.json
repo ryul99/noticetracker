@@ -1,10 +1,10 @@
 {
   "name": "notice-tracker",
-  "version": "0.0.0",
+  "version": "1.0.1212",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --proxy-config proxy.config.json",
-    "build": "ng build --prod --proxy-config proxy.config.json",
+    "build": "ng build --prod",
     "test": "ng test --code-coverage --sourceMap true",
     "lint": "ng lint",
     "e2e": "ng e2e"
