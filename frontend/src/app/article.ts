@@ -4,6 +4,7 @@ export class Article {
   course: Course;
   content: string;
   url: string;
+  updated: Date;
   star: boolean;
   ignore: boolean;
 

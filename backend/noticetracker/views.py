@@ -241,6 +241,7 @@ def userCourseArticle(request, courseId):
                 'course': art.fromCourse.toDict(),
                 'content': art.content,
                 'url': art.url,
+                'updated': art.updated,
                 'star': userDetail.starList.filter(id=art.id).exists(),
                 'ignore': userDetail.ignoreList.filter(id=art.id).exists()
             })
@@ -272,6 +273,7 @@ def userNewsfeed(request):
                     'course': art.fromCourse.toDict(),
                     'content': art.content,
                     'url': art.url,
+                    'updated': art.updated,
                     'star': userDetail.starList.filter(id=art.id).exists(),
                     'ignore': userDetail.ignoreList.filter(id=art.id).exists()
                 })
@@ -297,6 +299,7 @@ def userArticle(request, articleId):
                 'course': article.fromCourse.toDict(),
                 'content': article.content,
                 'url': article.url,
+                'updated': art.updated,
                 'star': userDetail.starList.filter(id=article.id).exists(),
                 'ignore': userDetail.ignoreList.filter(id=article.id).exists()
             }

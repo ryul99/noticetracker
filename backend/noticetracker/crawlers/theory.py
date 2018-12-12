@@ -5,8 +5,9 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 
+
 class Theory:
-    def getArticles(site, course): # theory.snu.ac.kr/?page_id=<id>
+    def getArticles(site, course):  # theory.snu.ac.kr/?page_id=<id>
         pageNum = 1
         while True:
             if not Theory.crawlPage(site, course, pageNum):
@@ -14,6 +15,9 @@ class Theory:
             pageNum += 1
 
     def crawlPage(site, course, pageNum):
+        if "http" not in site.url:
+            site.url = "http://" + site.url
+        print(site.url)
         html = requests.get(site.url + "&pageid=" + str(pageNum))
         if html.status_code == 200:
             bsObject = BeautifulSoup(html.text, "html.parser")
@@ -32,7 +36,7 @@ class Theory:
                         content=content,
                         url=(site.url + '&' + uid),
                         updated=datetime.now(timezone.utc),
-                        fromCourse=course,
+                        fromCourse=course.course,
                         fromSite=site
                     )
                     articleData.save()

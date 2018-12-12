@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core import serializers
-from .crawl import crawler
+from .timetable_crawl import crawler
 from .getarticles import getArticles
 from .crawlers.theory import Theory
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail

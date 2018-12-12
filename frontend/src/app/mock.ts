@@ -85,6 +85,7 @@ export const mockArticles: Article[] = [
     course: mockCourses[0],
     content: mockCourses[0].name,
     url: 'https://www.naver.com/',
+    updated: new Date(),
     star: true,
     ignore: false
   }),
@@ -93,6 +94,7 @@ export const mockArticles: Article[] = [
     course: mockCourses[1],
     content: mockCourses[1].name,
     url: 'https://github.com/',
+    updated: new Date(),
     star: true,
     ignore: false
   }),
@@ -101,6 +103,7 @@ export const mockArticles: Article[] = [
     course: mockCourses[2],
     content: mockCourses[2].name,
     url: 'https://www.youtube.com/',
+    updated: new Date(),
     star: false,
     ignore: false
   }),
@@ -109,6 +112,7 @@ export const mockArticles: Article[] = [
     course: mockCourses[3],
     content: mockCourses[3].name,
     url: 'https://www.daum.net/',
+    updated: new Date(),
     star: false,
     ignore: true
   }),
@@ -117,6 +121,7 @@ export const mockArticles: Article[] = [
     course: mockCourses[4],
     content: mockCourses[4].name,
     url: 'https://www.google.com/',
+    updated: new Date(),
     star: false,
     ignore: false
   })

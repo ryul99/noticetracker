@@ -28,6 +28,7 @@ export class NewsfeedComponent implements OnInit {
 
     this.userService.getNewsfeed().subscribe(newsfeed => {
       this.newsfeed = newsfeed;
+      console.log(this.newsfeed);
     });
   }
 

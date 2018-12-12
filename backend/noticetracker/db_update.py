@@ -5,6 +5,18 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from .crawlers.theory import Theory
 
+
+def update():
+    users = list(UserDetail.objects.all())
+    for user in users:
+        courses = list(user.courseList.all())
+        for course in courses:
+            sites = list(course.siteList.all())
+            for site in sites:
+                getArticles(site, course)
+
+
 def getArticles(site, course):
+    print(site.url)
     if "theory.snu.ac.kr" in site.url:
         Theory.getArticles(site, course)

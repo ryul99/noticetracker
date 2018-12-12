@@ -26,6 +26,8 @@
           >
             <div class="card-header">{{ article.course.name }}</div>
             <div [ngClass]="{ 'text-primary': article.star }" class="card-body">
+              {{ article.updated }} <br/>
+              {{ article.content }} <br/>
               <a href="{{ article.url }}">{{ article.url }}</a>
               <div class="d-flex flex-row-reverse">
                 <button class="btn btn-primary btn-space" (click)="toggleStar(article)">Star</button>
