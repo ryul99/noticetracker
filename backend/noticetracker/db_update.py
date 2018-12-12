@@ -5,6 +5,16 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from .crawlers.theory import Theory
 from .crawlers.github import Github
+import time
+from datetime import datetime, timezone
+
+
+def update_auto():
+    while True:
+        print("Update start: " + str(datetime.now(timezone.utc)))
+        update()
+        time.sleep(15)
+        
 
 def update():
     users = list(UserDetail.objects.all())
