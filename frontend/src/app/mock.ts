@@ -154,8 +154,8 @@ export class mockUserService {
     return of(courses);
   }
 
-  getNewsfeed(pageNumber: number) {
-    return;
+  getNewsfeed() {
+    return of(mockArticles);
   }
 
   updateArticle(article: Article) {
@@ -197,6 +197,6 @@ export class mockCourseService {
   }
 
   addSiteByCourseId(courseId: number, site: Site) {
-    return;
+    return of();
   }
 }
