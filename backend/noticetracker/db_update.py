@@ -3,10 +3,11 @@ import requests
 import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from .crawlers.theory import Theory
-from .crawlers.github import Github
 import time
 from datetime import datetime, timezone
+from .crawl_diff import scan
+from .crawlers.theory import Theory
+from .crawlers.github import Github
 
 
 def update_auto():
@@ -14,7 +15,7 @@ def update_auto():
         print("Update start: " + str(datetime.now(timezone.utc)))
         update()
         time.sleep(15)
-        
+
 
 def update():
     users = list(UserDetail.objects.all())
@@ -23,12 +24,23 @@ def update():
         for course in courses:
             sites = list(course.siteList.all())
             for site in sites:
-                getArticles(site, course)
+                if checkCrawlerExist(site, course):
+                    pass
+                else:
+                    try:
+                        scan(site, course.course)
+                    except Exception:
+                        print("An error occured during crawl " + site.url)
 
 
-def getArticles(site, course):
-    print(site.url)
+def checkCrawlerExist(site, course):
     if "theory.snu.ac.kr" in site.url:
+        print("scan " + site.url + " is working")
         Theory.getArticles(site, course)
+        return True
     elif "github.com" in site.url:
+        print("scan " + site.url + " is working")
         Github.getArticles(site, course)
+        return True
+    else:
+        return False

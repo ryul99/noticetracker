@@ -2,8 +2,8 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core import serializers
-from .timetable_crawl import crawler
-from .db_update import getArticles
+from .crawl_timetable import crawler
+from .db_update import checkCrawlerExist
 from .crawlers.theory import Theory
 from .crawlers.github import Github
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
@@ -91,7 +91,7 @@ class NoticeTrackerTestCase(TestCase):
         self.time2 = LectureTime(day=4, start=170, end=180)
         self.time1.save()
         self.time2.save()
-        self.site1 = Site(name='SNU', url='www.snu.ac.kr',
+        self.site1 = Site(name='SNU', url='http://www.snu.ac.kr',
                           lastUpdated=datetime(year=2018, month=12, day=6, tzinfo=timezone.utc))
         self.site2 = Site(name='ropas', url='ropas.snu.ac.kr',
                           lastUpdated=datetime(year=2018, month=12, day=7, tzinfo=timezone.utc))
@@ -99,7 +99,7 @@ class NoticeTrackerTestCase(TestCase):
                           lastUpdated=datetime(year=2018, month=12, day=8, tzinfo=timezone.utc))
         self.site4 = Site(name='automata', url='http://theory.snu.ac.kr/?page_id=1388',
                           lastUpdated=datetime(year=2018, month=12, day=9, tzinfo=timezone.utc))
-        self.site5 = Site(name='SWPP', url='https://github.com/swsnu/swppfall2018',
+        self.site5 = Site(name='SWPP', url='https://github.com/swsnu/swppfall2018/issues',
                           lastUpdated=datetime(year=2018, month=12, day=10, tzinfo=timezone.utc))
         self.site1.save()
         self.site2.save()
@@ -344,19 +344,19 @@ class NoticeTrackerTestCase(TestCase):
         self.assertEqual(courseDataResult, answer)
 
     def test_theory_crawl(self):
-        getArticles(self.site4, self.cc1)
-        getArticles(self.site4, self.cc1)
+        checkCrawlerExist(self.site4, self.cc1)
+        checkCrawlerExist(self.site4, self.cc1)
         s = list(Article.objects.filter(
             content__contains="[HW2] HW2의 성적을 공지드립니다.").all())
         self.assertEqual(len(s), 1)
         self.assertIn("uid=437", s[0].url)
 
-    # def test_github_crawl(self):
-    #     Github.crawlPage(self.site5, self.cc1, 1)
-    #     s = list(Article.objects.filter(
-    #         content__contains="[Practice Session] 12/12 Bug Report"))
-    #     self.assertEqual(len(s), 1)
-    #     self.assertIn("163", s[0].url)
+    def test_github_crawl(self):
+        Github.crawlPage(self.site5, self.cc1, 1)
+        s = list(Article.objects.filter(
+            content__contains="[Practice Session] 12/12 Bug Report"))
+        self.assertEqual(len(s), 1)
+        self.assertIn("163", s[0].url)
 
     def test_user_course_site(self):
         client = Client()
