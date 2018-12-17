@@ -26,7 +26,7 @@ def rawHref2Url(href, root, slicedUrl):
 def crawl(url):
     req = requests.get(url)
     ret = list()
-    if req.status_code == 200 and req.ok:
+    if req.status_code < 400 and req.ok:
         slicedUrl = re.findall('([^/]+[/]{2})?([^/]+)', url)
         root = slicedUrl[0][1]  # e.g. stackoverflow.com
         bsObject = BeautifulSoup(req.text, "html.parser")
