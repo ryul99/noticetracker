@@ -24,6 +24,7 @@ def rawHref2Url(href, root, slicedUrl):
 
 
 def crawl(url):
+    print("crawl {} is working".format(url))
     req = requests.get(url)
     ret = list()
     if req.status_code == 200 and req.ok:

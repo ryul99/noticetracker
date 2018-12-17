@@ -6,16 +6,17 @@ import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import re
-from noticetracker import baseCrawl
+from .baseCrawl import crawl
 
 
 def scan(site, course):
+    print("scan {} is working".format(site.url))
     url = site.url
     hrefs = crawl(url)
     addedHrefs = list()
     for href in hrefs:
         searchedHref = site.hrefs.filter(href=href)
-        if searchedHref == None:
+        if len(searchedHref) == 0:
             addedHrefs.append(href)
     # for href in site.hrefs.all():  # need to test
     #     if href.href not in hrefs:
