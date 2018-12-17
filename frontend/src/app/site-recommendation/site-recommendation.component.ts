@@ -61,8 +61,8 @@ export class SiteRecommendationComponent implements OnInit {
     let index: number = this.courses.indexOf(course);
     let s: Site = { name: this.siteName[index], url: this.siteUrl[index], lastUpdated: new Date() };
     course.siteList.push({ name: this.siteName[index], url: this.siteUrl[index], lastUpdated: new Date() });
-    // Course와 연동된 siteList가 제대로 작동하지 않는 것으로 보임.
-    // this.courseService.addSiteByCourseId(course.id, s).subscribe();
+    this.siteName[index] = '';
+    this.siteUrl[index] = '';
     this.userService.addSiteByCourseId(course, s).subscribe();
   }
 
