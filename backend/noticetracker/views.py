@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from json.decoder import JSONDecodeError
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
+from crawl_init import save2DB
 
 # Create your views here.
 
@@ -242,6 +243,7 @@ def userCourseSite(request, courseId):
                 reqName = requestData['name']
                 site = Site(url=reqUrl, name=reqName)
                 site.save()
+                save2DB(site)
                 course.siteList.add(site)
                 return HttpResponse(status=201)
             except (KeyError, JSONDecodeError):
