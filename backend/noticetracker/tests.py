@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core import serializers
-from .timetable_crawl import crawler
+from .crawl_timetable import crawler
 from .db_update import getArticles
 from .crawlers.theory import Theory
 from .crawlers.github import Github
@@ -91,7 +91,7 @@ class NoticeTrackerTestCase(TestCase):
         self.time2 = LectureTime(day=4, start=170, end=180)
         self.time1.save()
         self.time2.save()
-        self.site1 = Site(name='SNU', url='www.snu.ac.kr',
+        self.site1 = Site(name='SNU', url='http://www.snu.ac.kr',
                           lastUpdated=datetime(year=2018, month=12, day=6, tzinfo=timezone.utc))
         self.site2 = Site(name='ropas', url='ropas.snu.ac.kr',
                           lastUpdated=datetime(year=2018, month=12, day=7, tzinfo=timezone.utc))

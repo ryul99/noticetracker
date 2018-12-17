@@ -6,6 +6,8 @@ from bs4 import BeautifulSoup
 import time
 from datetime import datetime, timezone
 from .crawl_diff import scan
+from .crawlers.theory import Theory
+from .crawlers.github import Github
 
 
 def update_auto():
@@ -23,3 +25,10 @@ def update():
             sites = list(course.siteList.all())
             for site in sites:
                 scan(site, course.course)
+
+
+def getArticles(site, course):
+    if "theory.snu.ac.kr" in site.url:
+        Theory.getArticles(site, course)
+    elif "github.com" in site.url:
+        Github.getArticles(site, course)
