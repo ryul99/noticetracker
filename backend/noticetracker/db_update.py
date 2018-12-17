@@ -24,11 +24,18 @@ def update():
         for course in courses:
             sites = list(course.siteList.all())
             for site in sites:
-                scan(site, course.course)
+                if checkCrawlerExist(site, course):
+                    pass
+                else:
+                    scan(site, course.course)
 
 
-def getArticles(site, course):
+def checkCrawlerExist(site, course):
     if "theory.snu.ac.kr" in site.url:
         Theory.getArticles(site, course)
+        return True
     elif "github.com" in site.url:
         Github.getArticles(site, course)
+        return True
+    else:
+        return False
