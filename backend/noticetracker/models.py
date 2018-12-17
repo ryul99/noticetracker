@@ -64,3 +64,9 @@ class UserDetail(models.Model):
     courseList = models.ManyToManyField(CourseCustom)
     starList = models.ManyToManyField(Article, related_name="star")
     ignoreList = models.ManyToManyField(Article, related_name="ignore")
+
+
+class SiteHref(models.Model):
+    href = models.TextField(default="")  # valid url
+    site = models.ForeignKey(
+        Site, on_delete=models.CASCADE, related_name="hrefs")
