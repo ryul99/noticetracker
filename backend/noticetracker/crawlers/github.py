@@ -60,7 +60,6 @@ class Github:
         headers = { 'User-Agent': 'NoticeTracker' }
         crawlUrl = site.url + '?page=' + str(pageNum)
         html = requests.get(crawlUrl, headers=headers)
-        print("crawl try: " + site.url)
 
         if html.status_code == 200:
             bsObject = BeautifulSoup(html.text, "html.parser")
