@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <body class="text-center">
     <form class="form-signin">
-        <h1 class="h3 mb-3 font-weight-normal">Welcome to Notice Tracker!</h1>
-        <h1 class="h5 mb-3 font-weight-normal">Team 8: 김무환, 심유근, 이준혁, 최창민</h1>
-        <label for="inputID" class="sr-only">Username</label>
-        <input type="text" [(ngModel)]="this.id" [ngModelOptions]="{standalone: true}" id="inputID" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPW" class="sr-only">Password</label>
-        <input type="Password" [(ngModel)]="this.password" [ngModelOptions]="{standalone: true}" id="inputPW" class="form-control" placeholder="Password" required>
-        <br>
-        <button id="signin-button" class="btn btn-lg btn-primary btn-block" (click)="signIn()">Sign in</button>
-        <button id="signup-button" class="btn btn-lg btn-primary btn-block" (click)="signUp()">Sign up</button>
-        <div class="alert alert-danger" role="alert" *ngIf=this.errorMessage>{{this.errorMessage}}</div>
-        <br>
-        <h1 class="h6 mb-3 font-weight-normal">ver. Sprint 6 - Bug report session (2018-12-12)</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Welcome to Notice Tracker!</h1>
+      <h1 class="h5 mb-3 font-weight-normal">Team 8: 김무환, 심유근, 이준혁, 최창민</h1>
+      <label for="inputID" class="sr-only">Username</label>
+      <input
+        type="text"
+        [(ngModel)]="this.id"
+        [ngModelOptions]="{ standalone: true }"
+        id="inputID"
+        class="form-control"
+        placeholder="Username"
+        required
+        autofocus
+      />
+      <label for="inputPW" class="sr-only">Password</label>
+      <input
+        type="Password"
+        [(ngModel)]="this.password"
+        [ngModelOptions]="{ standalone: true }"
+        id="inputPW"
+        class="form-control"
+        placeholder="Password"
+        required
+      />
+      <br />
+      <button id="signin-button" class="btn btn-lg btn-primary btn-block" (click)="signIn()">Sign in</button>
+      <button id="signup-button" class="btn btn-lg btn-primary btn-block" (click)="signUp()">Sign up</button>
+      <div class="alert alert-danger" role="alert" *ngIf="this.errorMessage">{{ this.errorMessage }}</div>
+      <br />
+      <h1 class="h6 mb-3 font-weight-normal">ver. Sprint 6 - Bug report session (2018-12-12)</h1>
     </form>
   </body>
 </html>
