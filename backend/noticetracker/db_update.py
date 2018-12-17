@@ -32,9 +32,11 @@ def update():
 
 def checkCrawlerExist(site, course):
     if "theory.snu.ac.kr" in site.url:
+        print("scan " + site.url + " is working")
         Theory.getArticles(site, course)
         return True
     elif "github.com" in site.url:
+        print("scan " + site.url + " is working")
         Github.getArticles(site, course)
         return True
     else:

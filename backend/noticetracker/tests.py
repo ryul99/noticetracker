@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core import serializers
 from .crawl_timetable import crawler
-from .db_update import getArticles
+from .db_update import checkCrawlerExist
 from .crawlers.theory import Theory
 from .crawlers.github import Github
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
@@ -344,8 +344,8 @@ class NoticeTrackerTestCase(TestCase):
         self.assertEqual(courseDataResult, answer)
 
     def test_theory_crawl(self):
-        getArticles(self.site4, self.cc1)
-        getArticles(self.site4, self.cc1)
+        checkCrawlerExist(self.site4, self.cc1)
+        checkCrawlerExist(self.site4, self.cc1)
         s = list(Article.objects.filter(
             content__contains="[HW2] HW2의 성적을 공지드립니다.").all())
         self.assertEqual(len(s), 1)
