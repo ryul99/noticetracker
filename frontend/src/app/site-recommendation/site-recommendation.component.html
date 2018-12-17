@@ -33,8 +33,9 @@
                   <a href="{{ site.url }}">{{ site.url }}</a>
                 </li>
               </ul>
-              Name: <input [(ngModel)]="siteName[index]" /> <br />
-              URL: <input [(ngModel)]="siteUrl[index]" /> <button (click)="addUrl(course)">Add</button>
+              Name: <input [(ngModel)]="siteName[index]" type="text" id="inputSiteName" class="form-control" /> <br />
+              URL: <input [(ngModel)]="siteUrl[index]" type="txt" id="inputSiteUrl" class="form-control" />
+              <button class="btn btn-primary" (click)="addUrl(course)">Add</button>
             </div>
           </li>
         </ul>
