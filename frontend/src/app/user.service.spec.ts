@@ -86,7 +86,7 @@ describe('UserService', () => {
   });
 
   it('updateArticle', () => {
-    let url = '/api/user/article/' + 2;
+    let url = '/api/user/article/' + 2 + '/';
     service.updateArticle(mockArticles[1]).subscribe(() => {
       expect(req.request.method).toEqual('PUT');
     });

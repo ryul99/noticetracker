@@ -96,7 +96,7 @@ export class UserService {
   }
 
   updateArticle(article: Article): Observable<any> {
-    let url = '/api/user/article/' + article.id;
+    let url = '/api/user/article/' + article.id + '/';
     return this.http.put<any>(url, article);
   }
 
