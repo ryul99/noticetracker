@@ -27,7 +27,10 @@ def update():
                 if checkCrawlerExist(site, course):
                     pass
                 else:
-                    scan(site, course.course)
+                    try:
+                        scan(site, course.course)
+                    except Exception:
+                        print("An error occured during crawl " + site.url)
 
 
 def checkCrawlerExist(site, course):

@@ -241,12 +241,16 @@ def userCourseSite(request, courseId):
                 requestData = json.loads(request.body.decode())
                 reqUrl = requestData['url']
                 reqName = requestData['name']
-                hrefs = crawl(reqUrl)
-                site = Site(url=reqUrl, name=reqName)
-                site.save()
-                for href in hrefs:
-                    sitehref = SiteHref(href=href, site=site)
-                    sitehref.save()
+                try:
+                    hrefs = crawl(reqUrl)
+                    site = Site(url=reqUrl, name=reqName)
+                    site.save()
+                    for href in hrefs:
+                        sitehref = SiteHref(href=href, site=site)
+                        sitehref.save()
+                except Exception:
+                    # Error
+                    pass
                 course.siteList.add(site)
                 return HttpResponse(status=201)
             except (KeyError, JSONDecodeError):
