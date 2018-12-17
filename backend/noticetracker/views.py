@@ -248,10 +248,10 @@ def userCourseSite(request, courseId):
                     for href in hrefs:
                         sitehref = SiteHref(href=href, site=site)
                         sitehref.save()
+                    course.siteList.add(site)
                 except Exception:
                     # Error
                     pass
-                course.siteList.add(site)
                 return HttpResponse(status=201)
             except (KeyError, JSONDecodeError):
                 return HttpResponseBadRequest()
