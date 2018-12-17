@@ -6,7 +6,7 @@ import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 import re
-from baseCrawl import rawHref2Url, crawl
+from noticetracker import baseCrawl
 
 
 def scan(site, course):
