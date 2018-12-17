@@ -26,7 +26,7 @@ export class CourseService {
   }
 
   getRecommendedSitesById(courseId: number): Observable<Site[]> {
-    let url = 'api/course/' + courseId + '/site';
+    let url = 'api/course/' + courseId + '/site/';
     return this.http.get<Site[]>(url);
   }
 
@@ -36,7 +36,7 @@ export class CourseService {
   }
 
   addSiteByCourseId(courseId: number, site: Partial<Site>): Observable<Site> {
-    let url = 'api/course/' + courseId + '/site';
+    let url = 'api/course/' + courseId + '/site/';
     return this.http.post<Site>(url, site);
   }
 }

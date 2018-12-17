@@ -22,7 +22,11 @@ export class SubmitTimeTableComponent implements OnInit {
   constructor(private courseService: CourseService, private userService: UserService, private router: Router) {}
 
   ngOnInit() {
-    if (!this.userService.authorized()) this.router.navigate(['']);
+    this.userService.authorized().then(success => {
+      if (!success) {
+        this.router.navigate(['']);
+      }
+    });
     this.userService.getCourses().subscribe(courses => {
       this.selectedCourse = courses;
     });
@@ -106,5 +110,10 @@ export class SubmitTimeTableComponent implements OnInit {
     if (i > -1) {
       this.searchedCourseSelected[i] = false;
     }
+  }
+
+  signOut() {
+    this.userService.signOut();
+    this.router.navigate(['']);
   }
 }

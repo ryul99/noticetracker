@@ -26,7 +26,7 @@ describe('ArticleService', () => {
 
   it('getArticlesByCourseId', () => {
     service.getArticlesByCourseId(3).subscribe(() => {});
-    const req = httpMock.expectOne('api/course/3/article');
+    const req = httpMock.expectOne('api/course/3/article/');
     expect(req.request.method).toBe('GET');
     req.flush([mockArticles[0], mockArticles[1]]);
   });

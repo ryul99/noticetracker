@@ -4,7 +4,8 @@ import { SiteRecommendationComponent } from './site-recommendation.component';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { UserService } from '../user.service';
-import { mockCourses, mockUserService } from '../mock';
+import { CourseService } from '../course.service';
+import { mockCourses, mockUserService, mockCourseService } from '../mock';
 
 describe('SiteRecommendationComponent', () => {
   let component: SiteRecommendationComponent;
@@ -15,7 +16,10 @@ describe('SiteRecommendationComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SiteRecommendationComponent],
       imports: [FormsModule, RouterTestingModule],
-      providers: [{ provide: UserService, useClass: mockUserService }]
+      providers: [
+        { provide: UserService, useClass: mockUserService },
+        { provide: CourseService, useClass: mockCourseService }
+      ]
     }).compileComponents();
   }));
 
@@ -65,7 +69,6 @@ describe('SiteRecommendationComponent', () => {
   });
 
   it('addUrl', () => {
-    component.addUrl(mockCourses[1]);
     // TODO: real test
   });
 });

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { mockCourses } from '../mock';
 import { Course } from '../course';
+import { Site } from '../site';
 import { UserService } from '../user.service';
+import { CourseService } from '../course.service';
 
 @Component({
   selector: 'app-site-recommendation',
@@ -12,26 +13,25 @@ import { UserService } from '../user.service';
 export class SiteRecommendationComponent implements OnInit {
   courses: Course[];
   expanded: boolean[] = [];
-  urlToAdd: string[] = [];
-
-  siteIDList: number[] = [];
-  siteSelected: boolean[] = [];
+  siteName: string[] = [];
+  siteUrl: string[] = [];
 
   initialized: boolean = false;
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, private courseService: CourseService) {}
 
   ngOnInit() {
-    if (!this.userService.authorized()) this.router.navigate(['']);
+    this.userService.authorized().then(success => {
+      if (!success) {
+        this.router.navigate(['']);
+      }
+    });
     this.userService.getCourses().subscribe(courses => {
       this.courses = courses;
       for (let course of this.courses) {
         this.expanded.push(false);
-        this.urlToAdd.push('');
-        for (let site of course.sites) {
-          this.siteIDList.push(site.id);
-          this.siteSelected.push(false);
-        }
+        this.siteUrl.push('');
+        this.siteName.push('');
       }
 
       this.initialized = true;
@@ -59,6 +59,15 @@ export class SiteRecommendationComponent implements OnInit {
 
   addUrl(course: Course) {
     let index: number = this.courses.indexOf(course);
-    course.sites.push({ id: 100, name: 'added', url: this.urlToAdd[index] });
+    let s: Site = { name: this.siteName[index], url: this.siteUrl[index], lastUpdated: new Date() };
+    course.siteList.push({ name: this.siteName[index], url: this.siteUrl[index], lastUpdated: new Date() });
+    this.siteName[index] = '';
+    this.siteUrl[index] = '';
+    this.userService.addSiteByCourseId(course, s).subscribe();
+  }
+
+  signOut() {
+    this.userService.signOut();
+    this.router.navigate(['']);
   }
 }

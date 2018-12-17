@@ -8,5 +8,5 @@ export class Course {
   profName: string;
   classNumber: number;
   time: LectureTime[];
-  sites: Site[];
+  siteList: Site[];
 }

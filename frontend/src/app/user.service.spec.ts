@@ -24,7 +24,7 @@ describe('UserService', () => {
   });
 
   it('signIn', async(() => {
-    let url = '/api/sign_in';
+    let url = '/api/sign_in/';
     service.signIn('minty', 'wow').then(() => {
       expect(req.request.method).toEqual('POST');
       expect(service.userNumber).toEqual(1);
@@ -35,7 +35,7 @@ describe('UserService', () => {
   }));
 
   it('signOut', () => {
-    let url = '/api/sign_out';
+    let url = '/api/sign_out/';
     service.signOut().then(success => {
       expect(req.request.method).toEqual('GET');
       expect(service.userNumber).toEqual(-1);
@@ -46,7 +46,7 @@ describe('UserService', () => {
   });
 
   it('signUp', () => {
-    let url = '/api/sign_up';
+    let url = '/api/sign_up/';
     service.signUp('minty', 'wow').then(() => {
       expect(req.request.method).toEqual('POST');
       expect(service.userNumber).toEqual(1);
@@ -57,7 +57,7 @@ describe('UserService', () => {
   });
 
   it('getCourses', () => {
-    let url = '/api/user/course';
+    let url = '/api/user/course/';
     service.getCourses().subscribe(courses => {
       expect(req.request.method).toEqual('GET');
       expect(courses).toEqual([mockCourses[1], mockCourses[5]]);
@@ -67,7 +67,7 @@ describe('UserService', () => {
   });
 
   it('addCourses', () => {
-    let url = '/api/user/course';
+    let url = '/api/user/course/';
     service.addCourses([mockCourses[2], mockCourses[3]]).subscribe(() => {
       expect(req.request.method).toEqual('POST');
     });
@@ -76,8 +76,8 @@ describe('UserService', () => {
   });
 
   it('getNewsfeed', () => {
-    let url = '/api/user/newsfeed/' + 1;
-    service.getNewsfeed(1).subscribe(articles => {
+    let url = '/api/user/newsfeed/';
+    service.getNewsfeed().subscribe(articles => {
       expect(req.request.method).toEqual('GET');
       expect(articles).toEqual([mockArticles[0], mockArticles[1]]);
     });
@@ -86,7 +86,7 @@ describe('UserService', () => {
   });
 
   it('updateArticle', () => {
-    let url = '/api/user/article/' + 2;
+    let url = '/api/user/article/' + 2 + '/';
     service.updateArticle(mockArticles[1]).subscribe(() => {
       expect(req.request.method).toEqual('PUT');
     });

@@ -47,7 +47,7 @@ describe('CourseService', () => {
 
   it('getRecommendedSitesById', () => {
     service.getRecommendedSitesById(3).subscribe(() => {});
-    const req = httpMock.expectOne('api/course/3/site');
+    const req = httpMock.expectOne('api/course/3/site/');
     expect(req.request.method).toBe('GET');
     req.flush(mockCourses[2]);
   });
@@ -60,9 +60,9 @@ describe('CourseService', () => {
   });
 
   it('addSiteByCourseId', () => {
-    service.addSiteByCourseId(3, mockCourses[4].sites[0]).subscribe(() => {});
-    const req = httpMock.expectOne('api/course/3/site');
+    service.addSiteByCourseId(3, mockCourses[4].siteList[0]).subscribe(() => {});
+    const req = httpMock.expectOne('api/course/3/site/');
     expect(req.request.method).toBe('POST');
-    req.flush(mockCourses[2].sites.concat(mockCourses[4].sites[0]));
+    req.flush(mockCourses[2].siteList.concat(mockCourses[4].siteList[0]));
   });
 });
