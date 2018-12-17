@@ -3,11 +3,9 @@ import requests
 import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-from .crawlers.theory import Theory
-from .crawlers.github import Github
 import time
 from datetime import datetime, timezone
-
+from .crawl_diff import scan
 
 def update_auto():
     while True:
@@ -23,12 +21,4 @@ def update():
         for course in courses:
             sites = list(course.siteList.all())
             for site in sites:
-                getArticles(site, course)
-
-
-def getArticles(site, course):
-    print(site.url)
-    if "theory.snu.ac.kr" in site.url:
-        Theory.getArticles(site, course)
-    elif "github.com" in site.url:
-        Github.getArticles(site, course)
+                scan(site, course)

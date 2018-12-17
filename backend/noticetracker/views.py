@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from json.decoder import JSONDecodeError
 from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
 import json
-from crawl_init import save2DB
+from .crawl_init import save2DB
 
 # Create your views here.
 
