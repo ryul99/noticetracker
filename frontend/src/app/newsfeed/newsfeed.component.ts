@@ -27,8 +27,15 @@ export class NewsfeedComponent implements OnInit {
     });
 
     this.userService.getNewsfeed().subscribe(newsfeed => {
-      this.newsfeed = newsfeed;
-      console.log(this.newsfeed);
+      this.newsfeed = newsfeed.sort((a: Article, b: Article) => {
+        var updA: Date = a.updated;
+        var updB: Date = b.updated;
+        var timeA = new Date(updA).getTime();
+        var timeB = new Date(updB).getTime();
+        var diff = Math.abs(timeA - timeB);
+        if (diff < 3000) return 0;
+        return timeB - timeA;
+      });
     });
   }
 
