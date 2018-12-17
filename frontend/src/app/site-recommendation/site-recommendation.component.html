@@ -28,20 +28,20 @@
             <div *ngIf="expanded[index]">
               <ul class="list-group">
                 <li class="list-group-item" *ngFor="let site of course.siteList">
-                  <strong>{{ site.name }}</strong><br>
-				  <a href="{{ site.url }}">{{ site.url }}</a>
+                  <strong>{{ site.name }}</strong
+                  ><br />
+                  <a href="{{ site.url }}">{{ site.url }}</a>
                 </li>
               </ul>
-              Name: <input [(ngModel)]="siteName[index]" /> <br/>
-              URL:  <input [(ngModel)]="siteUrl[index]" /> <button (click)="addUrl(course)">Add</button>
+              Name: <input [(ngModel)]="siteName[index]" type="text" id="inputSiteName" class="form-control" /> <br />
+              URL: <input [(ngModel)]="siteUrl[index]" type="txt" id="inputSiteUrl" class="form-control" />
+              <button class="btn btn-primary" (click)="addUrl(course)">Add</button>
             </div>
           </li>
         </ul>
       </div>
       <br />
-      <div class="d-flex flex-row-reverse">
-        <button class="btn btn-success" (click)="confirm()">Confirm</button>
-      </div>
+      <div class="d-flex flex-row-reverse"><button class="btn btn-success" (click)="confirm()">Confirm</button></div>
     </div>
   </body>
 </html>
