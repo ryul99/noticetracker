@@ -5,6 +5,8 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 import re
+from ..crawl_init import rawHref2Url
+
 
 class Github:
     def getArticles(site, course):  # theory.snu.ac.kr/?page_id=<id>
@@ -56,16 +58,23 @@ class Github:
 
         repoUrl = site.url[site.url.find('github.com') + len('github.com'):]
         headers = { 'User-Agent': 'NoticeTracker' }
-        html = requests.get(site.url + '/issues?page=' + str(pageNum), headers=headers)
+        crawlUrl = site.url + '?page=' + str(pageNum)
+        html = requests.get(crawlUrl, headers=headers)
+        print("crawl try: " + site.url)
 
         if html.status_code == 200:
             bsObject = BeautifulSoup(html.text, "html.parser")
             issues = bsObject.find_all("a", id=re.compile("issue.*"))
             if len(issues) == 0:
                 return False
+            slicedUrl = re.findall('([^/]+[/]{2})?([^/]+)', crawlUrl)
+            root = slicedUrl[0][1]  # e.g. stackoverflow.com
             for issue in issues:
                 content = issue.get_text()
                 url = issue.get('href')
+                if url == None or url == "":
+                    continue
+                url = rawHref2Url(url, root, slicedUrl)
                 if Article.objects.filter(url=url, fromSite=site).count() == 0:
                     articleData = Article(
                         content=content,

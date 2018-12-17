@@ -20,6 +20,8 @@ def rawHref2Url(href, root, slicedUrl):
             # remove last elements
             r = "/".join([i[1] for i in slicedUrl[0:len(slicedUrl) - 1]])
             ret = r + '/' + href
+    if "http" not in ret:
+        ret = "http://" + ret
     return ret
 
 

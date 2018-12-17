@@ -99,7 +99,7 @@ class NoticeTrackerTestCase(TestCase):
                           lastUpdated=datetime(year=2018, month=12, day=8, tzinfo=timezone.utc))
         self.site4 = Site(name='automata', url='http://theory.snu.ac.kr/?page_id=1388',
                           lastUpdated=datetime(year=2018, month=12, day=9, tzinfo=timezone.utc))
-        self.site5 = Site(name='SWPP', url='https://github.com/swsnu/swppfall2018',
+        self.site5 = Site(name='SWPP', url='https://github.com/swsnu/swppfall2018/issues',
                           lastUpdated=datetime(year=2018, month=12, day=10, tzinfo=timezone.utc))
         self.site1.save()
         self.site2.save()
