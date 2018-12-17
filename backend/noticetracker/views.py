@@ -5,7 +5,7 @@ from django.http import HttpResponseNotFound, HttpResponseBadRequest
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from json.decoder import JSONDecodeError
-from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail
+from .models import LectureTime, Site, Course, CourseCustom, Article, UserDetail, SiteHref
 import json
 from .crawl_init import crawl
 
