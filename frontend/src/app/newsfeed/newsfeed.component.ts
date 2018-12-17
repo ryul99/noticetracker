@@ -46,10 +46,10 @@ export class NewsfeedComponent implements OnInit {
   }
 
   toggleStar(article: Article) {
-    article.toggleStar();
+    article.star = !article.star;
   }
 
   setIgnore(article: Article) {
-    article.toggleIgnore();
+    article.ignore = !article.ignore;
   }
 }
