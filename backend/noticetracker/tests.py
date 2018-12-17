@@ -351,12 +351,12 @@ class NoticeTrackerTestCase(TestCase):
         self.assertEqual(len(s), 1)
         self.assertIn("uid=437", s[0].url)
 
-    # def test_github_crawl(self):
-    #     Github.crawlPage(self.site5, self.cc1, 1)
-    #     s = list(Article.objects.filter(
-    #         content__contains="[Practice Session] 12/12 Bug Report"))
-    #     self.assertEqual(len(s), 1)
-    #     self.assertIn("163", s[0].url)
+    def test_github_crawl(self):
+        Github.crawlPage(self.site5, self.cc1, 1)
+        s = list(Article.objects.filter(
+            content__contains="[Practice Session] 12/12 Bug Report"))
+        self.assertEqual(len(s), 1)
+        self.assertIn("163", s[0].url)
 
     def test_user_course_site(self):
         client = Client()

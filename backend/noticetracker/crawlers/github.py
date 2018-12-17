@@ -4,7 +4,7 @@ import csv
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
-
+import re
 
 class Github:
     def getArticles(site, course):  # theory.snu.ac.kr/?page_id=<id>
@@ -17,6 +17,10 @@ class Github:
     def crawlPage(site, course, pageNum):
         if "http" not in site.url:
             site.url = "https://" + site.url
+
+        '''
+        # below code uses github api: not using due to api limits
+
         repoUrl = site.url[site.url.find('github.com') + len('github.com'):]
         apiUrl = "https://api.github.com/repos"
         # print(apiUrl + repoUrl + '/issues?page=' + str(pageNum))
@@ -46,4 +50,31 @@ class Github:
         else:
             # print("Github returned " + str(html.status_code))
             # print(html.text)
+            return False
+
+        '''
+
+        repoUrl = site.url[site.url.find('github.com') + len('github.com'):]
+        headers = { 'User-Agent': 'NoticeTracker' }
+        html = requests.get(site.url + '/issues?page=' + str(pageNum), headers=headers)
+
+        if html.status_code == 200:
+            bsObject = BeautifulSoup(html.text, "html.parser")
+            issues = bsObject.find_all("a", id=re.compile("issue.*"))
+            if len(issues) == 0:
+                return False
+            for issue in issues:
+                content = issue.get_text()
+                url = issue.get('href')
+                if Article.objects.filter(url=url, fromSite=site).count() == 0:
+                    articleData = Article(
+                        content=content,
+                        url=url,
+                        updated=datetime.now(timezone.utc),
+                        fromCourse=course.course,
+                        fromSite=site
+                    )
+                    articleData.save()
+            return True
+        else:
             return False
